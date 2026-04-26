@@ -1,0 +1,98 @@
+version: '3.8'
+services:
+  #######################################
+  # OAI MEP (Kong Gateway)
+  #######################################
+  oai-mep-gateway:
+    container_name: "oai-mep-gateway"
+    image: kong:latest
+    restart: always
+    hostname: "172.22.0.162"
+    environment:
+      KONG_PG_HOST: oai-mep-gateway-db
+      KONG_PG_PASSWORD: kong
+      KONG_PROXY_LISTEN: 0.0.0.0:80
+      KONG_PROXY_LISTEN_SSL: 0.0.0.0:443
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001   # admin interface of kong
+    depends_on:
+      - kong-migration
+      - oai-mep-gateway-db
+    healthcheck:
+      test: ps aux | grep nginx
+      interval: 5s
+      timeout: 2s
+      retries: 15
+    ports:
+      - 8001
+      - 80
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.162
+  kong-migration:
+    image: kong:latest
+    command: "kong migrations bootstrap"
+    container_name: "migeration-tmp"
+    restart: on-failure
+    environment:
+      KONG_PG_HOST: oai-mep-gateway-db
+      KONG_PG_PASSWORD: kong
+    depends_on:
+      - oai-mep-gateway-db
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.163
+  oai-mep-gateway-db:
+    image: postgres:9.6
+    restart: always
+    container_name: "oai-mep-gateway-db"
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kong
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.164
+  # #######################################
+  # # OAI MEP (Registry Service)
+  # #######################################
+  oai-mep-registry:
+    image: oaisoftwarealliance/oai-mep:latest
+    container_name: "oai-mep-registry"
+    hostname: "oai-mep-registry.org"
+    environment:
+      CONFIG_FILE: '/usr/local/etc/configuration.yaml'
+      MOUNT_CONFIG: 'no'
+      HOST: '172.22.0.165'
+      PORT: 80              #application port
+      LOG_LEVEL: info
+      FQDN: '172.22.0.162'   # same as oai-mep-backend.hostname
+      BACKEND: 'oai-mep-gateway:8001' # admin interface of kong
+      DATABASE_HOST: 172.22.0.167
+      DATABASE_PORT: 27017
+      DATABASE_USER: admin
+      DATABASE_PASSWORD: linux
+      RESET_DATABASE: 'yes'    #whenever mep is restarted database will be re-initialized
+    depends_on:
+      - oai-mep-gateway
+    healthcheck:
+      test: /bin/sh -c "pgrep oai_mep"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.165
+
+networks:
+    public_net:
+        driver: bridge
+        name: docker_open5gs_default
+        external: true
+        ipam:
+            config:
+                - subnet: 172.22.0.0/24

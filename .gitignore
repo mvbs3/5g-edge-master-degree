@@ -1,0 +1,31 @@
+examples/mec_app1
+examples/app_testes/venv_emissor
+examples/app_testes/venv_receptor
+examples/uploads
+*.csv
+*.json
+*.png
+*.jpg
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignorar ambientes virtuais
+venv/
+.env/
+
+# Ignorar configurações do VSCode e IDEs
+.vscode/
+.idea/
+
+# Ignorar arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar logs
+*.log
+
+# Ignorar arquivos de build
+build/
+dist/
+*.egg-info/

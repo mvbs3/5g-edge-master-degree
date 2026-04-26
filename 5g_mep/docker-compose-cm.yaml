@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  #######################################
+  # OAI CM
+  #######################################
+  oai-cm:
+    image: oaisoftwarealliance/oai-cm:latest
+    container_name: "oai-cm"
+    restart: always
+    environment:
+      CONFIG_FILE: '/usr/local/etc/configuration.yaml'
+      MOUNT_CONFIG: 'no'
+      PORT: 80              #application port
+      LOG_LEVEL: info
+      HOST: 172.22.0.168  ## Really important it should be reachable from amf and smf
+      DATABASE_HOST: mongodb
+      AMF_HOST: 172.22.0.10
+      SMF_HOST: 172.22.0.7
+      DATABASE_PORT: 27017
+      DATABASE_USER: admin
+      DATABASE_PASSWORD: linux
+      RESET_DATABASE: 'yes'    #whenever mep is restarted database will be re-initialized
+    depends_on:
+      - mongodb
+    healthcheck:
+      test: /bin/sh -c "pgrep oai_cm"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.168
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: linux
+    command: mongod
+    healthcheck:
+      test: /bin/sh -c "pgrep mongod"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+       public_net:
+          ipv4_address: 172.22.0.167
+networks:
+    public_net:
+        driver: bridge
+        name: docker_open5gs_default
+        external: true
+        ipam:
+            config:
+                - subnet: 172.22.0.0/24
