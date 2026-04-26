@@ -1,0 +1,19 @@
+# Usando Python como base
+FROM python:3.9
+
+# Definir diretório de trabalho no container
+WORKDIR /app
+
+# Copiar arquivos do app para o container
+COPY mec_app1.py requirements_measurement.txt ./
+
+# Instalar dependências
+RUN pip install --upgrade pip
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+RUN pip install --no-cache-dir -r requirements_measurement.txt
+
+# Expor a porta do serviço (ajuste conforme necessário)
+EXPOSE 8080 8081 8082
+
+# Comando para rodar o app
+CMD ["python", "mec_app1.py"]

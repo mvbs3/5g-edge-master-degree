@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  mec_app1_instance1:
+  
+    build:  
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app1.py:/app/app.py
+    environment:
+      - MEC_NAME=VideoStreamingService
+      - MEC_PORT=8089
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8089:8089"
+    networks:
+      - public_net
+
+  mec_app1_instance2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app1.py:/app/app.py
+    environment:
+      - MEC_NAME=VideoStreamingService2
+      - MEC_PORT=8081
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8081:8081"
+    networks:
+      - public_net
+    mem_limit: 512m    # Limite de memória (512MB)
+    mem_reservation: 256m  # Memória reservada (256MB)
+
+
+  mec_app1_instance3:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app1.py:/app/app.py
+    environment:
+      - MEC_NAME=VideoStreamingService3
+      - MEC_PORT=8082
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8082:8082"
+    networks:
+      - public_net
+
+  mec_app2_instance1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app2.py:/app/app.py
+    environment:
+      - MEC_NAME=HeartService
+      - MEC_PORT=8083
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8083:8083"
+    networks:
+      - public_net
+
+  mec_app2_instance2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app2.py:/app/app.py
+    environment:
+      - MEC_NAME=HeartService2
+      - MEC_PORT=8084
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8084:8084"
+    networks:
+      - public_net
+  mec_app2_instance3:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app2.py:/app/app.py
+    environment:
+      - MEC_NAME=HeartService3
+      - MEC_PORT=8085
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8085:8085"
+    networks:
+      - public_net
+
+  mec_app3_instance1:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app3.py:/app/app.py
+    environment:
+      - MEC_NAME=MedicalReportService
+      - MEC_PORT=8086
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8086:8086"
+    networks:
+      - public_net
+  mec_app3_instance2:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app3.py:/app/app.py
+    environment:
+      - MEC_NAME=MedicalReportService2
+      - MEC_PORT=8087
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8087:8087"
+    networks:
+      - public_net
+  mec_app3_instance3:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile
+    image: mec_app:latest
+    volumes:
+      - ./mec_app3.py:/app/app.py
+    environment:
+      - MEC_NAME=MedicalReportService3
+      - MEC_PORT=8088
+      - MEC_HOST=${MEC_HOST}
+      - MEC_APP=app.py
+    ports:
+      - "8088:8088"
+    networks:
+      - public_net
+networks:
+  default:
+    external: true
+    name: docker_open5gs_default

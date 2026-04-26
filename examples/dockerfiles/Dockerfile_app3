@@ -1,0 +1,13 @@
+FROM python:3.9
+
+WORKDIR /app
+
+COPY mec_app3.py requirements_measurement.txt ./
+
+RUN pip install --upgrade pip
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+RUN pip install --no-cache-dir -r requirements_measurement.txt
+
+EXPOSE 8086 8087 8088 8089  
+
+CMD ["python", "mec_app3.py"]

@@ -45,7 +45,7 @@ metrics_history_buffer = deque(maxlen=100) # Valor inicial seguro, ajustado depo
 cpu_percentage = 0
 PORT = 8078
 MEC_HOST = os.getenv("MEC_HOST", "10.0.0.186")
-MEP_ADDRESS = os.getenv("MEC_HOST", "192.168.70.2")
+MEP_ADDRESS = os.getenv("MEP_ADDRESS", "192.168.70.2")
 INTELIGENCE_PORT = PORT
 CATCHER_PORT = 8081
 MEC_REGISTRY_URL = f"http://{MEP_ADDRESS}/service_registry/v1/register"

@@ -89,10 +89,6 @@ services:
           ipv4_address: 172.22.0.165
 
 networks:
-    public_net:
-        driver: bridge
-        name: docker_open5gs_default
-        external: true
-        ipam:
-            config:
-                - subnet: 172.22.0.0/24
+  public_net:
+    external: true
+    name: docker_open5gs_default
