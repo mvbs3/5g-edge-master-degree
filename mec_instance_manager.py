@@ -47,7 +47,7 @@ def start_instance(name, port, py_file, mec_name="VideoStreamingService", mec_ho
     "-e", f"MEC_HOST={mec_host}",
     "-e", "MEC_APP=app.py",
     "-p", f"{port}:{port}",
-    "--network", "demo-oai-public-net",
+    "--network", "docker_open5gs_default",
     "--memory", FIXED_MEM_LIMIT,
     "--memory-reservation", FIXED_MEM_RESERVATION,
     "--cpus", FIXED_CPU_LIMIT,

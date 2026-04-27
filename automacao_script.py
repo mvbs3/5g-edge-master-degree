@@ -39,6 +39,7 @@ class DockerConfig:
     cm: str = "docker-compose-cm.yaml"
     mep: str = "docker-compose-mep.yaml"
     ran: str = "docker-compose-ran.yaml"
+    ue: str = "docker-compose-nrue.yaml"
     prometheus_dir: str = "prometheus"
     docker_compose_dir: str = "docker-compose"
 
@@ -129,6 +130,7 @@ def update_env_files(ip: str):
         for path in env_paths:
             with open(path, 'w') as f:
                 f.write(f'MEC_HOST={ip}\n')
+                f.write(f'')
         print(f"✅ .env files updated with MEC_HOST={ip}")
     except Exception as e:
         print(f"❌ Error updating .env files: {e}")
@@ -303,14 +305,7 @@ def start_mep_enviroment():
     time.sleep(15)
 
 def start_mep_inteligence_plus_catcher():
-    print("\nStarting MEC Intelligence APP...")
-    open_terminal(
-        'bash -c "source mec_app1/bin/activate && python3 mec_app_inteligence.py"',
-        directory='mec_apps',
-        title="MEC_Intelligence"
-    )
-    print("✅ MEC Intelligence APP started.")
-    time.sleep(2)
+    
 
     print("\nStarting MEC Catcher APP...")
     open_terminal(
@@ -321,6 +316,14 @@ def start_mep_inteligence_plus_catcher():
     print("✅ MEC Catcher started.")
 
     time.sleep(10)
+    print("\nStarting MEC Intelligence APP...")
+    open_terminal(
+        'bash -c "source mec_app1/bin/activate && python3 mec_app_inteligence.py"',
+        directory='mec_apps',
+        title="MEC_Intelligence"
+    )
+    print("✅ MEC Intelligence APP started.")
+    time.sleep(2)
 
 def start_core_environment():
     """Start core network components (Core, CM, MEP, Intelligence, Catcher)."""
@@ -335,7 +338,10 @@ def start_ran():
     start_docker_compose(docker_config.ran, title="Ran", directory="5g_ran")
     print("✅ Ran environment started.")
     time.sleep(10)
-
+def start_ue():
+    print("\nStarting nr_ue...")
+    start_docker_compose(docker_config.ue, title="ue", directory="5g_ran")
+    print("✅ nr_ue started.")
 def start_ran_and_ue():
     """Start RAN and UE consumer."""
     print("\nStarting RAN and UE...")
@@ -473,11 +479,13 @@ def main():
                 cleanup_and_exit()
             
             elif choice == '1':
-                #start_prometheus_grafana()
+                start_prometheus_grafana()
                 start_core_environment()
                 start_ran()
                 start_mep_enviroment()
                 start_mep_inteligence_plus_catcher()
+                start_mec_apps(1)
+                start_ue()
             elif choice == '2':
                 start_core_environment()
             
@@ -528,6 +536,6 @@ def main():
 if __name__ == "__main__":
     local_ip = get_local_ip()
     print(f"Detected local IP: {local_ip}")
-    update_env_files(local_ip)
+    #update_env_files(local_ip)
     print("Environment ready.\n")
     main()

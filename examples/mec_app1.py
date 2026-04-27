@@ -15,8 +15,8 @@ import ipfshttpclient
 
 MEC_NAME = os.getenv("MEC_NAME", "TimeService")
 MEC_PORT = int(os.getenv("MEC_PORT", 8080))
-MEC_HOST = os.getenv("MEC_HOST", "10.0.0.186")
-MEP_ADDRESS = os.getenv("MEP_ADDRESS", "10.0.0.186")
+MEC_HOST = os.getenv("MEC_HOST", "1150.161.121.210")
+MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 
 MAX_FRAMES_BUFFER = int(os.getenv("MAX_FRAMES_BUFFER", 5))
 
