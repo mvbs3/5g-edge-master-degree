@@ -255,6 +255,24 @@ def upload_file():
 def get_time():
     return "Hello World"
 
+@app.route("/video_stream")
+def video():
+    def generate():
+        while True:
+            chunk = os.urandom(1024 * 50)  # 50KB por chunk
+            yield chunk
+            time.sleep(0.01)  # controla bitrate (~5MB/s)
+    return Response(generate(), mimetype="application/octet-stream")
+
+import random
+# 👁️ visão computacional (simulada)
+@app.route("/infer", methods=["POST"])
+def infer():
+    payload = request.data
+    # simula processamento pesado
+    time.sleep(random.uniform(0.05, 0.2))
+    return {"status": "ok"}
+
 @app.route('/metric', methods=['GET'])
 def get_metric():
 

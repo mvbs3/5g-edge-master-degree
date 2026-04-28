@@ -351,6 +351,14 @@ def start_ran_and_ue():
     time.sleep(3)
     print("✅ RAN and UE started.")
 
+def start_mapeK():
+    print("Starting MapeK...")
+    open_terminal(
+        'python3 mapeK.py',
+        directory="mec_apps",
+        title="mapeK"
+    )
+    print("✅ MapeK started.")
 def start_mep_and_intelligence():
     """Start MEP, Intelligence, and Metric Catcher."""
     print("\nStarting MEP, Intelligence, and Catcher...")
@@ -484,8 +492,29 @@ def main():
                 start_ran()
                 start_mep_enviroment()
                 start_mep_inteligence_plus_catcher()
-                start_mec_apps(1)
+                start_mec_apps(2)
                 start_ue()
+                time.sleep(5)
+                start_mapeK()
+                NUM_UES = 5
+
+                cmd = f"""
+                cd /mnt/ueransim &&
+                for i in $(seq 1 {NUM_UES}); do
+                python3 ue_client.py $i > ue_$i.log 2>&1 &
+                done;
+                wait
+                """
+
+                docker_cmd = [
+                    "docker", "exec", "-d", "nr_ue",
+                    "bash", "-c", cmd
+                ]
+
+                print("Executando comando no container...")
+                subprocess.run(docker_cmd, check=True)
+
+                print("Ues iniciadas com sucesso 🚀")
             elif choice == '2':
                 start_core_environment()
             

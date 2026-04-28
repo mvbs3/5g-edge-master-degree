@@ -319,7 +319,7 @@ def metric_catcher():
                 if app_type == "VidProc": # Foco apenas em VidProc
                     app_list = [
                     app_name
-                    for app_name in mec_metrics["data"][topic["app_type"]]
+                    for app_name in mec_metrics["data"][app_type]
                     if app_name not in draining_instances
                 ]
                     app_counts[app_type] = len(app_list)

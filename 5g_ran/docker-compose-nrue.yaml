@@ -1,6 +1,6 @@
 services:
   nr_ue:
-    image: docker_ueransim
+    image: ueransim-python:latest
     container_name: nr_ue
     stdin_open: true
     tty: true
@@ -20,6 +20,7 @@ services:
     networks:
       default:
         ipv4_address: ${NR_UE_IP}
+    
 networks:
   default:
     external: true

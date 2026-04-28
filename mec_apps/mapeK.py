@@ -21,7 +21,7 @@ MIN_INSTANCES = 1        # Número mínimo de instâncias MEC de vídeo que o si
 MAX_INSTANCES = 3        # Número máximo de instâncias MEC de vídeo que o sistema pode ter.
 processos_abertos = []   # Uma lista para manter referências a processos abertos por 'abrir_terminal'. Útil para gerenciamento.
 METRICS_POLLING_INTERVAL = 10 # Tempo em segundos entre as coleções de médias de CPU e PREVISÃO.
-MEP_ADDRESS = os.getenv("MEP_ADDRESS", "192.168.70.2")
+MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MONITOR_URL = f"http://{MEP_ADDRESS}/traffic_inteligence/cpu_percent"
 # URL do endpoint na sua MEC Intelligence que fornece a média de CPU e a PREVISÃO.
 

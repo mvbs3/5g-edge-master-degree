@@ -1,0 +1,6 @@
+FROM docker_ueransim
+
+RUN apt update && \
+    apt install -y python3 python3-pip
+
+RUN pip3 install requests redis numpy opencv-python aiohttp python-dotenv
