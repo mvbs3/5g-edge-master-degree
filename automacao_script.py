@@ -496,12 +496,15 @@ def main():
                 start_ue()
                 time.sleep(5)
                 start_mapeK()
-                NUM_UES = 5
+                NUM_UES = 60
+                DELAY = 3  # segundos
 
                 cmd = f"""
                 cd /mnt/ueransim &&
                 for i in $(seq 1 {NUM_UES}); do
+                echo "🚀 Iniciando UE $i"
                 python3 ue_client.py $i > ue_$i.log 2>&1 &
+                sleep {DELAY}
                 done;
                 wait
                 """

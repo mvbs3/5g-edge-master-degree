@@ -397,8 +397,7 @@ def metric_catcher():
             # Update app assignments for all topics
             is_map_enable = os.getenv("MAP_ENABLE", True)
             i = 0
-            for topic_id in topics.keys():
-                topic = topics[topic_id]
+            for topic_id, topic in list(topics.items()):
                 if "data" in mec_metrics and topic["app_type"] in mec_metrics["data"]:
                     app_list = list(mec_metrics["data"][topic["app_type"]])
 
@@ -436,7 +435,8 @@ def metric_catcher():
 
 # Initialize Flask app
 app = Flask(__name__)
-redis_client = redis.Redis(host=MEC_HOST, port=6379, decode_responses=True)
+REDIS_HOST = os.getenv("REDIS_HOST", "127.0.0.1")
+redis_client = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
 
 
 @app.route('/hello-api', methods=['GET'])
@@ -636,7 +636,7 @@ def reassign_topics_from_instance(app_type, instance_name):
         logger.warning(f"Sem apps candidatas para redistribuir tópicos de {instance_name}")
         return reassigned
 
-    for topic_id, topic_info in topics.items():
+    for topic_id, topic_info in list(topics.items()):
         if topic_info.get("app_type") == app_type and topic_info.get("app") == instance_name:
             new_app = random.choice(candidate_apps)
             topics[topic_id]["app"] = new_app

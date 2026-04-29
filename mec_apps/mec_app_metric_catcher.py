@@ -10,8 +10,8 @@ import os
 
 load_dotenv()
 TIME_TO_COLLECT=3
-MEC_HOST = os.getenv("MEC_HOST", "10.0.0.186")
-MEP_ADDRESS = os.getenv("MEP_ADDRESS", "192.168.70.2")
+MEC_HOST = os.getenv("MEC_HOST", "150.161.121.210")
+MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 PROMETHEUS_URL = f"http://{MEC_HOST}:9090"
 mec_apps_found = {}
 latency_samples = {}
