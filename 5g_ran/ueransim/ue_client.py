@@ -6,7 +6,6 @@ import redis
 import json
 import os
 import random
-
 import sys
 
 # valor padrão
@@ -17,7 +16,6 @@ if len(sys.argv) > 1:
     UE_ID = sys.argv[1]
  
 print(f"ue_id = {UE_ID}")
-
 
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 REDIS_HOST = os.getenv("MEC_HOST", "150.161.121.210")
@@ -109,12 +107,13 @@ def video_stream():
 
 
 def inference_loop():
-    global endpoint
+    global endpoint, topic_id
 
     while True:
         try:
             with lock:
                 url = endpoint + "/infer"
+                current_app = endpoint.split("/")[-1]  # pega nome do app atual
 
             payload = os.urandom(random.randint(500, 5000))
 
@@ -123,6 +122,21 @@ def inference_loop():
             latency = (time.time() - start) * 1000
 
             print(f"[UE {UE_ID}] Infer latency: {latency:.1f} ms")
+
+            # 🔥 NOVO: envia latência para o Metric Catcher
+            if topic_id:
+                try:
+                    requests.post(
+                        f"http://{MEP_ADDRESS}/traffic_catcher/latency",
+                        json={
+                            "topic": topic_id,
+                            "app": current_app,
+                            "latency": latency
+                        },
+                        timeout=1
+                    )
+                except Exception as e:
+                    print(f"[UE {UE_ID}] Erro ao enviar latência: {e}")
 
         except Exception as e:
             print(f"[UE {UE_ID}] Erro infer: {e}")

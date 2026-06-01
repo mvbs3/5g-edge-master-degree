@@ -54,8 +54,10 @@ METRICS_CSV_FILE = "rl_input_state.csv"
 METRICS_POLLING_INTERVAL = 10  # seconds
 variables_create_app = {"instance_numer":1}
 create_app = {"container_name": "mec_app1_instance", "port": 8090, "py_file": "examples/mec_app1.py", "mec_name": "VideoStreamingService", "mec_host": "10.0.0.", "initial_ip":186, "instance_numer": 0}
-m_controller = controller(metric_a_ref=0.3, metric_b_ref=2, num_arms=2)
-
+m_controller = controller(
+    latency_ref=100,
+    num_arms=2
+)
 # --- CONFIGURAÇÃO DE INATIVIDADE ---
 INACTIVITY_TIMEOUT = 30
 
@@ -76,10 +78,13 @@ CORE_METRICS_FOR_CSV = [
     "network_rx_kbps",
     "network_tx_kbps",
     "throughput_kbps(prometheus)",
-    "latency_ms"
+    "avg_latency_ms",
+    "max_latency_ms",
+    "min_latency_ms"
 ]
-
 ue_connected = {}
+service_latency_stats = {}
+topic_latency_stats = {}
 
 # --- Função auxiliar para carregar ativos de inferência (NOVA) ---
 def load_assets(model_path, scaler_path, params_path):
@@ -301,7 +306,10 @@ def cleanup_inactive_users():
 def metric_catcher():
     """Thread function to periodically fetch metrics from traffic catcher"""
     global mec_metrics, topics, cpu_percentage, metrics_history_buffer, loaded_model, inference_params
+    global service_latency_stats, topic_latency_stats
 
+    service_latency_stats = {}
+    topic_latency_stats = {}
     while True:
         try:
             response = requests.get(METRICS_URL)
@@ -309,8 +317,57 @@ def metric_catcher():
             raw_metrics = response.json()
 
             mec_metrics = format_metrics_json(raw_metrics)
+            topic_latency_stats.clear()
+            service_latency_stats.clear()
             # open("mec_metrics.json", "w").write(json.dumps(mec_metrics)) # Remover ou usar apenas para debug
 
+
+            for app_type, services in mec_metrics.get("data", {}).items():
+                for service_name, metrics in services.items():
+
+                    latency_data = metrics.get("latency_ms", {})
+
+                    latencies = []
+
+                    if isinstance(latency_data, dict):
+                        for topic, info in latency_data.items():
+
+                            if isinstance(info, dict):
+
+                                latency = info.get("latency")
+
+                                try:
+                                    latency = float(latency)
+
+                                    latencies.append(latency)
+
+                                    topic_latency_stats[topic] = {
+                                        "service": service_name,
+                                        "latency": latency
+                                    }
+
+                                except:
+                                    pass
+
+                    if latencies:
+                        service_latency_stats[service_name] = {
+                            "avg": sum(latencies) / len(latencies),
+                            "max": max(latencies),
+                            "min": min(latencies)
+                        }
+            for app_type, services in mec_metrics.get("data", {}).items():
+                for service_name, metrics in services.items():
+
+                    stats = service_latency_stats.get(service_name)
+
+                    if stats:
+                        metrics["avg_latency_ms"] = stats["avg"]
+                        metrics["max_latency_ms"] = stats["max"]
+                        metrics["min_latency_ms"] = stats["min"]
+                    else:
+                        metrics["avg_latency_ms"] = "N/A"
+                        metrics["max_latency_ms"] = "N/A"
+                        metrics["min_latency_ms"] = "N/A"
             relevant_metrics = {}
             average_metrics = {}
             app_counts = {}
@@ -362,7 +419,14 @@ def metric_catcher():
 
             # --- ATUALIZAÇÃO DA VARIÁVEL GLOBAL cpu_percentage ---
             if "VidProc" in average_metrics and "cpu_percent(prometheus)" in average_metrics["VidProc"]:
-                cpu_percentage = average_metrics["VidProc"]["cpu_percent(prometheus)"]
+                cpu_values = []
+
+                for app in mec_metrics["data"]["VidProc"].values():
+                    v = app.get("cpu_percent(prometheus)", np.nan)
+                    if isinstance(v, (int, float)):
+                        cpu_values.append(v)
+
+                cpu_percentage = max(cpu_values) if cpu_values else "N/A"
             else:
                 cpu_percentage = "N/A"
                 logger.warning("Não foi possível calcular avg_cpu_percent para VidProc.")
@@ -395,7 +459,9 @@ def metric_catcher():
                 # else: logger.warning("App_type 'VidProc' não encontrado nas métricas para histórico GRU.") # Este log ja existe acima
 
             # Update app assignments for all topics
-            is_map_enable = os.getenv("MAP_ENABLE", True)
+            is_map_enable = (
+                os.getenv("MAP_ENABLE", "true").lower() == "true"
+            )
             i = 0
             for topic_id, topic in list(topics.items()):
                 if "data" in mec_metrics and topic["app_type"] in mec_metrics["data"]:
@@ -405,12 +471,45 @@ def metric_catcher():
                         if is_map_enable:
                             if m_controller.model.num_arms != len(app_list):
                                 m_controller.set_num_arms(len(app_list))
-                            action = m_controller.get_arm_ts(topic_id)
-                            time.sleep(5)
-                            #EM VEZ DE DAR UM TEMPO E DAR UPDATE, EU PENSEI EM SO DAR UPDATE ANTES DE ESCOLHER A CHOICE SEMPRE
-                            #ISSO FAZ COM QUE SEMPRE Q A O GET_ARM_TS SEJA CHAMADO, ESTEJA ATUALIZADO.
-                            m_controller.update_model(userId=topic_id, state=[0.5, 2])
-                            mec_app_choice = app_list[action]
+                            current_app = topics[topic_id].get("app")
+
+                            latency_info = topic_latency_stats.get(topic_id)
+
+                            if latency_info and latency_info["service"] == current_app:
+
+                                ue_latency = latency_info["latency"]
+
+                                # 1. update do bandit
+                                m_controller.update_model(
+                                    userId=topic_id,
+                                    state=[ue_latency]
+                                )
+
+                                # 2. escolha do MAB
+                                action = m_controller.get_arm_ts(topic_id)
+                                mec_app_choice = app_list[action]
+
+                                selected_service = mec_app_choice
+
+                                # 3. LOG COMPLETO (DEBUG REAL)
+                                logger.info(
+                                    "\n[MAB DEBUG]\n"
+                                    f"topic={topic_id}\n"
+                                    f"  current_service={current_app}\n"
+                                    f"  latency={ue_latency:.2f}\n"
+                                    f"  selected_arm={action}\n"
+                                    f"  selected_service={selected_service}\n"
+                                    "------------------------"
+                                )
+
+                            else:
+                                # fallback normal (sem update do MAB)
+                                action = m_controller.get_arm_ts(topic_id)
+                                mec_app_choice = app_list[action]
+
+                                logger.info(
+                                    f"[MAB FALLBACK] topic={topic_id} app={mec_app_choice} (no latency update)"
+                                )
                         else:
                             mec_app_choice = app_list[i]
                         i = (i + 1) % len(app_list)

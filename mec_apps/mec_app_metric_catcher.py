@@ -219,7 +219,11 @@ def metric_catcher():
                             "network_tx_kbps": prometheus_metrics.get("network_tx_kbps", "N/A"),
                             "throughput_kbps(prometheus)": prometheus_metrics.get("throughput_kbps", "N/A"),
                             "throughput_kbps(metric)": metric_data.get("throughput_kbps", "N/A"),
-                            "latency_ms": latency_samples if latency_samples else "N/A",
+                            "latency_ms": {
+                                topic: info
+                                for topic, info in latency_samples.items()
+                                if info["app"] == service_name
+                            } if latency_samples else "N/A",
                             # Last updated timestamp
                             "last_updated": datetime.datetime.now().isoformat()
                         }

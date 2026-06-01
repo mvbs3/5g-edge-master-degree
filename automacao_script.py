@@ -496,8 +496,8 @@ def main():
                 start_ue()
                 time.sleep(5)
                 start_mapeK()
-                NUM_UES = 60
-                DELAY = 3  # segundos
+                NUM_UES = 100
+                DELAY = 5  # segundos
 
                 cmd = f"""
                 cd /mnt/ueransim &&
