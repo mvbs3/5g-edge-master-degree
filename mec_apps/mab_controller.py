@@ -1,5 +1,6 @@
 import csv
 import os
+import time
 import numpy as np
 
 RED = '\033[31m'
@@ -12,9 +13,18 @@ class ThompsonSamplingBandit:
     Preserva estatísticas dos braços que sobrevivem entre operações de
     set_arms — essencial quando MAPE-K adiciona/remove instâncias MEC
     no meio do experimento.
+
+    Persiste em CSV:
+      - prob_csv:    snapshots de (alpha, beta) por braço a cada evento
+      - rewards_csv: um registro por evento de feedback (sucesso/falha)
     """
 
-    def __init__(self, prob_csv='./Results/arm_probabilities.csv', decay=1.0):
+    def __init__(
+        self,
+        prob_csv='./Results/arm_probabilities.csv',
+        rewards_csv='./Results/rewards.csv',
+        decay=1.0,
+    ):
         # arms = {arm_name: {'alpha': float, 'beta': float}}
         self.arms = {}
 
@@ -25,9 +35,11 @@ class ThompsonSamplingBandit:
         self.history = []  # [(arm_name, reward), ...]
 
         self.prob_csv = prob_csv
+        self.rewards_csv = rewards_csv
         self.decay = decay  # 1.0 = sem decay; <1.0 = forgetting (não-estacionário)
 
         self._init_prob_csv()
+        self._init_rewards_csv()
 
     @property
     def num_arms(self):
@@ -40,6 +52,7 @@ class ThompsonSamplingBandit:
             with open(self.prob_csv, mode='w', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([
+                    'timestamp',
                     'event',
                     'arm',
                     'alpha_before',
@@ -47,7 +60,24 @@ class ThompsonSamplingBandit:
                     'sampled_prob'
                 ])
 
+    def _init_rewards_csv(self):
+        os.makedirs(os.path.dirname(self.rewards_csv), exist_ok=True)
+
+        if not os.path.exists(self.rewards_csv):
+            with open(self.rewards_csv, mode='w', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow([
+                    'timestamp',
+                    'user_id',
+                    'arm',
+                    'latency_ms',
+                    'reward',
+                    'alpha_after',
+                    'beta_after',
+                ])
+
     def _save_arm_snapshot(self, event, sampled_values=None):
+        ts = time.time()
         with open(self.prob_csv, mode='a', newline='') as f:
             writer = csv.writer(f)
 
@@ -59,12 +89,39 @@ class ThompsonSamplingBandit:
                 )
 
                 writer.writerow([
+                    round(ts, 6),
                     event,
                     name,
                     round(params['alpha'], 6),
                     round(params['beta'], 6),
                     round(sampled, 6) if sampled != '' else ''
                 ])
+
+    def log_reward_event(self, user_id, arm, latency, reward):
+        """Registra um evento atômico de feedback no rewards_csv."""
+        try:
+            lat = float(latency)
+        except (TypeError, ValueError):
+            lat = float('nan')
+
+        alpha_after = (
+            self.arms[arm]['alpha'] if arm in self.arms else ''
+        )
+        beta_after = (
+            self.arms[arm]['beta'] if arm in self.arms else ''
+        )
+
+        with open(self.rewards_csv, mode='a', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                round(time.time(), 6),
+                user_id,
+                arm,
+                round(lat, 4),
+                int(reward),
+                round(alpha_after, 6) if alpha_after != '' else '',
+                round(beta_after, 6) if beta_after != '' else '',
+            ])
 
     def _warm_prior(self):
         # Novo braço herda a média dos braços existentes, mas com evidência
@@ -217,6 +274,7 @@ class controller:
         arm_name = self.user_action[userId]
 
         self.model.update(arm_name, reward)
+        self.model.log_reward_event(userId, arm_name, latency, reward)
 
         self.action_history.append([arm_name, reward])
 
