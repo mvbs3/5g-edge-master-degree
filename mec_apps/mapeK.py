@@ -16,6 +16,8 @@ METRICS_POLLING_INTERVAL = 5
 
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MONITOR_URL = f"http://{MEP_ADDRESS}/traffic_inteligence/cpu_percent"
+DISCOVER_URL = f"http://{MEP_ADDRESS}/service_registry/v1/discover"
+TARGET_APP_TYPE = os.getenv("TARGET_APP_TYPE", "VidProc")
 
 create_app = {
     "instance_numer": 1,
@@ -52,6 +54,36 @@ def run_background(cmd):
         stderr=subprocess.DEVNULL
     )
     processos_abertos.append(processo)
+    return processo
+
+# ================= STATE RECOVERY =================
+def discover_active_instances():
+    """
+    Consulta o MEP service registry para descobrir quantas instâncias do
+    TARGET_APP_TYPE já estão ativas. Permite que o MAPE-K se reinicie sem
+    desincronizar com a realidade (containers que continuam rodando).
+    """
+    try:
+        response = requests.get(DISCOVER_URL, timeout=5)
+        response.raise_for_status()
+        services = response.json()
+
+        active = [
+            svc for svc in services
+            if svc.get("type") == TARGET_APP_TYPE
+        ]
+        return active
+    except Exception as e:
+        log(f"⚠️ Falha ao descobrir instâncias ativas: {e}. Assumindo estado limpo.")
+        return []
+
+def initialize_state():
+    """Sincroniza create_app['instance_numer'] com o número real de instâncias VidProc."""
+    active = discover_active_instances()
+    n = max(len(active), 1)
+    create_app["instance_numer"] = n
+    log(f"🔁 Estado recuperado: {len(active)} instância(s) {TARGET_APP_TYPE} ativa(s). instance_numer={n}")
+    return n
 
 # ================= MONITOR =================
 def collect_metrics():
@@ -129,10 +161,18 @@ def execute(plan):
         --mec_host {host}
         """
 
-        run_background(cmd)
+        proc = run_background(cmd)
+        time.sleep(8)
+
+        # Validação: o subprocess ainda está vivo? Se já saiu com erro, não
+        # incrementamos o contador (evita drift).
+        ret = proc.poll()
+        if ret is not None and ret != 0:
+            log(f"❌ SCALE_UP falhou (exit={ret}). Mantendo instance_numer em {num}.")
+            return
 
         create_app["instance_numer"] += 1
-        time.sleep(8)
+        log(f"✅ SCALE_UP concluído. instance_numer={create_app['instance_numer']}")
 
     elif action == "SCALE_DOWN":
         num = create_app["instance_numer"] - 1
@@ -143,23 +183,27 @@ def execute(plan):
         log(f"🧹 Removendo instância {num}")
 
         try:
-            requests.post(
+            response = requests.post(
                 f"http://{MEP_ADDRESS}/traffic_inteligence/shut_down_mec_app",
                 json={
                     "app_type": "VidProc",
                     "instance_name": f"VideoStreamingService{num}",
                     "container_name": f"mec_app1_instance{num}"
                 },
-                timeout=5
+                timeout=15
             )
-            create_app["instance_numer"] -= 1
+            if response.status_code == 200:
+                create_app["instance_numer"] -= 1
+                log(f"✅ SCALE_DOWN concluído. instance_numer={create_app['instance_numer']}")
+            else:
+                log(f"⚠️ shut_down_mec_app retornou {response.status_code}: {response.text[:200]}")
 
         except Exception as e:
             log(f"Erro ao remover: {e}")
 
 # ================= LOOP =================
 def run():
-    create_app["instance_numer"] = 1
+    initialize_state()
 
     while True:
         log("==== CICLO MAPE-K ====")

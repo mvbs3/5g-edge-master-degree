@@ -15,6 +15,11 @@ MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 PROMETHEUS_URL = f"http://{MEC_HOST}:9090"
 mec_apps_found = {}
 latency_samples = {}
+
+# Locks para o estado compartilhado entre o thread metric_catcher e os
+# handlers Flask (/latency, /app_metrics).
+metrics_lock = threading.RLock()
+latency_lock = threading.RLock()
 def query_prometheus(promql_query):
     try:
         response = requests.get(f"{PROMETHEUS_URL}/api/v1/query", params={"query": promql_query})
@@ -157,17 +162,18 @@ def metric_catcher():
             # Discover available MEC services
             response = requests.get(f"http://{MEP_ADDRESS}/service_registry/v1/discover")
             discovered_services = response.json()
-            
+
             for service in discovered_services:
                 service_type = service["type"]
                 service_name = service["name"]
-                
-                # Initialize type and service in our metrics dictionary if not exists
-                if not mec_apps_found.get(service_type):
-                    mec_apps_found[service_type] = {}
 
-                if not mec_apps_found[service_type].get(service_name):
-                    mec_apps_found[service_type][service_name] = {}
+                with metrics_lock:
+                    # Initialize type and service in our metrics dictionary if not exists
+                    if not mec_apps_found.get(service_type):
+                        mec_apps_found[service_type] = {}
+
+                    if not mec_apps_found[service_type].get(service_name):
+                        mec_apps_found[service_type][service_name] = {}
 
                 try:
                     # Skip collecting metrics for our own service and intelligence service
@@ -175,10 +181,10 @@ def metric_catcher():
                         # Get service's own metrics
                         metric_response = requests.get(f'http://{MEP_ADDRESS}/{service_name}/metric', timeout=2)
                         metric_data = metric_response.json()
-                        
+
                         # Get container name for Prometheus metrics
                         container_name = get_container_name_by_id(metric_data.get("container_id", "N/A"))
-                        
+
                         # Get Prometheus metrics if container name is available
                         prometheus_metrics = get_container_metrics(container_name) if container_name != "N/A" else {
                             "cpu_percent": "N/A",
@@ -189,69 +195,75 @@ def metric_catcher():
                             "network_tx_kbps": "N/A",
                             "throughput_kbps": "N/A"
                         }
-                        latency_ms = [{topic: info["latency"]} for topic, info in latency_samples.items() if info["app"] == service_name]
-                        
-                        # Update metrics in our dictionary
-                        mec_apps_found[service_type][service_name] = {
-                            "container_name": container_name,
-                            "queue_size": metric_data.get("active_requests", 0),
-                            
-                            # Video streaming specific metrics
-                            "frames_received": metric_data.get("frames_received", 0),
-                            "frames_dropped": metric_data.get("frames_dropped", 0),
-                            "frames_sent": metric_data.get("frames_sent", 0),
-                            "current_fps": metric_data.get("current_fps", 0),
-                            "avg_latency_ms": metric_data.get("avg_latency_ms", 0),
-                            "drop_rate_percent": metric_data.get("drop_rate_percent", 0),
-                            
-                            # System metrics from both sources
-                            "cpu_percent(prometheus)": prometheus_metrics.get("cpu_percent", "N/A"),
-                            "cpu_percent(metric)": metric_data.get("cpu_percent", "N/A"),
-                            "memory_percent(prometheus)": prometheus_metrics.get("memory_percent", "N/A"),
-                            "memory_percent(metric)": metric_data.get("memory_percent", "N/A"),
-                            "memory_used_mb(prometheus)": prometheus_metrics.get("memory_used_mb", "N/A"),
-                            "memory_used_mb(metric)": metric_data.get("memory_used_mb", "N/A"),
-                            "memory_total_mb(prometheus)": prometheus_metrics.get("memory_total_mb", "N/A"),
-                            "memory_total_mb(metric)": metric_data.get("memory_total_mb", "N/A"),
-                            
-                            # Network metrics from Prometheus
-                            "network_rx_kbps": prometheus_metrics.get("network_rx_kbps", "N/A"),
-                            "network_tx_kbps": prometheus_metrics.get("network_tx_kbps", "N/A"),
-                            "throughput_kbps(prometheus)": prometheus_metrics.get("throughput_kbps", "N/A"),
-                            "throughput_kbps(metric)": metric_data.get("throughput_kbps", "N/A"),
-                            "latency_ms": {
-                                topic: info
+                        with latency_lock:
+                            latency_snapshot = {
+                                topic: dict(info)
                                 for topic, info in latency_samples.items()
-                                if info["app"] == service_name
-                            } if latency_samples else "N/A",
-                            # Last updated timestamp
-                            "last_updated": datetime.datetime.now().isoformat()
-                        }
-                        
+                                if isinstance(info, dict) and info.get("app") == service_name
+                            }
+                        latency_ms = [{topic: info["latency"]} for topic, info in latency_snapshot.items()]
+
+                        # Update metrics in our dictionary
+                        with metrics_lock:
+                            mec_apps_found[service_type][service_name] = {
+                                "container_name": container_name,
+                                "queue_size": metric_data.get("active_requests", 0),
+
+                                # Video streaming specific metrics
+                                "frames_received": metric_data.get("frames_received", 0),
+                                "frames_dropped": metric_data.get("frames_dropped", 0),
+                                "frames_sent": metric_data.get("frames_sent", 0),
+                                "current_fps": metric_data.get("current_fps", 0),
+                                "avg_latency_ms": metric_data.get("avg_latency_ms", 0),
+                                "drop_rate_percent": metric_data.get("drop_rate_percent", 0),
+
+                                # System metrics from both sources
+                                "cpu_percent(prometheus)": prometheus_metrics.get("cpu_percent", "N/A"),
+                                "cpu_percent(metric)": metric_data.get("cpu_percent", "N/A"),
+                                "memory_percent(prometheus)": prometheus_metrics.get("memory_percent", "N/A"),
+                                "memory_percent(metric)": metric_data.get("memory_percent", "N/A"),
+                                "memory_used_mb(prometheus)": prometheus_metrics.get("memory_used_mb", "N/A"),
+                                "memory_used_mb(metric)": metric_data.get("memory_used_mb", "N/A"),
+                                "memory_total_mb(prometheus)": prometheus_metrics.get("memory_total_mb", "N/A"),
+                                "memory_total_mb(metric)": metric_data.get("memory_total_mb", "N/A"),
+
+                                # Network metrics from Prometheus
+                                "network_rx_kbps": prometheus_metrics.get("network_rx_kbps", "N/A"),
+                                "network_tx_kbps": prometheus_metrics.get("network_tx_kbps", "N/A"),
+                                "throughput_kbps(prometheus)": prometheus_metrics.get("throughput_kbps", "N/A"),
+                                "throughput_kbps(metric)": metric_data.get("throughput_kbps", "N/A"),
+                                "latency_ms": latency_snapshot if latency_snapshot else "N/A",
+                                # Last updated timestamp
+                                "last_updated": datetime.datetime.now().isoformat()
+                            }
+
                         print(f"[OK] Metrics collected for {service_name}")
                     else:
                         # For our own service, just update a basic entry
-                        mec_apps_found[service_type][service_name]["queue_size"] = "N/A"
+                        with metrics_lock:
+                            mec_apps_found[service_type][service_name]["queue_size"] = "N/A"
                 except Exception as e:
                     print(f"[METRIC ERROR] {service_name}: {e}")
                     # Mark the service as having no metrics available
-                    mec_apps_found[service_type][service_name]["queue_size"] = "No Metric"
-                    mec_apps_found[service_type][service_name]["error"] = str(e)
-                    
+                    with metrics_lock:
+                        mec_apps_found[service_type][service_name]["queue_size"] = "No Metric"
+                        mec_apps_found[service_type][service_name]["error"] = str(e)
+
             # Print current metrics summary
             print("\n===== CURRENT MEC APPLICATION METRICS =====")
-            for app_type, apps in mec_apps_found.items():
-                for app_name, metrics in apps.items():
-                    print(f"App: {app_name} (Type: {app_type})")
-                    # Print key metrics
-                    key_metrics = ["queue_size", "cpu_percent(prometheus)", "memory_percent(prometheus)", 
-                                 "network_rx_kbps", "network_tx_kbps","throughput_kbps(prometheus)","latency_ms"]
-                    
-                    for metric_name in key_metrics:
-                        if metric_name in metrics:
-                            print(f"     • {metric_name}: {metrics[metric_name]}")
+            with metrics_lock:
+                for app_type, apps in mec_apps_found.items():
+                    for app_name, metrics in apps.items():
+                        print(f"App: {app_name} (Type: {app_type})")
+                        # Print key metrics
+                        key_metrics = ["queue_size", "cpu_percent(prometheus)", "memory_percent(prometheus)",
+                                     "network_rx_kbps", "network_tx_kbps","throughput_kbps(prometheus)","latency_ms"]
+
+                        for metric_name in key_metrics:
+                            if metric_name in metrics:
+                                print(f"     • {metric_name}: {metrics[metric_name]}")
             print("===========================================\n")
-            
+
         except Exception as e:
             print("[GENERAL ERROR] Service discovery failed:", e)
 
@@ -266,20 +278,23 @@ def get_time():
     return "Hello World2"
 @app.route('/latency', methods=['POST'])
 def save_latency():
-    global latency_samples 
+    global latency_samples
     data = request.json
     latency_ms = data.get('latency')
     topic = data.get('topic')
     app = data.get('app')
-    if topic not in latency_samples:
-        latency_samples[topic] = {}
-    latency_samples[topic]={"app": app, "latency": latency_ms}
-    
+    with latency_lock:
+        if topic not in latency_samples:
+            latency_samples[topic] = {}
+        latency_samples[topic]={"app": app, "latency": latency_ms}
+
     return 'Latency saved', 200
 
 @app.route('/app_metrics', methods=['GET'])
 def receive_patient_data():
-    return jsonify({"message": "Metricas enviadas com sucesso", "data": mec_apps_found, "timestamp": datetime.datetime.now().isoformat()})
+    with metrics_lock:
+        snapshot = json.loads(json.dumps(mec_apps_found))
+    return jsonify({"message": "Metricas enviadas com sucesso", "data": snapshot, "timestamp": datetime.datetime.now().isoformat()})
 
 if __name__ == '__main__':
     print(f"Starting MEC Catcher service on port 8079")

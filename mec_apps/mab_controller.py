@@ -7,21 +7,31 @@ RESET = '\033[0m'
 
 
 class ThompsonSamplingBandit:
-    def __init__(self, num_arms, prob_csv='./Results/arm_probabilities.csv'):
-        self.num_arms = num_arms
+    """
+    Thompson Sampling com braços identificados por NOME (não por posição).
+    Preserva estatísticas dos braços que sobrevivem entre operações de
+    set_arms — essencial quando MAPE-K adiciona/remove instâncias MEC
+    no meio do experimento.
+    """
 
-        self.alpha = np.ones(num_arms)
-        self.beta = np.ones(num_arms)
+    def __init__(self, prob_csv='./Results/arm_probabilities.csv', decay=1.0):
+        # arms = {arm_name: {'alpha': float, 'beta': float}}
+        self.arms = {}
 
         self.total_reward = 0
         self.total_reward_history = []
 
         self.n_step = 1
-        self.history = []
+        self.history = []  # [(arm_name, reward), ...]
 
         self.prob_csv = prob_csv
+        self.decay = decay  # 1.0 = sem decay; <1.0 = forgetting (não-estacionário)
 
         self._init_prob_csv()
+
+    @property
+    def num_arms(self):
+        return len(self.arms)
 
     def _init_prob_csv(self):
         os.makedirs(os.path.dirname(self.prob_csv), exist_ok=True)
@@ -29,7 +39,6 @@ class ThompsonSamplingBandit:
         if not os.path.exists(self.prob_csv):
             with open(self.prob_csv, mode='w', newline='') as f:
                 writer = csv.writer(f)
-
                 writer.writerow([
                     'event',
                     'arm',
@@ -38,106 +47,125 @@ class ThompsonSamplingBandit:
                     'sampled_prob'
                 ])
 
-    def _save_arm_snapshot(self, event: str, sampled_values=None):
-
+    def _save_arm_snapshot(self, event, sampled_values=None):
         with open(self.prob_csv, mode='a', newline='') as f:
             writer = csv.writer(f)
 
-            for arm in range(self.num_arms):
-
+            for name, params in self.arms.items():
                 sampled = (
-                    sampled_values[arm]
+                    sampled_values.get(name, '')
                     if sampled_values is not None
                     else ''
                 )
 
                 writer.writerow([
                     event,
-                    arm,
-                    round(self.alpha[arm], 6),
-                    round(self.beta[arm], 6),
-                    round(sampled, 6)
-                    if sampled != ''
-                    else ''
+                    name,
+                    round(params['alpha'], 6),
+                    round(params['beta'], 6),
+                    round(sampled, 6) if sampled != '' else ''
                 ])
 
-    def update_arms(self, new_num_arms):
+    def _warm_prior(self):
+        # Novo braço herda a média dos braços existentes, mas com evidência
+        # limitada (cap em 10) para preservar exploração.
+        if not self.arms:
+            return 1.0, 1.0
 
-        if new_num_arms == self.num_arms:
+        alphas = [a['alpha'] for a in self.arms.values()]
+        betas = [a['beta'] for a in self.arms.values()]
+
+        mean_alpha = float(np.mean(alphas))
+        mean_beta = float(np.mean(betas))
+
+        total = mean_alpha + mean_beta
+        if total > 10.0:
+            factor = 10.0 / total
+            return max(1.0, mean_alpha * factor), max(1.0, mean_beta * factor)
+
+        return max(1.0, mean_alpha), max(1.0, mean_beta)
+
+    def set_arms(self, arm_names):
+        """
+        Sincroniza o conjunto de braços com a lista atual de instâncias MEC.
+        Braços existentes preservam (alpha, beta); novos recebem warm prior;
+        removidos perdem estado.
+        """
+        new_set = set(arm_names)
+        existing = set(self.arms.keys())
+
+        to_remove = existing - new_set
+        to_add = new_set - existing
+
+        if not to_remove and not to_add:
             return
 
-        if new_num_arms < self.num_arms:
-
+        if to_remove:
             self._save_arm_snapshot(event='remove_arms')
 
-            self.alpha = self.alpha[:new_num_arms]
-            self.beta = self.beta[:new_num_arms]
+            for name in to_remove:
+                del self.arms[name]
 
             self.history = [
-                (a, r)
-                for a, r in self.history
-                if a < new_num_arms
+                (n, r) for n, r in self.history if n in self.arms
             ]
 
-        else:
-
-            extra = new_num_arms - self.num_arms
-
-            self.alpha = np.append(
-                self.alpha,
-                np.ones(extra)
-            )
-
-            self.beta = np.append(
-                self.beta,
-                np.ones(extra)
-            )
-
-        self.num_arms = new_num_arms
+        if to_add:
+            warm_alpha, warm_beta = self._warm_prior()
+            for name in to_add:
+                self.arms[name] = {
+                    'alpha': warm_alpha,
+                    'beta': warm_beta,
+                }
 
     def select_action(self):
+        """Retorna o NOME do braço amostrado (None se não houver braços)."""
+        if not self.arms:
+            return None
 
-        sampled_values = np.random.beta(
-            self.alpha,
-            self.beta
-        )
+        sampled_values = {
+            name: float(np.random.beta(
+                self.arms[name]['alpha'],
+                self.arms[name]['beta']
+            ))
+            for name in self.arms
+        }
 
         self._save_arm_snapshot(
             event='select',
             sampled_values=sampled_values
         )
 
-        action = np.argmax(sampled_values)
+        return max(sampled_values, key=sampled_values.get)
 
-        return action
+    def update(self, arm_name, reward):
+        if arm_name not in self.arms:
+            return
 
-    def update(self, action, reward):
-
-        self.history.append(
-            (action, reward)
-        )
+        self.history.append((arm_name, reward))
 
         if len(self.history) >= self.n_step:
+            G = sum(r for _, r in self.history[:self.n_step])
+            name, _ = self.history.pop(0)
 
-            G = sum([
-                self.history[i][1]
-                for i in range(self.n_step)
-            ])
+            if name not in self.arms:
+                return
 
-            a, _ = self.history.pop(0)
+            self._save_arm_snapshot(event='update')
 
-            self._save_arm_snapshot(
-                event='update'
-            )
+            if self.decay < 1.0:
+                self.arms[name]['alpha'] = max(
+                    1.0, self.arms[name]['alpha'] * self.decay
+                )
+                self.arms[name]['beta'] = max(
+                    1.0, self.arms[name]['beta'] * self.decay
+                )
 
-            self.alpha[a] += G
-            self.beta[a] += self.n_step - G
+            self.arms[name]['alpha'] += G
+            self.arms[name]['beta'] += self.n_step - G
 
             self.total_reward += G
-
-            self.total_reward_history.append(
-                self.total_reward
-            )
+            self.total_reward_history.append(self.total_reward)
 
     def end_episode(self):
         self.history = []
@@ -148,102 +176,94 @@ class controller:
     def __init__(
         self,
         latency_ref,
-        num_arms=2,
-        csv_file='./Results/model_info.csv'
+        csv_file='./Results/model_info.csv',
+        decay=1.0,
     ):
-
         self.latency_ref = latency_ref
-
         self.csv_file = csv_file
 
         self.episode = 0
-
         self.action_history = []
 
+        # user_action mapeia userId -> NOME da instância (não índice)
         self.user_action = {}
+        self.user_assignment_time = {}
 
-        self.model = ThompsonSamplingBandit(
-            num_arms
-        )
+        self.model = ThompsonSamplingBandit(decay=decay)
 
-    def set_num_arms(self, new_num_arms):
+    def set_arms(self, arm_names):
+        self.model.set_arms(arm_names)
 
-        self.model.update_arms(
-            new_num_arms
-        )
+    def get_arm_ts(self, userId, current_time=None):
+        action_name = self.model.select_action()
 
-        print(
-            f'[Controller] Número de braços atualizado para {new_num_arms}'
-        )
+        if action_name is None:
+            return None
 
-    def get_arm_ts(self, userId):
+        print(f'[MEC] thompson_sampling_action = {action_name}')
 
-        action = self.model.select_action()
+        self.user_action[userId] = action_name
+        if current_time is not None:
+            self.user_assignment_time[userId] = current_time
 
-        print(
-            f'[MEC] thompson_sampling_action = {action}'
-        )
-
-        self.user_action[userId] = action
-
-        return action
+        return action_name
 
     def update_model(self, userId, state):
+        if userId not in self.user_action:
+            return
 
         latency = state[0]
-
         reward = self.reward(latency)
+        arm_name = self.user_action[userId]
 
-        arm = self.user_action[userId]
+        self.model.update(arm_name, reward)
 
-        self.model.update(
-            arm,
-            reward
-        )
+        self.action_history.append([arm_name, reward])
 
-        self.action_history.append(
-            [arm, reward]
-        )
+    def reassign(self, userId, new_arm_name, current_time=None):
+        """
+        Força a atribuição de um UE a um braço específico (ex: drenagem
+        de instância). Mantém user_action coerente com o app real para que
+        update_model atribua reward ao braço correto.
+        """
+        if new_arm_name in self.model.arms:
+            self.user_action[userId] = new_arm_name
+            if current_time is not None:
+                self.user_assignment_time[userId] = current_time
+
+    def remove_user(self, userId):
+        self.user_action.pop(userId, None)
+        self.user_assignment_time.pop(userId, None)
 
     def reward(self, latency):
-
-        if latency >= self.latency_ref:
+        # Menor latência é melhor: reward=1 quando latency <= ref.
+        if latency <= self.latency_ref:
             return 1
-
         return 0
 
 
 def main():
+    import time
 
-    m_controller = controller(
-        latency_ref=-50,
-        num_arms=2
-    )
+    m_controller = controller(latency_ref=100)
 
-    print(
-        f'Braços iniciais: {m_controller.model.num_arms}'
-    )
+    m_controller.set_arms(['svc1', 'svc2'])
+    print(f'Braços iniciais: {m_controller.model.num_arms}')
 
-    action = m_controller.get_arm_ts(
-        userId=1
-    )
+    action = m_controller.get_arm_ts(userId=1, current_time=time.time())
+    print(f'Ação escolhida: {action}')
 
-    m_controller.update_model(
-        userId=1,
-        state=[-30]
-    )
+    # latência 80ms <= 100ms -> reward 1 (correto: latência baixa é boa)
+    m_controller.update_model(userId=1, state=[80])
 
-    m_controller.set_num_arms(4)
+    m_controller.set_arms(['svc1', 'svc2', 'svc3', 'svc4'])
+    print(f'Braços após adicionar svc3,svc4: {m_controller.model.num_arms}')
+    print(f'  svc1 stats: {m_controller.model.arms["svc1"]}')
 
-    print(
-        f'Braços após atualização: {m_controller.model.num_arms}'
-    )
-
-    m_controller.set_num_arms(3)
-
-    print(
-        f'Braços após redução: {m_controller.model.num_arms}'
-    )
+    # Remover svc2 — svc1, svc3, svc4 preservam stats
+    m_controller.set_arms(['svc1', 'svc3', 'svc4'])
+    print(f'Braços após remover svc2: {m_controller.model.num_arms}')
+    print(f'  svc1 stats preservadas: {m_controller.model.arms["svc1"]}')
 
 
 if __name__ == '__main__':

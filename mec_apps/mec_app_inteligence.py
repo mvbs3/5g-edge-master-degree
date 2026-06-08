@@ -15,6 +15,12 @@ import numpy as np # Adicionado para manipulação de arrays
 from collections import deque # Adicionado para o histórico em memória
 from mab_controller import controller
 
+# Locks para estado compartilhado entre Flask handlers, metric_catcher
+# thread e cleanup_inactive_users thread.
+topics_lock = threading.RLock()
+metrics_lock = threading.RLock()
+mab_lock = threading.RLock()
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -54,9 +60,17 @@ METRICS_CSV_FILE = "rl_input_state.csv"
 METRICS_POLLING_INTERVAL = 10  # seconds
 variables_create_app = {"instance_numer":1}
 create_app = {"container_name": "mec_app1_instance", "port": 8090, "py_file": "examples/mec_app1.py", "mec_name": "VideoStreamingService", "mec_host": "10.0.0.", "initial_ip":186, "instance_numer": 0}
+
+# --- CONFIGURAÇÃO DO MAB ---
+MAB_LATENCY_REF_MS = float(os.getenv("MAB_LATENCY_REF_MS", "100"))
+MAB_DECAY = float(os.getenv("MAB_DECAY", "1.0"))
+# Tempo mínimo (s) que um UE permanece em uma instância antes de o MAB
+# poder re-rotear. Evita trocar antes de coletar amostras suficientes.
+MAB_MIN_DWELL_SEC = float(os.getenv("MAB_MIN_DWELL_SEC", "30"))
+
 m_controller = controller(
-    latency_ref=100,
-    num_arms=2
+    latency_ref=MAB_LATENCY_REF_MS,
+    decay=MAB_DECAY,
 )
 # --- CONFIGURAÇÃO DE INATIVIDADE ---
 INACTIVITY_TIMEOUT = 30
@@ -287,19 +301,25 @@ def cleanup_inactive_users():
     while True:
         current_time = time.time()
         topics_to_remove = []
-        for topic_id, info in list(topics.items()):
-            if "last_active_time" in info and (current_time - info["last_active_time"]) > INACTIVITY_TIMEOUT:
-                topics_to_remove.append(topic_id)
+
+        with topics_lock:
+            for topic_id, info in list(topics.items()):
+                if "last_active_time" in info and (current_time - info["last_active_time"]) > INACTIVITY_TIMEOUT:
+                    topics_to_remove.append(topic_id)
 
         for topic_id in topics_to_remove:
             logger.info(f"Usuário {topic_id} inativo por muito tempo. Removendo.")
             try:
-                redis_client.publish(topic_id, "STOP_STREAM") 
+                redis_client.publish(topic_id, "STOP_STREAM")
                 logger.info(f"Comando 'STOP_STREAM' publicado para {topic_id}.")
             except Exception as e:
                 logger.error(f"Falha ao publicar 'STOP_STREAM' para {topic_id}: {e}")
 
-            del topics[topic_id]
+            with topics_lock:
+                topics.pop(topic_id, None)
+
+            with mab_lock:
+                m_controller.remove_user(topic_id)
 
         time.sleep(INACTIVITY_TIMEOUT / 2)
 
@@ -459,64 +479,100 @@ def metric_catcher():
                 # else: logger.warning("App_type 'VidProc' não encontrado nas métricas para histórico GRU.") # Este log ja existe acima
 
             # Update app assignments for all topics
-            is_map_enable = (
-                os.getenv("MAP_ENABLE", "true").lower() == "true"
+            is_mab_enable = (
+                os.getenv("MAB_ENABLE", os.getenv("MAP_ENABLE", "true")).lower() == "true"
             )
             i = 0
-            for topic_id, topic in list(topics.items()):
+            poll_time = time.time()
+
+            with topics_lock:
+                topic_items = list(topics.items())
+
+            for topic_id, topic in topic_items:
                 if "data" in mec_metrics and topic["app_type"] in mec_metrics["data"]:
-                    app_list = list(mec_metrics["data"][topic["app_type"]])
+                    # Lista de instâncias vivas (excluindo as que estão drenando)
+                    app_list = [
+                        app
+                        for app in mec_metrics["data"][topic["app_type"]]
+                        if app not in draining_instances
+                    ]
 
-                    if app_list:
-                        if is_map_enable:
-                            if m_controller.model.num_arms != len(app_list):
-                                m_controller.set_num_arms(len(app_list))
-                            current_app = topics[topic_id].get("app")
+                    if not app_list:
+                        logger.warning(f"Nenhum app disponível para app_type {topic['app_type']} para {topic_id}.")
+                        continue
 
+                    if is_mab_enable:
+                        with mab_lock:
+                            # Sincroniza arms (preserva stats por NOME)
+                            m_controller.set_arms(app_list)
+
+                            current_app = topic.get("app")
                             latency_info = topic_latency_stats.get(topic_id)
 
-                            if latency_info and latency_info["service"] == current_app:
-
+                            # 1) Update do bandit usando latência medida CONTRA
+                            #    a instância atualmente atribuída (current_app).
+                            #    user_action[topic_id] aponta para o NOME do braço,
+                            #    então o reward vai para o braço certo mesmo após
+                            #    scaling/reassignment.
+                            if (
+                                latency_info
+                                and latency_info["service"] == current_app
+                                and current_app in m_controller.model.arms
+                            ):
                                 ue_latency = latency_info["latency"]
-
-                                # 1. update do bandit
                                 m_controller.update_model(
                                     userId=topic_id,
-                                    state=[ue_latency]
+                                    state=[ue_latency],
                                 )
-
-                                # 2. escolha do MAB
-                                action = m_controller.get_arm_ts(topic_id)
-                                mec_app_choice = app_list[action]
-
-                                selected_service = mec_app_choice
-
-                                # 3. LOG COMPLETO (DEBUG REAL)
                                 logger.info(
-                                    "\n[MAB DEBUG]\n"
-                                    f"topic={topic_id}\n"
-                                    f"  current_service={current_app}\n"
-                                    f"  latency={ue_latency:.2f}\n"
-                                    f"  selected_arm={action}\n"
-                                    f"  selected_service={selected_service}\n"
-                                    "------------------------"
+                                    f"[MAB UPDATE] topic={topic_id} arm={current_app} "
+                                    f"latency={ue_latency:.2f}ms ref={MAB_LATENCY_REF_MS}ms"
                                 )
 
+                            # 2) Decide se re-roteia (TTL de dwell evita troca prematura)
+                            last_assign = m_controller.user_assignment_time.get(topic_id, 0)
+                            dwell = poll_time - last_assign
+
+                            needs_reassign = (
+                                current_app is None
+                                or current_app not in app_list
+                                or dwell >= MAB_MIN_DWELL_SEC
+                            )
+
+                            if needs_reassign:
+                                new_action = m_controller.get_arm_ts(
+                                    topic_id,
+                                    current_time=poll_time,
+                                )
+                                if new_action is None:
+                                    continue
+                                mec_app_choice = new_action
+
+                                if mec_app_choice != current_app:
+                                    logger.info(
+                                        f"[MAB SELECT] topic={topic_id} "
+                                        f"{current_app} -> {mec_app_choice} (dwell={dwell:.1f}s)"
+                                    )
+                                else:
+                                    logger.info(
+                                        f"[MAB SELECT] topic={topic_id} keeps {current_app} (dwell={dwell:.1f}s)"
+                                    )
                             else:
-                                # fallback normal (sem update do MAB)
-                                action = m_controller.get_arm_ts(topic_id)
-                                mec_app_choice = app_list[action]
-
-                                logger.info(
-                                    f"[MAB FALLBACK] topic={topic_id} app={mec_app_choice} (no latency update)"
+                                mec_app_choice = current_app
+                                logger.debug(
+                                    f"[MAB DWELL] topic={topic_id} keeping {current_app} "
+                                    f"(dwell={dwell:.1f}s < {MAB_MIN_DWELL_SEC}s)"
                                 )
-                        else:
-                            mec_app_choice = app_list[i]
-                        i = (i + 1) % len(app_list)
-                        topics[topic_id]["app"] = mec_app_choice
-                        redis_client.publish(topic_id, mec_app_choice)
                     else:
-                        logger.warning(f"Nenhum app disponível para app_type {topic['app_type']} para {topic_id}.")
+                        # Round-robin determinístico (baseline)
+                        mec_app_choice = app_list[i % len(app_list)]
+                        i += 1
+
+                    with topics_lock:
+                        if topic_id in topics:
+                            topics[topic_id]["app"] = mec_app_choice
+
+                    redis_client.publish(topic_id, mec_app_choice)
                 else:
                     logger.warning(f"Nenhum dado disponível para app_type {topic['app_type']} para {topic_id}. Não foi possível atribuir um app.")
 
@@ -556,27 +612,28 @@ def get_metrics():
 def get_subscribe():
     """Subscribe to app_type updates and get a topic ID"""
     global topic_counter
-    
+
     try:
         data = request.get_json()
-        
+
         if not data or "app_type" not in data:
             return jsonify({"error": "Missing app_type parameter"}), 400
-            
-        topic_counter += 1
-        topic_id = f"topic_{topic_counter}"
-        
-        topics[topic_id] = {
-            "user_id": topic_id,
-            "app": None,
-            "status": "Online", 
-            "app_type": data["app_type"],
-            "last_active_time": time.time()
-        }
-        
+
+        with topics_lock:
+            topic_counter += 1
+            topic_id = f"topic_{topic_counter}"
+
+            topics[topic_id] = {
+                "user_id": topic_id,
+                "app": None,
+                "status": "Online",
+                "app_type": data["app_type"],
+                "last_active_time": time.time()
+            }
+
         logger.info(f"New subscription: {topic_id} for app_type {data['app_type']}")
         return topic_id
-        
+
     except Exception as e:
         logger.error(f"Error in subscribe endpoint: {e}")
         return jsonify({"error": str(e)}), 500
@@ -591,11 +648,12 @@ def receive_heartbeat():
         if not topic_id:
             return jsonify({"error": "Missing topic_id"}), 400
 
-        if topic_id in topics:
-            topics[topic_id]["last_active_time"] = time.time()
-            return jsonify({"status": "ok"}), 200
-        else:
-            return jsonify({"error": "Topic not found"}), 404
+        with topics_lock:
+            if topic_id in topics:
+                topics[topic_id]["last_active_time"] = time.time()
+                return jsonify({"status": "ok"}), 200
+            else:
+                return jsonify({"error": "Topic not found"}), 404
     except Exception as e:
         logger.error(f"Erro ao receber heartbeat: {e}")
         return jsonify({"error": str(e)}), 500
@@ -735,10 +793,25 @@ def reassign_topics_from_instance(app_type, instance_name):
         logger.warning(f"Sem apps candidatas para redistribuir tópicos de {instance_name}")
         return reassigned
 
-    for topic_id, topic_info in list(topics.items()):
+    now = time.time()
+
+    with topics_lock:
+        topic_items = list(topics.items())
+
+    for topic_id, topic_info in topic_items:
         if topic_info.get("app_type") == app_type and topic_info.get("app") == instance_name:
             new_app = random.choice(candidate_apps)
-            topics[topic_id]["app"] = new_app
+
+            with topics_lock:
+                if topic_id in topics:
+                    topics[topic_id]["app"] = new_app
+
+            # Crítico: sincronizar user_action do MAB com o novo app real,
+            # senão o próximo update_model creditaria reward ao braço que
+            # já está morto.
+            with mab_lock:
+                m_controller.reassign(topic_id, new_app, current_time=now)
+
             redis_client.publish(topic_id, new_app)
             reassigned.append({
                 "topic_id": topic_id,
@@ -804,13 +877,21 @@ def shut_down_mec_app():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # --- CAMINHOS PARA O SEU MODELO E ATIVOS DE INFERÊNCIA ---
-    # SUBSTITUA ESTES CAMINHOS PELOS REAIS DO SEU AMBIENTE!
-    # Se você está no Colab, eles provavelmente estarão em /content/saved_inference_assets/
-    # Exemplo: './Results/Model_Optuna-GRU_0_51_8_0.009778396777794504_9_relu_Adam/GRU_lb9_lr0.009778396777794504_bs8_acrelu_opAdam_05_12_2025_16_28_14.sav'
-    MODEL_PATH = '/home/marcelo-victor/Downloads/ml_model_gru/Results/best_lighter_Model_Optuna-GRU_0_198_32_1.0100167086418738e-05_23_relu_Adam/GRU_lb23_lr1.0100167086418738e-05_bs32_acrelu_opAdam_07_02_2025_12_03_41.sav'
-    SCALER_PATH = '/home/marcelo-victor/Downloads/ml_model_gru/saved_inference_assets/min_max_scaler.pkl'
-    INFERENCE_PARAMS_PATH = '/home/marcelo-victor/Downloads/ml_model_gru/saved_inference_assets/inference_params.pkl'
+    # Caminhos do modelo GRU agora vêm de env vars (com defaults relativos
+    # ao repo para reprodutibilidade). Coloque os artefatos em ./models/
+    # ou exporte MODEL_PATH/SCALER_PATH/INFERENCE_PARAMS_PATH.
+    MODEL_PATH = os.getenv(
+        "MODEL_PATH",
+        "./models/gru_model.sav",
+    )
+    SCALER_PATH = os.getenv(
+        "SCALER_PATH",
+        "./models/min_max_scaler.pkl",
+    )
+    INFERENCE_PARAMS_PATH = os.getenv(
+        "INFERENCE_PARAMS_PATH",
+        "./models/inference_params.pkl",
+    )
 
     # Carregar modelo, scaler e parâmetros de inferência na inicialização do app
     logger.info("Carregando modelo GRU, scaler e parâmetros de inferência...")
