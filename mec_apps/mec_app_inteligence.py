@@ -13,7 +13,14 @@ import logging
 import pickle # Adicionado para carregar o modelo e o scaler
 import numpy as np # Adicionado para manipulação de arrays
 from collections import deque # Adicionado para o histórico em memória
-from mab_controller import controller
+
+_CONTROLLER_TYPE = os.getenv("CONTROLLER_TYPE", "mab").lower()
+if _CONTROLLER_TYPE == "rr":
+    from rr_controller import controller
+    print(f"[CTRL] Using ROUND ROBIN controller")
+else:
+    from mab_controller import controller
+    print(f"[CTRL] Using MAB (Thompson Sampling) controller")
 
 # Locks para estado compartilhado entre Flask handlers, metric_catcher
 # thread e cleanup_inactive_users thread.

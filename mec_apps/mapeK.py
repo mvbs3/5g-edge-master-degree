@@ -9,7 +9,7 @@ import numpy as np
 
 # ================= CONFIG =================
 CPU_THRESHOLD_UP = 15
-CPU_THRESHOLD_DOWN = 10
+CPU_THRESHOLD_DOWN = 8
 MIN_INSTANCES = 2
 MAX_INSTANCES = 10
 METRICS_POLLING_INTERVAL = 5
@@ -30,7 +30,7 @@ processos_abertos = []
 
 # cooldown anti-flapping
 last_action_time = 0
-COOLDOWN_SEC = 10
+COOLDOWN_SEC = 30
 
 # ================= LOG =================
 def log(msg):
