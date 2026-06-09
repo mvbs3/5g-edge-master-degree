@@ -14,6 +14,8 @@ MIN_INSTANCES = 2
 MAX_INSTANCES = 10
 METRICS_POLLING_INTERVAL = 5
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MONITOR_URL = f"http://{MEP_ADDRESS}/traffic_inteligence/cpu_percent"
 DISCOVER_URL = f"http://{MEP_ADDRESS}/service_registry/v1/discover"
@@ -46,12 +48,13 @@ def get_local_ip():
         s.close()
     return IP
 
-def run_background(cmd):
+def run_background(cmd, cwd=None):
     processo = subprocess.Popen(
         cmd,
         shell=True,
         stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
+        stderr=subprocess.DEVNULL,
+        cwd=cwd,
     )
     processos_abertos.append(processo)
     return processo
@@ -161,7 +164,7 @@ def execute(plan):
         --mec_host {host}
         """
 
-        proc = run_background(cmd)
+        proc = run_background(cmd, cwd=PROJECT_ROOT)
         time.sleep(8)
 
         # Validação: o subprocess ainda está vivo? Se já saiu com erro, não
