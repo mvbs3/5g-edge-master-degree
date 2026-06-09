@@ -4,6 +4,7 @@ import signal
 import sys
 import socket
 import os
+import shutil
 import requests
 import random
 from dataclasses import dataclass
@@ -464,6 +465,239 @@ def cleanup_and_exit():
     sys.exit(0)
 
 # ============================================================================
+# AUTOMATED EXPERIMENT SUITE — Option 2
+# ============================================================================
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+def kill_pattern(pattern: str):
+    """Mata todos os processos cujo cmdline contém `pattern` (best-effort)."""
+    try:
+        subprocess.run(f"pkill -f '{pattern}'", shell=True, check=False)
+    except Exception as e:
+        print(f"⚠️ Erro matando '{pattern}': {e}")
+
+
+def clean_experiment_csvs():
+    """Remove CSVs do run anterior pra começar limpo."""
+    paths = [
+        os.path.join(PROJECT_ROOT, 'mec_apps/Results/rewards.csv'),
+        os.path.join(PROJECT_ROOT, 'mec_apps/Results/arm_probabilities.csv'),
+        os.path.join(PROJECT_ROOT, 'mec_apps/rl_input_state.csv'),
+    ]
+    for p in paths:
+        if os.path.exists(p):
+            os.remove(p)
+    print("✅ CSVs anteriores removidos.")
+
+
+def start_metric_catcher_for_experiment():
+    print("Iniciando MEC Metric Catcher...")
+    open_terminal(
+        'bash -c "source mec_app1/bin/activate && python3 mec_app_metric_catcher.py"',
+        directory='mec_apps',
+        title='Metric_Catcher_exp',
+    )
+    time.sleep(8)
+
+
+def start_intelligence_for_experiment(controller_type: str):
+    print(f"Iniciando MEC Intelligence (CONTROLLER_TYPE={controller_type})...")
+    cmd = (
+        f'CONTROLLER_TYPE={controller_type} bash -c '
+        '"source mec_app1/bin/activate && python3 mec_app_inteligence.py"'
+    )
+    open_terminal(
+        cmd,
+        directory='mec_apps',
+        title=f'MEC_Intelligence_{controller_type}',
+    )
+    time.sleep(15)
+
+
+def start_mapeK_for_experiment():
+    print("Iniciando MAPE-K...")
+    open_terminal(
+        'python3 mapeK.py',
+        directory='mec_apps',
+        title='mapeK_exp',
+    )
+    time.sleep(5)
+
+
+def trigger_workload_in_container(scenario: str):
+    """Dispara run_workload.sh dentro do container nr_ue."""
+    log_path = f"/mnt/ueransim/workload_{scenario}_{int(time.time())}.log"
+    cmd = (
+        f'docker exec -d nr_ue bash -c '
+        f'"chmod +x /mnt/ueransim/run_workload.sh && '
+        f'/mnt/ueransim/run_workload.sh > {log_path} 2>&1"'
+    )
+    print(f"🚀 Disparando workload no nr_ue (log: {log_path})")
+    subprocess.run(cmd, shell=True, check=True)
+
+
+def stop_workload_in_container():
+    print("Matando UEs e workload no container...")
+    subprocess.run("docker exec nr_ue pkill -f ue_client.py",
+                   shell=True, check=False)
+    subprocess.run("docker exec nr_ue pkill -f run_workload.sh",
+                   shell=True, check=False)
+    time.sleep(5)
+
+
+def wait_with_progress(duration_sec: int, label: str):
+    print(f"⏳ {label}: aguardando {duration_sec/60:.0f} min...")
+    start = time.time()
+    last_pct = -1
+    while True:
+        elapsed = int(time.time() - start)
+        if elapsed >= duration_sec:
+            break
+        pct = int(elapsed * 100 / duration_sec)
+        if pct != last_pct:
+            print(f"  [{pct:3d}%] {elapsed}/{duration_sec} s")
+            last_pct = pct
+        time.sleep(30)
+
+
+def archive_run(scenario: str) -> str:
+    timestamp = time.strftime('%Y%m%d_%H%M%S')
+    run_dir = os.path.join(PROJECT_ROOT, 'runs', f'{scenario}_{timestamp}')
+    os.makedirs(run_dir, exist_ok=True)
+
+    rl_csv = os.path.join(PROJECT_ROOT, 'mec_apps/rl_input_state.csv')
+    if os.path.exists(rl_csv):
+        shutil.copy(rl_csv, os.path.join(run_dir, 'rl_input_state.csv'))
+        graficos_csv = os.path.join(
+            PROJECT_ROOT, 'graficos', f'rl_input_state_{scenario}.csv'
+        )
+        os.makedirs(os.path.dirname(graficos_csv), exist_ok=True)
+        shutil.copy(rl_csv, graficos_csv)
+        print(f"✅ rl_input_state.csv → {run_dir} e graficos/")
+    else:
+        print(f"⚠️ rl_input_state.csv não foi gerado — verifique mec_app_inteligence")
+
+    results_dir = os.path.join(PROJECT_ROOT, 'mec_apps/Results')
+    if os.path.isdir(results_dir):
+        dest = os.path.join(run_dir, 'Results')
+        if os.path.exists(dest):
+            shutil.rmtree(dest)
+        shutil.copytree(results_dir, dest)
+
+    return run_dir
+
+
+def run_single_scenario(scenario: str, duration_min: int):
+    print(f"\n{'='*60}\n  CENÁRIO {scenario.upper()}  ({duration_min} min)\n{'='*60}")
+
+    # 1. Mata processos do cenário anterior (intelligence/catcher/mapeK)
+    for pat in ['mec_app_inteligence.py',
+                'mec_app_metric_catcher.py',
+                'mapeK.py']:
+        kill_pattern(pat)
+    time.sleep(5)
+
+    # 2. Limpa CSVs
+    clean_experiment_csvs()
+
+    # 3. Catcher → Intelligence → MAPE-K
+    start_metric_catcher_for_experiment()
+    start_intelligence_for_experiment(scenario)
+    start_mapeK_for_experiment()
+
+    # 4. Dispara workload
+    try:
+        trigger_workload_in_container(scenario)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Falha ao disparar workload: {e}")
+        return None
+
+    # 5. Aguarda execução
+    try:
+        wait_with_progress(duration_min * 60, scenario.upper())
+    except KeyboardInterrupt:
+        print("\n⚠️ Interrompido pelo usuário — encerrando UEs...")
+        stop_workload_in_container()
+        raise
+
+    # 6. Para workload
+    stop_workload_in_container()
+
+    # 7. Arquiva resultados
+    return archive_run(scenario)
+
+
+def generate_comparison_graphs():
+    print(f"\n{'='*60}\n  GERANDO GRÁFICOS COMPARATIVOS\n{'='*60}")
+    graphs_dir = os.path.join(PROJECT_ROOT, 'graficos')
+    try:
+        subprocess.run(
+            ['python3', 'graficos_compare.py'],
+            cwd=graphs_dir,
+            check=True,
+        )
+        print(f"✅ Gráficos em {graphs_dir}/relatorio_compare/")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ graficos_compare.py falhou: {e}")
+    except FileNotFoundError:
+        print("❌ python3 não encontrado no PATH")
+
+
+def setup_stack_for_experiment():
+    """Sobe o stack inteiro (Prometheus → Core → RAN → MEP → MEC apps → UE).
+
+    Idempotente o suficiente: se já está de pé, os comandos vão falhar
+    rapidinho sem quebrar.
+    """
+    print(f"\n{'='*60}\n  SETUP DO STACK\n{'='*60}")
+    start_prometheus_grafana()
+    start_core_environment()
+    start_ran()
+    start_mep_enviroment()
+    start_mec_apps(2)
+    start_ue()
+    time.sleep(10)
+    print("✅ Stack pronto.")
+
+
+def run_full_experiment_suite(duration_min: int = 60):
+    """Roda o suite inteiro automaticamente: setup + MAB + RR + gráficos."""
+    total_min = duration_min * 2
+    print(f"\n{'='*60}")
+    print(f"  SUITE COMPLETO — MAB vs Round Robin")
+    print(f"  Duração de cada cenário: {duration_min} min")
+    print(f"  Tempo total estimado:    {total_min} min ({total_min/60:.1f} h)")
+    print(f"{'='*60}")
+
+    confirm = input("Confirmar e iniciar? [s/N]: ").strip().lower()
+    if confirm != 's':
+        print("Cancelado.")
+        return
+
+    setup_stack_for_experiment()
+
+    try:
+        for scenario in ['mab', 'rr']:
+            run_single_scenario(scenario, duration_min)
+    finally:
+        # Sempre tenta limpar o que ficou de pé
+        for pat in ['mec_app_inteligence.py',
+                    'mec_app_metric_catcher.py',
+                    'mapeK.py']:
+            kill_pattern(pat)
+        stop_workload_in_container()
+
+    generate_comparison_graphs()
+
+    print(f"\n{'='*60}")
+    print(f"  SUITE FINALIZADO")
+    print(f"  Resultados em runs/<scenario>_*/")
+    print(f"  Gráficos em  graficos/relatorio_compare/")
+    print(f"{'='*60}")
+
+# ============================================================================
 # MAIN MENU
 # ============================================================================
 
@@ -473,6 +707,7 @@ def display_menu():
     print("MEC ORCHESTRATOR - MAIN MENU")
     print("="*50)
     print("1  - Start Prometheus+Grafana -> Core components -> CM+MEP -> RAN")
+    print("2  - Run FULL experiment suite (MAB + RR, ~2h, automated)")
     print("q  - Shutdown and Exit")
     print("="*50 + "\n")
 
@@ -519,7 +754,12 @@ def main():
 
                 print("Ues iniciadas com sucesso 🚀")
             elif choice == '2':
-                start_core_environment()
+                # Suite automático: setup + MAB + RR + gráficos comparativos
+                duration_input = input(
+                    "Duração de CADA cenário em minutos [60]: "
+                ).strip()
+                duration_min = int(duration_input) if duration_input else 60
+                run_full_experiment_suite(duration_min=duration_min)
             
             elif choice == '3':
                 num = int(input("Number of consumers: "))
