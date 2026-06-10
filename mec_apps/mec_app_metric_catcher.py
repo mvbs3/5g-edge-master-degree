@@ -10,6 +10,7 @@ import os
 
 load_dotenv()
 TIME_TO_COLLECT=3
+LATENCY_TTL_SEC = 30  # amostras de latência mais velhas que isso são descartadas
 MEC_HOST = os.getenv("MEC_HOST", "150.161.121.210")
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 PROMETHEUS_URL = f"http://{MEC_HOST}:9090"
@@ -20,6 +21,24 @@ latency_samples = {}
 # handlers Flask (/latency, /app_metrics).
 metrics_lock = threading.RLock()
 latency_lock = threading.RLock()
+
+
+def _purge_stale_latencies(now=None):
+    """Remove amostras de latência que ultrapassaram o TTL.
+
+    Sem isso, o último valor por topic vive pra sempre — quando o tráfego para,
+    o intelligence continua agregando latência stale e os gráficos ficam
+    com platôs artificiais (visto na rodada de 8h: 855.91ms travado).
+    """
+    if now is None:
+        now = time.time()
+    cutoff = now - LATENCY_TTL_SEC
+    with latency_lock:
+        stale = [t for t, info in latency_samples.items()
+                 if isinstance(info, dict) and info.get("ts", 0) < cutoff]
+        for t in stale:
+            latency_samples.pop(t, None)
+
 def query_prometheus(promql_query):
     try:
         response = requests.get(f"{PROMETHEUS_URL}/api/v1/query", params={"query": promql_query})
@@ -196,6 +215,7 @@ def metric_catcher():
                             "throughput_kbps": "N/A"
                         }
                         with latency_lock:
+                            _purge_stale_latencies()
                             latency_snapshot = {
                                 topic: dict(info)
                                 for topic, info in latency_samples.items()
@@ -286,7 +306,11 @@ def save_latency():
     with latency_lock:
         if topic not in latency_samples:
             latency_samples[topic] = {}
-        latency_samples[topic]={"app": app, "latency": latency_ms}
+        latency_samples[topic] = {
+            "app": app,
+            "latency": latency_ms,
+            "ts": time.time(),
+        }
 
     return 'Latency saved', 200
 

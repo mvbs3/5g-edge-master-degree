@@ -6,6 +6,15 @@ import numpy as np
 RED = '\033[31m'
 RESET = '\033[0m'
 
+# Resolve caminhos dos CSVs em relação ao diretório deste módulo,
+# pra não depender da cwd do processo (mec_app_inteligence pode ser
+# iniciado de qualquer lugar pelo orchestrator).
+_RESULTS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'Results'
+)
+DEFAULT_PROB_CSV = os.path.join(_RESULTS_DIR, 'arm_probabilities.csv')
+DEFAULT_REWARDS_CSV = os.path.join(_RESULTS_DIR, 'rewards.csv')
+
 
 class ThompsonSamplingBandit:
     """
@@ -21,8 +30,8 @@ class ThompsonSamplingBandit:
 
     def __init__(
         self,
-        prob_csv='./Results/arm_probabilities.csv',
-        rewards_csv='./Results/rewards.csv',
+        prob_csv=DEFAULT_PROB_CSV,
+        rewards_csv=DEFAULT_REWARDS_CSV,
         decay=1.0,
     ):
         # arms = {arm_name: {'alpha': float, 'beta': float}}
@@ -233,7 +242,7 @@ class controller:
     def __init__(
         self,
         latency_ref,
-        csv_file='./Results/model_info.csv',
+        csv_file=os.path.join(_RESULTS_DIR, 'model_info.csv'),
         decay=1.0,
     ):
         self.latency_ref = latency_ref

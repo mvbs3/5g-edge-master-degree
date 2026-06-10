@@ -11,6 +11,13 @@ import itertools
 import os
 import time
 
+# Caminhos ancorados ao diretório do módulo (não dependem da cwd).
+_RESULTS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'Results'
+)
+DEFAULT_PROB_CSV = os.path.join(_RESULTS_DIR, 'arm_probabilities.csv')
+DEFAULT_REWARDS_CSV = os.path.join(_RESULTS_DIR, 'rewards.csv')
+
 
 class RoundRobin:
     """Distribuidor circular puro. Sem aprendizagem.
@@ -21,8 +28,8 @@ class RoundRobin:
 
     def __init__(
         self,
-        prob_csv='./Results/arm_probabilities.csv',
-        rewards_csv='./Results/rewards.csv',
+        prob_csv=DEFAULT_PROB_CSV,
+        rewards_csv=DEFAULT_REWARDS_CSV,
         decay=1.0,
     ):
         self.arms = {}
@@ -111,7 +118,7 @@ class RoundRobin:
 class controller:
     """Drop-in equivalente ao mab_controller.controller, mas com Round Robin."""
 
-    def __init__(self, latency_ref, csv_file='./Results/model_info.csv', decay=1.0):
+    def __init__(self, latency_ref, csv_file=os.path.join(_RESULTS_DIR, 'model_info.csv'), decay=1.0):
         self.latency_ref = latency_ref
         self.csv_file = csv_file
         self.episode = 0

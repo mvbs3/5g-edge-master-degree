@@ -27,6 +27,10 @@ import seaborn as sns
 
 SLA_LATENCY_MS = 200.0  # limite de violação pra KPI
 
+# Diretório onde mora este script — pra resolver os CSVs por aqui em vez de
+# depender da cwd de quem invocou.
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 NUMERIC_COLS = [
     'avg_cpu_percent', 'max_cpu_percent', 'min_cpu_percent',
     'avg_memory_percent', 'max_memory_percent', 'min_memory_percent',
@@ -40,8 +44,8 @@ NUMERIC_COLS = [
 ]
 
 SCENARIO_FILES = {
-    'MAB':         'rl_input_state_mab.csv',
-    'Round Robin': 'rl_input_state_rr.csv',
+    'MAB':         os.path.join(_SCRIPT_DIR, 'rl_input_state_mab.csv'),
+    'Round Robin': os.path.join(_SCRIPT_DIR, 'rl_input_state_rr.csv'),
 }
 
 PALETTE = {
@@ -197,12 +201,23 @@ def main():
     parser = argparse.ArgumentParser(
         description='Gera gráficos comparativos MAB vs Round Robin'
     )
-    parser.add_argument('--out', default='relatorio_compare', help='Diretório de saída')
+    parser.add_argument(
+        '--out',
+        default=os.path.join(_SCRIPT_DIR, 'relatorio_compare'),
+        help='Diretório de saída (absoluto recomendado)',
+    )
     args = parser.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
     plt.style.use('seaborn-v0_8-darkgrid')
     sns.set_palette('tab10')
+
+    print(f"Diretório do script: {_SCRIPT_DIR}")
+    print(f"Buscando CSVs:")
+    for label, path in SCENARIO_FILES.items():
+        marker = "✓" if os.path.exists(path) else "✗"
+        print(f"  {marker} {label}: {path}")
+    print()
 
     print("Carregando cenários...")
     dfs = []
@@ -212,9 +227,13 @@ def main():
             dfs.append(df)
 
     if not dfs:
-        sys.exit("Nenhum CSV de cenário encontrado. Rode os experimentos primeiro:\n"
-                 "  ./run_experiment.sh mab\n"
-                 "  ./run_experiment.sh rr")
+        sys.exit(
+            "\nNenhum CSV de cenário encontrado.\n"
+            "Esperado:\n"
+            f"  {SCENARIO_FILES['MAB']}\n"
+            f"  {SCENARIO_FILES['Round Robin']}\n"
+            "Rode os experimentos primeiro (opção 2 do automacao_script.py)."
+        )
 
     df_combined = pd.concat(dfs, ignore_index=True)
     print(f"\nGerando gráficos em '{args.out}/':")

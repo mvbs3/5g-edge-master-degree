@@ -11,6 +11,11 @@ from dataclasses import dataclass
 from typing import List, Tuple, Optional
 from enum import Enum
 
+# Raiz do projeto — anchor pra todos os caminhos relativos. NÃO depende
+# da cwd: usa o local físico deste script.
+_PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = _PROJECT_ROOT  # alias retrocompatível
+
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
@@ -166,14 +171,21 @@ def open_terminal(
     title: Optional[str] = None
 ) -> Tuple:
     """Open a terminal and execute a command."""
+    # Resolve `directory` em relação à raiz do projeto (não da cwd atual).
+    # Isso garante que `cd "{directory}"` funcione mesmo se o orchestrator
+    # tiver sido lançado de fora do diretório do projeto.
     if directory:
+        if not os.path.isabs(directory):
+            directory = os.path.join(_PROJECT_ROOT, directory)
         full_command = f'cd "{directory}" && {command}'
     else:
         full_command = command
 
-    # Salva logs em arquivo em vez de DEVNULL
-    log_file = f"logs/{title or 'process'}.log"
-    os.makedirs("logs", exist_ok=True)
+    # Salva logs em arquivo em vez de DEVNULL — caminho absoluto pra não
+    # depender da cwd.
+    logs_dir = os.path.join(_PROJECT_ROOT, "logs")
+    os.makedirs(logs_dir, exist_ok=True)
+    log_file = os.path.join(logs_dir, f"{title or 'process'}.log")
 
     with open(log_file, "w") as f:
         process = subprocess.Popen(
@@ -183,7 +195,7 @@ def open_terminal(
             stderr=subprocess.STDOUT
         )
 
-    print(f"Background command executed (PID: {process.pid}) → logs/{title or 'process'}.log")
+    print(f"Background command executed (PID: {process.pid}) → {log_file}")
     return (process, title)
 
 # ============================================================================
@@ -468,8 +480,6 @@ def cleanup_and_exit():
 # AUTOMATED EXPERIMENT SUITE — Option 2
 # ============================================================================
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 
 def kill_pattern(pattern: str):
     """Mata todos os processos cujo cmdline contém `pattern` (best-effort)."""
@@ -568,16 +578,26 @@ def archive_run(scenario: str) -> str:
     os.makedirs(run_dir, exist_ok=True)
 
     rl_csv = os.path.join(PROJECT_ROOT, 'mec_apps/rl_input_state.csv')
+    print(f"📋 Arquivando '{scenario}' — origem esperada: {rl_csv}")
     if os.path.exists(rl_csv):
+        size = os.path.getsize(rl_csv)
         shutil.copy(rl_csv, os.path.join(run_dir, 'rl_input_state.csv'))
         graficos_csv = os.path.join(
             PROJECT_ROOT, 'graficos', f'rl_input_state_{scenario}.csv'
         )
         os.makedirs(os.path.dirname(graficos_csv), exist_ok=True)
         shutil.copy(rl_csv, graficos_csv)
-        print(f"✅ rl_input_state.csv → {run_dir} e graficos/")
+        print(f"✅ rl_input_state.csv ({size} bytes) → {run_dir} e {graficos_csv}")
     else:
-        print(f"⚠️ rl_input_state.csv não foi gerado — verifique mec_app_inteligence")
+        print(f"⚠️ {rl_csv} NÃO foi gerado.")
+        print(f"   Conteúdo de {os.path.dirname(rl_csv)}:")
+        try:
+            for f in sorted(os.listdir(os.path.dirname(rl_csv))):
+                print(f"     - {f}")
+        except OSError:
+            print("     (diretório não existe)")
+        print("   Verifique se mec_app_inteligence iniciou corretamente:")
+        print(f"     tail -50 {os.path.join(_PROJECT_ROOT, 'logs', f'MEC_Intelligence_{scenario}.log')}")
 
     results_dir = os.path.join(PROJECT_ROOT, 'mec_apps/Results')
     if os.path.isdir(results_dir):
@@ -631,10 +651,26 @@ def run_single_scenario(scenario: str, duration_min: int):
 
 def generate_comparison_graphs():
     print(f"\n{'='*60}\n  GERANDO GRÁFICOS COMPARATIVOS\n{'='*60}")
-    graphs_dir = os.path.join(PROJECT_ROOT, 'graficos')
+    graphs_dir = os.path.join(_PROJECT_ROOT, 'graficos')
+    script_path = os.path.join(graphs_dir, 'graficos_compare.py')
+
+    # Confere existência dos CSVs antes de tentar plotar
+    expected = [
+        os.path.join(graphs_dir, 'rl_input_state_mab.csv'),
+        os.path.join(graphs_dir, 'rl_input_state_rr.csv'),
+    ]
+    found = [p for p in expected if os.path.exists(p)]
+    if not found:
+        print(f"❌ Nenhum CSV de cenário em {graphs_dir}/")
+        print("   Esperado: rl_input_state_mab.csv e/ou rl_input_state_rr.csv")
+        return
+    print("CSVs encontrados:")
+    for p in found:
+        print(f"  ✓ {p} ({os.path.getsize(p)} bytes)")
+
     try:
         subprocess.run(
-            ['python3', 'graficos_compare.py'],
+            [sys.executable, script_path],
             cwd=graphs_dir,
             check=True,
         )
@@ -642,7 +678,7 @@ def generate_comparison_graphs():
     except subprocess.CalledProcessError as e:
         print(f"❌ graficos_compare.py falhou: {e}")
     except FileNotFoundError:
-        print("❌ python3 não encontrado no PATH")
+        print(f"❌ {sys.executable} não encontrado")
 
 
 def setup_stack_for_experiment():
@@ -713,6 +749,11 @@ def display_menu():
 
 def main():
     """Main menu loop."""
+    # Anchor cwd no projeto pra garantir que comandos `docker-compose -f xxx`
+    # com caminhos relativos achem os arquivos certos.
+    os.chdir(_PROJECT_ROOT)
+    print(f"📂 Working directory: {_PROJECT_ROOT}")
+
     while True:
         display_menu()
         choice = input("Select option: ").strip().lower()

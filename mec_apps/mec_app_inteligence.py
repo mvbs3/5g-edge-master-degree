@@ -63,10 +63,16 @@ INTELIGENCE_PORT = PORT
 CATCHER_PORT = 8081
 MEC_REGISTRY_URL = f"http://{MEP_ADDRESS}/service_registry/v1/register"
 METRICS_URL = f"http://{MEP_ADDRESS}/traffic_catcher/app_metrics"
-METRICS_CSV_FILE = "rl_input_state.csv"
+METRICS_CSV_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "rl_input_state.csv"
+)
 METRICS_POLLING_INTERVAL = 10  # seconds
 variables_create_app = {"instance_numer":1}
 create_app = {"container_name": "mec_app1_instance", "port": 8090, "py_file": "examples/mec_app1.py", "mec_name": "VideoStreamingService", "mec_host": "10.0.0.", "initial_ip":186, "instance_numer": 0}
+
+# Diretório onde mora este script — usado pra ancorar caminhos de CSVs
+# de modo que NÃO dependam da cwd do processo que disparou.
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- CONFIGURAÇÃO DO MAB ---
 MAB_LATENCY_REF_MS = float(os.getenv("MAB_LATENCY_REF_MS", "100"))
