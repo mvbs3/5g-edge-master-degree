@@ -4,6 +4,7 @@ import signal
 import sys
 import socket
 import os
+import re
 import shutil
 import requests
 import random
@@ -513,9 +514,13 @@ def start_metric_catcher_for_experiment():
 
 
 def start_intelligence_for_experiment(controller_type: str):
-    print(f"Iniciando MEC Intelligence (CONTROLLER_TYPE={controller_type})...")
+    print(f"Iniciando MEC Intelligence (CONTROLLER_TYPE={controller_type}, MAB_ENABLE=true)...")
+    # MAB_ENABLE=true força o caminho via controller (MAB ou RR via
+    # CONTROLLER_TYPE) — caso contrário o inteligence cai num round-robin
+    # legado interno que NÃO loga rewards.csv, fazendo o RR parecer "sem
+    # latência" nos relatórios.
     cmd = (
-        f'CONTROLLER_TYPE={controller_type} bash -c '
+        f'CONTROLLER_TYPE={controller_type} MAB_ENABLE=true bash -c '
         '"source mec_app1/bin/activate && python3 mec_app_inteligence.py"'
     )
     open_terminal(
@@ -555,6 +560,74 @@ def stop_workload_in_container():
     subprocess.run("docker exec nr_ue pkill -f run_workload.sh",
                    shell=True, check=False)
     time.sleep(5)
+
+
+def cleanup_extra_mec_instances(keep_min: int = 2):
+    """Mata containers mec_app1_instance<N> com N >= keep_min e remove o
+    serviço correspondente do service_registry. Usar entre cenários pra
+    evitar que MAPE-K do segundo cenário herde 10 instâncias do primeiro.
+
+    Estratégia:
+      1. docker ps lista os containers mec_app1_instance*
+      2. Pra cada com índice >= keep_min, chama mec_instance_manager.py stop
+         (que tira do registry E faz docker rm -f)
+    """
+    print(f"\n🧹 Cleanup de instâncias MEC extras (mantém 0..{keep_min - 1})...")
+    try:
+        result = subprocess.run(
+            "docker ps --format '{{.Names}}' | grep '^mec_app1_instance' || true",
+            shell=True, capture_output=True, text=True, check=False,
+        )
+        names = [n.strip() for n in result.stdout.splitlines() if n.strip()]
+    except Exception as e:
+        print(f"⚠️ Falha ao listar containers: {e}")
+        return
+
+    if not names:
+        print("  (nenhum container mec_app1_instance encontrado)")
+        return
+
+    pat = re.compile(r"^mec_app1_instance(\d+)$")
+    extras = []
+    for name in names:
+        m = pat.match(name)
+        if not m:
+            continue
+        idx = int(m.group(1))
+        if idx >= keep_min:
+            extras.append(idx)
+
+    if not extras:
+        print(f"  ✅ Nada pra remover. {len(names)} instâncias dentro do limite.")
+        return
+
+    extras.sort(reverse=True)  # mata maiores primeiro pra manter contiguidade
+    print(f"  Removendo {len(extras)} instância(s): {extras}")
+    for idx in extras:
+        container = f"mec_app1_instance{idx}"
+        mec_name = f"VideoStreamingService{idx}"
+        cmd = (
+            f"python3 mec_instance_manager.py stop "
+            f"{container} --mec_name {mec_name}"
+        )
+        try:
+            subprocess.run(
+                cmd, shell=True, cwd=_PROJECT_ROOT,
+                check=False, timeout=20,
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            # Fallback: force docker rm caso o stop tenha falhado parcialmente
+            subprocess.run(
+                f"docker rm -f {container}",
+                shell=True, check=False, timeout=10,
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            print(f"    ✓ {container} removido")
+        except Exception as e:
+            print(f"    ⚠️ falha removendo {container}: {e}")
+
+    time.sleep(3)
+    print("  ✅ Cleanup concluído.")
 
 
 def wait_with_progress(duration_sec: int, label: str):
@@ -613,28 +686,61 @@ def run_single_scenario(scenario: str, duration_min: int):
     print(f"\n{'='*60}\n  CENÁRIO {scenario.upper()}  ({duration_min} min)\n{'='*60}")
 
     # 1. Mata processos do cenário anterior (intelligence/catcher/mapeK)
+    print(f"\n[1/7] Matando processos do cenário anterior...")
     for pat in ['mec_app_inteligence.py',
                 'mec_app_metric_catcher.py',
                 'mapeK.py']:
         kill_pattern(pat)
     time.sleep(5)
+    print("  ✓ intelligence, catcher, mapeK encerrados")
 
-    # 2. Limpa CSVs
+    # 2. Cleanup de instâncias extras (volta ao estado inicial: 2 instâncias)
+    #    Isso impede que MAB (que escalou até 10) deixe o cenário RR
+    #    começando saturado em MAX_INSTANCES.
+    print(f"\n[2/7] Cleanup de instâncias MEC extras...")
+    cleanup_extra_mec_instances(keep_min=2)
+
+    # 3. Limpa CSVs do experimento
+    print(f"\n[3/7] Limpando CSVs antigos...")
     clean_experiment_csvs()
 
-    # 3. Catcher → Intelligence → MAPE-K
+    # 4. Catcher
+    print(f"\n[4/7] Iniciando MEC Metric Catcher...")
     start_metric_catcher_for_experiment()
-    start_intelligence_for_experiment(scenario)
-    start_mapeK_for_experiment()
 
-    # 4. Dispara workload
+    # 5. Intelligence (com CONTROLLER_TYPE)
+    print(f"\n[5/7] Iniciando MEC Intelligence (CONTROLLER_TYPE={scenario})...")
+    start_intelligence_for_experiment(scenario)
+
+    # 6. MAPE-K (vai inicializar com 2 instâncias detectadas via /discover)
+    print(f"\n[6/7] Iniciando MAPE-K (esperado: detectar 2 instâncias)...")
+    start_mapeK_for_experiment()
+    time.sleep(5)
+    # Confere via service_registry quantas instâncias o MAPE-K vai ver
+    try:
+        resp = subprocess.run(
+            "curl -sf --max-time 5 http://172.22.0.162/service_registry/v1/discover",
+            shell=True, capture_output=True, text=True, check=False, timeout=8,
+        )
+        if resp.returncode == 0 and resp.stdout:
+            import json as _json
+            services = _json.loads(resp.stdout)
+            vids = [s for s in services if s.get('type') == 'VidProc']
+            print(f"  📊 Service registry: {len(vids)} VidProc ativos antes do workload")
+            for s in vids:
+                print(f"    - {s.get('name')}")
+    except Exception as e:
+        print(f"  ⚠️ Não consegui consultar service_registry: {e}")
+
+    # 7. Dispara workload
+    print(f"\n[7/7] Disparando workload phased...")
     try:
         trigger_workload_in_container(scenario)
     except subprocess.CalledProcessError as e:
         print(f"❌ Falha ao disparar workload: {e}")
         return None
 
-    # 5. Aguarda execução
+    # Aguarda execução
     try:
         wait_with_progress(duration_min * 60, scenario.upper())
     except KeyboardInterrupt:
@@ -642,10 +748,10 @@ def run_single_scenario(scenario: str, duration_min: int):
         stop_workload_in_container()
         raise
 
-    # 6. Para workload
+    # Para workload
     stop_workload_in_container()
 
-    # 7. Arquiva resultados
+    # Arquiva resultados
     return archive_run(scenario)
 
 
@@ -724,6 +830,7 @@ def run_full_experiment_suite(duration_min: int = 60):
                     'mapeK.py']:
             kill_pattern(pat)
         stop_workload_in_container()
+        cleanup_extra_mec_instances(keep_min=2)
 
     generate_comparison_graphs()
 
