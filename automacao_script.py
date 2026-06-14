@@ -787,21 +787,149 @@ def generate_comparison_graphs():
         print(f"❌ {sys.executable} não encontrado")
 
 
-def setup_stack_for_experiment():
-    """Sobe o stack inteiro (Prometheus → Core → RAN → MEP → MEC apps → UE).
+def ensure_base_mec_instances():
+    """Garante exatamente 2 instâncias MEC base (0 e 1) rodando.
 
-    Idempotente o suficiente: se já está de pé, os comandos vão falhar
-    rapidinho sem quebrar.
+    Estratégia: força clean slate — remove TODOS os mec_app1_instance*
+    e recria os 2 base. É a forma mais robusta de funcionar tanto após
+    primeiro start (containers ausentes) quanto após Q/restart (podem
+    ter sobrado lixo).
+    """
+    print("Garantindo 2 instâncias MEC base (recreate-from-clean)...")
+    # 1. Remove TODOS os mec_app1_instance*
+    subprocess.run(
+        "docker ps -a --format '{{.Names}}' | grep '^mec_app1_instance' | "
+        "xargs -r docker rm -f",
+        shell=True, check=False, timeout=60,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    # 2. Reset do counter pra que start_mec_apps comece em 0
+    process_manager.app_instance_counter = 0
+    # 3. Sobe 2 frescos (0 e 1)
+    start_mec_apps(2)
+    # 4. Aguarda registrar no service_registry
+    time.sleep(15)
+
+
+def setup_stack_for_experiment():
+    """Sobe (ou re-sobe) o stack inteiro. Idempotente.
+
+    - Prometheus/Core/RAN/MEP/UE: docker-compose up é noop se já rodam
+    - MEC base (0 e 1): força recreate via ensure_base_mec_instances()
     """
     print(f"\n{'='*60}\n  SETUP DO STACK\n{'='*60}")
     start_prometheus_grafana()
     start_core_environment()
     start_ran()
     start_mep_enviroment()
-    start_mec_apps(2)
+    ensure_base_mec_instances()
     start_ue()
     time.sleep(10)
     print("✅ Stack pronto.")
+
+
+def _print_active_vidproc():
+    """Mostra quantas instâncias VidProc o service_registry conhece agora."""
+    try:
+        resp = subprocess.run(
+            "curl -sf --max-time 5 http://172.22.0.162/service_registry/v1/discover",
+            shell=True, capture_output=True, text=True, check=False, timeout=8,
+        )
+        if resp.returncode == 0 and resp.stdout:
+            import json as _json
+            services = _json.loads(resp.stdout)
+            vids = [s for s in services if s.get('type') == 'VidProc']
+            print(f"  📊 Service registry: {len(vids)} VidProc ativo(s)")
+            for s in vids:
+                print(f"     - {s.get('name')}")
+            return len(vids)
+    except Exception as e:
+        print(f"  ⚠️ Não consegui consultar service_registry: {e}")
+    return None
+
+
+def run_scenario_individual(scenario: str, duration_min: int):
+    """Roda UM cenário do zero — self-contained.
+
+    NÃO depende de você ter clicado a opção 1 antes. Faz tudo:
+      1. Setup completo do stack (idempotente — recria as 2 instâncias base)
+      2. Mata catcher/intelligence/mapeK que possam ter ficado vivos
+      3. Limpa CSVs
+      4. Sobe catcher → intelligence (CONTROLLER_TYPE=mab|rr) → mapeK
+      5. Mostra estado do service_registry
+      6. Dispara workload phased no nr_ue
+      7. Aguarda duration_min minutos
+      8. Para workload e arquiva resultados
+
+    Você pode rodar opção 2, dar Q, restart, opção 3 → funciona igual.
+    Você pode rodar opção 2 e em seguida 3 sem dar Q → também funciona.
+    """
+    print(f"\n{'='*60}\n  CENÁRIO {scenario.upper()} (self-contained, {duration_min} min)\n{'='*60}")
+
+    # 1. Setup completo do stack — idempotente
+    setup_stack_for_experiment()
+
+    # 2. Mata catcher/intelligence/mapeK que possam ter sobrado de cenário
+    #    anterior (se você vier de uma execução prévia ou opção 2 → 3 direto)
+    print(f"\n[2/8] Matando catcher/intelligence/mapeK antigos (se houver)...")
+    for pat in ['mec_app_inteligence.py',
+                'mec_app_metric_catcher.py',
+                'mapeK.py']:
+        kill_pattern(pat)
+    time.sleep(5)
+
+    print("\n📋 Estado do service_registry após setup:")
+    _print_active_vidproc()
+
+    # 3. Limpa CSVs
+    print(f"\n[3/8] Limpando CSVs antigos...")
+    clean_experiment_csvs()
+
+    # 4. Catcher
+    print(f"\n[4/8] Iniciando MEC Metric Catcher...")
+    start_metric_catcher_for_experiment()
+
+    # 5. Intelligence
+    print(f"\n[5/8] Iniciando MEC Intelligence (CONTROLLER_TYPE={scenario})...")
+    start_intelligence_for_experiment(scenario)
+
+    # 6. MAPE-K
+    print(f"\n[6/8] Iniciando MAPE-K...")
+    start_mapeK_for_experiment()
+    time.sleep(5)
+    print("\n📋 Estado do service_registry antes de disparar workload:")
+    _print_active_vidproc()
+
+    # 7. Dispara workload
+    print(f"\n[7/8] Disparando workload phased no nr_ue...")
+    try:
+        trigger_workload_in_container(scenario)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Falha ao disparar workload: {e}")
+        return None
+
+    # 8. Aguarda + cleanup + arquiva
+    print(f"\n[8/8] Aguardando {duration_min} min de execução...")
+    try:
+        wait_with_progress(duration_min * 60, scenario.upper())
+    except KeyboardInterrupt:
+        print("\n⚠️ Interrompido pelo usuário — encerrando UEs...")
+        stop_workload_in_container()
+        raise
+
+    stop_workload_in_container()
+    run_dir = archive_run(scenario)
+
+    print(f"\n{'='*60}")
+    print(f"  ✅ CENÁRIO {scenario.upper()} FINALIZADO")
+    print(f"     Resultado:        {run_dir}")
+    print(f"     CSV pra gráficos: graficos/rl_input_state_{scenario}.csv")
+    print(f"{'='*60}")
+    print("\n  PRÓXIMOS PASSOS:")
+    print("    - Pode rodar opção 3 (RR) ou 2 (MAB) direto — setup é idempotente")
+    print("    - Quando tiver os 2 cenários, opção 4 gera os gráficos")
+    print(f"{'='*60}")
+    return run_dir
 
 
 def run_full_experiment_suite(duration_min: int = 60):
@@ -846,13 +974,22 @@ def run_full_experiment_suite(duration_min: int = 60):
 
 def display_menu():
     """Display the main menu."""
-    print("\n" + "="*50)
+    print("\n" + "="*60)
     print("MEC ORCHESTRATOR - MAIN MENU")
-    print("="*50)
-    print("1  - Start Prometheus+Grafana -> Core components -> CM+MEP -> RAN")
-    print("2  - Run FULL experiment suite (MAB + RR, ~2h, automated)")
-    print("q  - Shutdown and Exit")
-    print("="*50 + "\n")
+    print("="*60)
+    print("1  - Setup standalone do stack (opcional — opções 2/3 já incluem)")
+    print()
+    print("--- Experimentos (cada um é SELF-CONTAINED — clica e roda tudo) ---")
+    print("2  - Cenário MAB completo (setup + 60 min de teste)")
+    print("3  - Cenário Round Robin completo (setup + 60 min de teste)")
+    print("4  - Gerar gráficos comparativos MAB vs RR")
+    print()
+    print("--- Utilidades ---")
+    print("5  - Cleanup: matar instâncias MEC extras (mantém só 0 e 1)")
+    print("6  - Iniciar N instâncias MEC manualmente")
+    print()
+    print("q  - Shutdown geral e sair")
+    print("="*60 + "\n")
 
 def main():
     """Main menu loop."""
@@ -902,29 +1039,34 @@ def main():
 
                 print("Ues iniciadas com sucesso 🚀")
             elif choice == '2':
-                # Suite automático: setup + MAB + RR + gráficos comparativos
+                # Cenário MAB INDIVIDUAL — você cuida de iniciar/parar manualmente
                 duration_input = input(
-                    "Duração de CADA cenário em minutos [60]: "
+                    "Duração em minutos [60]: "
                 ).strip()
                 duration_min = int(duration_input) if duration_input else 60
-                run_full_experiment_suite(duration_min=duration_min)
-            
+                run_scenario_individual('mab', duration_min)
+
             elif choice == '3':
-                num = int(input("Number of consumers: "))
-                start_broadcaster([app_config.mec_name_template + "0"])
-                for _ in range(num):
-                    start_receptor()
-            
+                # Cenário Round Robin INDIVIDUAL
+                duration_input = input(
+                    "Duração em minutos [60]: "
+                ).strip()
+                duration_min = int(duration_input) if duration_input else 60
+                run_scenario_individual('rr', duration_min)
+
             elif choice == '4':
-                start_ran_and_ue()
-            
+                # Gera gráficos comparativos MAB vs RR a partir dos
+                # rl_input_state_{mab,rr}.csv em graficos/
+                generate_comparison_graphs()
+
             elif choice == '5':
-                start_mep_and_intelligence()
-            
+                # Cleanup utilitário — mata containers mec_app1_instance{N>=2}
+                cleanup_extra_mec_instances(keep_min=2)
+
             elif choice == '6':
-                num = int(input("Number of instances to start: "))
+                num = int(input("Número de instâncias para subir: "))
                 start_mec_apps(num)
-            
+
             elif choice == '7':
                 if process_manager.app_instance_counter > 0:
                     process_manager.app_instance_counter -= 1
