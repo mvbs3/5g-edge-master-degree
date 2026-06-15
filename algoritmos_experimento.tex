@@ -1,0 +1,158 @@
+% =============================================================
+% PREÂMBULO — adicione ao seu .tex se ainda não tiver
+% =============================================================
+% \usepackage{algorithm}
+% \usepackage{algpseudocode}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% =============================================================
+
+
+% =============================================================
+% ALGORITMO 1 — Procedimento experimental completo
+% =============================================================
+\begin{algorithm}[t]
+\caption{Procedimento experimental para comparação MAB vs.\ Round Robin}
+\label{alg:experiment}
+\begin{algorithmic}[1]
+\Require Stack 5G inicializado (Open5GS Core, UERANSIM RAN, MEC Platform, gNB)
+\Require Estratégias $\mathcal{S} = \{\text{MAB}, \text{RR}\}$, duração $T_{\text{run}} = 60$~min
+\Statex
+\State \textbf{Setup base:}
+\State Inicializar 2 instâncias VidProc base $\{s_0, s_1\}$
+\State Iniciar MEC Metric Catcher
+\Statex
+\For{cada estratégia $\sigma \in \mathcal{S}$}
+    \State Limpar estado anterior (CSVs, instâncias extras)
+    \State Iniciar MEC Intelligence com roteador $\sigma$
+    \State Iniciar laço MAPE-K (Algoritmo~\ref{alg:mapek})
+    \Statex
+    \LineComment{Workload gerado em 5 fases (totaliza $T_{\text{run}}$)}
+    \State \textbf{Fase 1 — Warmup} (10\,min): manter 10 UEs ativas
+    \State \textbf{Fase 2 — Ramp-up} (15\,min): adicionar 1 UE a cada 10\,s até 100
+    \State \textbf{Fase 3 — Peak} (15\,min): manter 100 UEs ativas
+    \State \textbf{Fase 4 — Drain} (15\,min): remover 1 UE a cada 10\,s até 10
+    \State \textbf{Fase 5 — Settle} (5\,min): manter 10 UEs ativas
+    \Statex
+    \State Arquivar métricas (rl\_input\_state.csv, rewards.csv)
+    \State Encerrar Intelligence, MAPE-K e UEs
+\EndFor
+\Statex
+\State \textbf{Análise:} computar KPIs comparativos:
+\State \quad latência média, $p_{50}$, $p_{95}$, $p_{99}$
+\State \quad taxa de violação de SLA $= |\{\ell : \ell > L_{\text{SLA}}\}| / N$
+\State \quad \emph{instance-minutes} $= \int_0^{T_{\text{run}}} n(t)\, dt$
+\State \quad número de mudanças de scaling
+\end{algorithmic}
+\end{algorithm}
+
+
+% =============================================================
+% ALGORITMO 2 — Roteamento MAB (Thompson Sampling)
+% =============================================================
+\begin{algorithm}[t]
+\caption{Roteamento MAB com Thompson Sampling por UE}
+\label{alg:mab}
+\begin{algorithmic}[1]
+\Require UE $u$ requisitando serviço, conjunto de braços $\mathcal{A}$ (instâncias VidProc ativas)
+\Require Referência de latência $L_{\text{ref}} = 100$\,ms, dwell mínimo $T_{\text{dwell}} = 30$\,s
+\Statex
+\State \LineComment{Sincronizar braços com instâncias ativas, preservando estado}
+\State Para braços que persistem: manter $(\alpha_a, \beta_a)$
+\State Para braços novos: $(\alpha_a, \beta_a) \gets$ \textit{warm prior} (média dos atuais, cap=10)
+\Statex
+\State \LineComment{Atualizar estatística do braço da atribuição anterior}
+\If{$u$ tem braço prévio $a_{\text{prev}}$ \textbf{e} latência medida $\ell$}
+    \State $r \gets \mathbb{1}[\ell \leq L_{\text{ref}}]$ \Comment{1 se latência aceitável, 0 caso contrário}
+    \State $\alpha_{a_{\text{prev}}} \gets \alpha_{a_{\text{prev}}} + r$
+    \State $\beta_{a_{\text{prev}}} \gets \beta_{a_{\text{prev}}} + (1 - r)$
+\EndIf
+\Statex
+\State \LineComment{Decidir reatribuição se dwell expirou}
+\State $\Delta t \gets t_{\text{now}} - t_{\text{assign}}(u)$
+\If{$\Delta t \geq T_{\text{dwell}}$ \textbf{ou} $a_{\text{prev}} \notin \mathcal{A}$}
+    \For{cada braço $a \in \mathcal{A}$}
+        \State $\theta_a \sim \text{Beta}(\alpha_a, \beta_a)$
+    \EndFor
+    \State $a^{*} \gets \arg\max_{a \in \mathcal{A}} \theta_a$
+    \State Atribuir $u$ a $a^{*}$, atualizar $t_{\text{assign}}(u) \gets t_{\text{now}}$
+\Else
+    \State Manter $u$ em $a_{\text{prev}}$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+
+% =============================================================
+% ALGORITMO 3 — Roteamento Round Robin (baseline)
+% =============================================================
+\begin{algorithm}[t]
+\caption{Roteamento Round Robin (baseline)}
+\label{alg:rr}
+\begin{algorithmic}[1]
+\Require UE $u$, conjunto de braços $\mathcal{A} = \{a_1, \ldots, a_k\}$ ordenado
+\Require Dwell mínimo $T_{\text{dwell}} = 30$\,s, ponteiro circular $i$ (estado global)
+\Statex
+\State $\Delta t \gets t_{\text{now}} - t_{\text{assign}}(u)$
+\If{$\Delta t \geq T_{\text{dwell}}$ \textbf{ou} $a_{\text{prev}} \notin \mathcal{A}$}
+    \State $a^{*} \gets a_{(i \bmod k) + 1}$ \Comment{próximo na ordem cíclica}
+    \State $i \gets i + 1$
+    \State Atribuir $u$ a $a^{*}$, atualizar $t_{\text{assign}}(u) \gets t_{\text{now}}$
+\Else
+    \State Manter $u$ em $a_{\text{prev}}$
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+
+% =============================================================
+% ALGORITMO 4 — Laço MAPE-K (auto-scaling)
+% =============================================================
+\begin{algorithm}[t]
+\caption{Laço MAPE-K para auto-scaling de instâncias VidProc}
+\label{alg:mapek}
+\begin{algorithmic}[1]
+\Require Limites $\tau_{\text{up}} = 10\%$, $\tau_{\text{down}} = 5\%$
+\Require Bounds $N_{\min} = 2$, $N_{\max} = 10$
+\Require Cooldown $T_{\text{cool}} = 30$\,s, polling $T_{\text{poll}} = 5$\,s
+\Statex
+\State $n \gets$ \Call{InitFromRegistry}{} \Comment{maior índice ativo + 1}
+\State $t_{\text{last}} \gets 0$
+\Loop\ a cada $T_{\text{poll}}$ segundos
+    \State \LineComment{\textbf{Monitor}: coletar métrica agregada}
+    \State $c \gets \max_{i \in \mathcal{A}} \text{CPU}_i$ \Comment{CPU máxima entre instâncias}
+    \Statex
+    \State \LineComment{\textbf{Analyze}: decidir ação}
+    \If{$t_{\text{now}} - t_{\text{last}} < T_{\text{cool}}$}
+        \State $\text{ação} \gets \texttt{NO\_ACTION}$ \Comment{cooldown ativo}
+    \ElsIf{$c > \tau_{\text{up}}$ \textbf{ e } $n < N_{\max}$}
+        \State $\text{ação} \gets \texttt{SCALE\_UP}$
+    \ElsIf{$c < \tau_{\text{down}}$ \textbf{ e } $n > N_{\min}$}
+        \State $\text{ação} \gets \texttt{SCALE\_DOWN}$
+    \Else
+        \State $\text{ação} \gets \texttt{NO\_ACTION}$
+    \EndIf
+    \Statex
+    \State \LineComment{\textbf{Plan + Execute}}
+    \If{ação $=$ \texttt{SCALE\_UP}}
+        \State Lançar instância $s_n$ via \texttt{mec\_instance\_manager}
+        \If{$s_n$ aparece no \emph{service registry} em $T_{\text{verify}}$}
+            \State $n \gets n + 1$; $t_{\text{last}} \gets t_{\text{now}}$
+        \EndIf
+    \ElsIf{ação $=$ \texttt{SCALE\_DOWN}}
+        \State Encerrar instância $s_{n-1}$ via API \texttt{shut\_down\_mec\_app}
+        \If{sucesso (HTTP 200)}
+            \State $n \gets n - 1$; $t_{\text{last}} \gets t_{\text{now}}$
+        \EndIf
+    \EndIf
+\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+
+% =============================================================
+% MACRO AUXILIAR (caso seu pacote algpseudocode não defina LineComment)
+% =============================================================
+% \algnewcommand{\LineComment}[1]{\State \(\triangleright\) #1}
+%
+% Coloque essa linha no preâmbulo se compilar com erro em \LineComment.

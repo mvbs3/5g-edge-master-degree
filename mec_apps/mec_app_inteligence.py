@@ -178,12 +178,21 @@ def register_mec():
 
 def save_metrics_to_csv(metrics_data):
     """Save collected metrics to CSV file for reinforcement learning input state"""
-    
+
     # Validate the metrics data
     if not metrics_data or "data" not in metrics_data:
         logger.warning(f"Invalid data for saving metrics: {metrics_data}")
         return
-    
+
+    # Conta quantos app_types têm instâncias — pra logar quando NADA será escrito
+    populated = sum(1 for app_type, inst in metrics_data["data"].items() if inst)
+    if populated == 0:
+        logger.warning(
+            f"save_metrics_to_csv: nenhum app_type tem instâncias com dados — "
+            f"linha NÃO será escrita. Keys disponíveis: {list(metrics_data['data'].keys())}"
+        )
+        return
+
     file_exists = os.path.exists(METRICS_CSV_FILE)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
@@ -345,7 +354,9 @@ def metric_catcher():
     topic_latency_stats = {}
     while True:
         try:
-            response = requests.get(METRICS_URL)
+            # Timeout explícito — sem isso, se o catcher engasga o loop trava
+            # indefinidamente e o CSV deixa de ser populado.
+            response = requests.get(METRICS_URL, timeout=10)
             response.raise_for_status()
             raw_metrics = response.json()
 
@@ -589,15 +600,22 @@ def metric_catcher():
                 else:
                     logger.warning(f"Nenhum dado disponível para app_type {topic['app_type']} para {topic_id}. Não foi possível atribuir um app.")
 
-            save_metrics_to_csv(mec_metrics)
-
         except requests.exceptions.RequestException as e:
             logger.error(f"Erro ao buscar métricas: {e}")
         except json.JSONDecodeError:
             logger.error("Resposta JSON inválida do endpoint de métricas")
         except Exception as e:
-            logger.error(f"Erro na coleta de métricas: {e}")
-        
+            logger.error(f"Erro na coleta/roteamento de métricas: {e}")
+
+        # save_metrics_to_csv FORA do try acima — se o roteamento falha (Redis,
+        # controller, etc.), AINDA queremos persistir uma linha do estado atual
+        # pra a CSV de pesquisa não ter buracos. Tem seu próprio try/except.
+        try:
+            if mec_metrics and "data" in mec_metrics:
+                save_metrics_to_csv(mec_metrics)
+        except Exception as e:
+            logger.error(f"Erro ao salvar CSV de métricas: {e}")
+
         time.sleep(METRICS_POLLING_INTERVAL)
 
 

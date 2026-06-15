@@ -1,0 +1,161 @@
+================================================================
+DESCRIÇÃO DO EXPERIMENTO — MAB vs ROUND ROBIN em MEC 5G
+================================================================
+
+------------------------------------------------------------
+1. DESCRIÇÃO DO EXPERIMENTO
+------------------------------------------------------------
+
+Comparação de dois roteadores de tráfego em um sistema MEC 5G com
+auto-scaling dinâmico:
+
+  - MAB (Thompson Sampling) vs Round Robin decidindo qual instância
+    MEC atende cada UE
+  - MAPE-K loop controlando scale-up/down das instâncias com base em
+    CPU agregada (max entre instâncias)
+  - Cada cenário roda 60 min com a MESMA carga (warmup → ramp → peak
+    → drain → settle), pra comparação justa
+  - Métricas comparadas no paper:
+      * Latência média / p50 / p95 / p99
+      * % de violação de SLA (latência > 200 ms)
+      * Instance-minutes (custo computacional)
+      * Número de scaling changes (estabilidade)
+
+Pipeline:
+
+  100 UEs (UERANSIM) → 1 gNB → Open5GS Core → MEC Platform (MEP)
+                                                   │
+                                      ┌────────────┴────────────┐
+                                      ↓                         ↓
+                            MEC Intelligence              Service Registry
+                            (MAB ou RR roteia)            (cataloga MEC apps)
+                                      ↓
+                        Pool de VidProc (2-10 instâncias auto-scaled)
+                            ↑                                ↑
+                            └─ MAPE-K monitora CPU max ──────┘
+                               (UP > 10%, DOWN < 5%)
+
+Configuração do MAPE-K:
+  CPU_THRESHOLD_UP   = 10   (escala quando UMA instância > 10%)
+  CPU_THRESHOLD_DOWN = 5    (desescala quando TODAS < 5%)
+  MIN_INSTANCES      = 2
+  MAX_INSTANCES      = 10
+  COOLDOWN_SEC       = 30   (anti-flapping entre ações)
+  POLLING_INTERVAL   = 5s
+
+------------------------------------------------------------
+2. O QUE AS UEs REQUISITAM
+------------------------------------------------------------
+
+Cada UE roda 2 threads concorrentes contra a instância VidProc
+atribuída pelo MEC Intelligence:
+
+  THREAD A — inference_loop:
+    Operação:    POST /infer
+    Frequência:  a cada 0.1–0.5s (uniform random)
+    Payload:     random bytes 500–5000 B (uniform)
+
+  THREAD B — video_stream:
+    Operação:    GET /video (HTTP streaming)
+    Frequência:  contínuo
+    Resposta:    chunks de 1 KB até ~1 MB cumulativo
+
+Lado servidor (mec_app1.py:269-274) simula CV pesada:
+
+    @app.route("/infer", methods=["POST"])
+    def infer():
+        time.sleep(random.uniform(0.05, 0.2))  # 50–200 ms
+        return {"status": "ok"}
+
+Ou seja, latência base de inference no servidor = 50–200 ms,
+acrescida de queueing local e rede (RAN + transporte).
+
+------------------------------------------------------------
+3. QUANTAS UEs
+------------------------------------------------------------
+
+100 UEs no PEAK, escalonadas em 5 fases (60 min total):
+
+  Fase    | Tempo       | UEs ativas
+  --------+-------------+----------------------------------
+  Warmup  | 0–10 min    | 10
+  Ramp    | 10–25 min   | 10 → 100  (1 nova UE a cada ~10s)
+  Peak    | 25–40 min   | 100 sustentadas
+  Drain   | 40–55 min   | 100 → 10  (1 mata a cada ~10s)
+  Settle  | 55–60 min   | 10
+
+Configurável via env vars no run_workload.sh:
+  WARMUP_UES, PEAK_UES, PHASE_WARMUP_SEC, PHASE_RAMP_SEC,
+  PHASE_PEAK_SEC, PHASE_DRAIN_SEC, PHASE_SETTLE_SEC
+
+------------------------------------------------------------
+4. QUANTAS gNBs
+------------------------------------------------------------
+
+1 gNB — container "nr_gnb" (UERANSIM) em
+5g_ran/docker-compose-ran.yaml.
+
+Todas as 100 UEs registram nessa gNB única. UERANSIM simula uma
+PNF/gNB com múltiplas UEs anexadas.
+
+------------------------------------------------------------
+5. VAZÃO POR UE
+------------------------------------------------------------
+
+INFERENCE (uplink — requisição/resposta):
+  - Intervalo entre requests: 0.1–0.5s uniform
+    → média 0.3s → ~3.3 req/s por UE
+  - Payload por request: 500–5000 B uniform → média ~2.75 KB
+  - Banda de uplink por UE: ~3.3 × 2.75 KB ≈ 9 KB/s ≈ 72 kbps
+
+VÍDEO (downlink streaming):
+  - HTTP streaming contínuo, throughput limitado pela rede e
+    pelo servidor.
+  - Cada UE reporta seu throughput a cada 1 MB cumulativo
+    (ue_client.py:97-101).
+
+------------------------------------------------------------
+6. AGREGADO (TOTAL NO PEAK — 100 UEs)
+------------------------------------------------------------
+
+  Métrica                              | Valor estimado
+  -------------------------------------+--------------------------
+  Inference req/s agregada             | 100 × 3.3 = ~330 req/s
+  Inference uplink agregado            | ~900 KB/s ≈ 7.2 Mbps
+  Latência base de servidor (inference)| 50–200 ms (random.uniform)
+  Conexões HTTP simultâneas            | 200 (100 UEs × 2 threads)
+
+MENSAGENS AUXILIARES (incluídas no agregado):
+  - Cada UE também faz POST /traffic_catcher/latency após cada
+    inference → +330 req/s ao catcher
+  - Heartbeats periódicos
+  - Redis pubsub pra subscrição/atualização de tópicos
+
+TOTAL DE CHAMADAS HTTP/s NO MEP NO PEAK:
+  ~660 req/s (inference + latency reports), distribuídas entre
+  2 a 10 instâncias VidProc dependendo do scaling em andamento.
+
+------------------------------------------------------------
+JUSTIFICATIVA NUMÉRICA
+------------------------------------------------------------
+
+Carga teórica em flight no peak:
+  100 UEs × 3.3 req/s × ~150 ms latência base ≈ 50 inferências
+  simultâneas em flight a qualquer momento.
+
+Capacidade por instância:
+  Limite Docker --cpus=0.20 por container
+  (mec_instance_manager.py:32)
+  → uma instância sustenta ~6 req/s antes de saturar CPU se
+    o trabalho fosse CPU-bound puro.
+  → peak teórico precisaria de ~55 instâncias para CPU-bound puro.
+
+Observação experimental:
+  CPU max observada saturou em ~20% (não 100%), indicando que
+  o sistema é I/O-BOUND (time.sleep no /infer em vez de CPU real).
+  Por isso 10 instâncias absorvem o peak sem saturar — não
+  precisamos do MAX teórico de 55.
+
+================================================================
+FIM
+================================================================
