@@ -9,15 +9,17 @@ import re
 import numpy as np
 
 # ================= CONFIG =================
-# Sinal de CPU consumido daqui é o MAX entre as instâncias VidProc
-# (vide mec_app_inteligence.py:462 — `cpu_percentage = max(cpu_values)`).
-# Com teto de CPU observado em ~20%, escolha de thresholds:
-#   UP=10  → escala assim que UMA instância ultrapassa 50% do teto
-#            (margem ampla pra reagir antes de saturar)
-#   DOWN=5 → desescala quando TODAS estão claramente ociosas
-#            (~25% do teto, evita oscilação no regime estacionário)
-CPU_THRESHOLD_UP = 10
-CPU_THRESHOLD_DOWN = 5
+# Sinal de CPU: as duas decisões usam agregações DIFERENTES, de propósito.
+#   UP   olha o MÁXIMO  → reage assim que UMA instância aquece (protege o SLA)
+#   DOWN olha a MÉDIA   → desescala quando o POOL como um todo está ocioso
+# Usar o máximo nos dois lados (como era antes) trava o pool no teto: com 100 UEs
+# sempre existe uma instância acima de UP, e o máximo nunca cai abaixo de DOWN,
+# então o número de instâncias só sobe — 2→10 e nunca mais desce.
+# Com teto de CPU observado em ~20% por instância (--cpus=0.20):
+#   UP=10   → uma instância passou de 50% do teto
+#   DOWN=5  → o pool inteiro abaixo de 25% do teto
+CPU_THRESHOLD_UP = float(os.getenv("CPU_THRESHOLD_UP", "10"))
+CPU_THRESHOLD_DOWN = float(os.getenv("CPU_THRESHOLD_DOWN", "5"))
 MIN_INSTANCES = 2
 MAX_INSTANCES = 10
 METRICS_POLLING_INTERVAL = 5
@@ -41,7 +43,6 @@ create_app = {
     "instance_numer": 1,
     "port": 8090
 }
-
 processos_abertos = []
 
 # cooldown anti-flapping
@@ -119,13 +120,29 @@ def _max_index_from_active(active):
     return max_idx
 
 
-def initialize_state():
-    """Sincroniza create_app['instance_numer'] com o MAIOR índice ativo + 1.
+def live_indexes():
+    """Índices das instâncias REALMENTE vivas, em ordem crescente.
 
-    Antes usávamos len(active), o que cria conflitos se houver buracos
-    (ex: 0 e 2 vivos, mas 1 morreu → próximo índice deveria ser 3, não 2).
-    Agora usamos `max(idx) + 1` pra garantir que SCALE_UP nunca colida com
-    nome existente.
+    Fonte da verdade do loop: `instance_numer` só serve pra nomear a próxima
+    instância e não cai quando um container morre sozinho, então contar por ele
+    fazia o MAPE-K se achar no teto (e parar de crescer) ou tentar matar um
+    índice que já estava morto.
+    """
+    indexes = []
+    for svc in discover_active_instances():
+        m = SERVICE_NAME_PATTERN.match(svc.get("name", ""))
+        if m:
+            indexes.append(int(m.group(1)))
+    return sorted(indexes)
+
+
+def initialize_state():
+    """Define o próximo nome a usar: MAIOR índice ativo + 1.
+
+    `instance_numer` é só o gerador de nomes — a contagem de instâncias vivas é
+    lida do registry a cada ciclo (ver live_indexes()). O piso em MIN_INSTANCES
+    existe porque o stack sobe as instâncias 0 e 1 no boot, então o próximo nome
+    livre nunca deve ser menor que 2 mesmo que o registry ainda esteja vazio.
     """
     active = discover_active_instances()
     max_idx = _max_index_from_active(active)
@@ -151,22 +168,35 @@ def verify_instance_registered(target_index, timeout_sec, interval_sec):
 
 # ================= MONITOR =================
 def collect_metrics():
+    """Devolve dict com o MÁXIMO, a MÉDIA e quantas instâncias reportaram CPU.
+
+    O endpoint antigo só expunha `current_avg_cpu_percent` (que na verdade era o
+    máximo); se o módulo de inteligência em execução for uma versão anterior, os
+    campos novos não vêm e a média cai de volta pro máximo.
+    """
     try:
         response = requests.get(MONITOR_URL, timeout=5)
         response.raise_for_status()
         data = response.json()
         log(f"[DEBUG RESPONSE] {data}")
-        cpu = data.get("current_avg_cpu_percent", None)
+
+        raw_max = data.get("cpu_max_percent", data.get("current_avg_cpu_percent"))
+        raw_avg = data.get("cpu_avg_percent", raw_max)
 
         try:
-            cpu = float(cpu)
-            log(f"[DEBUG RAW CPU] cpu={cpu} type={type(cpu)} source={MONITOR_URL}")
-        except:
-            log(f"⚠️ CPU inválida recebida: {cpu}")
+            cpu_max = float(raw_max)
+        except (TypeError, ValueError):
+            log(f"⚠️ CPU inválida recebida: {raw_max}")
             return None
 
-        log(f"CPU atual: {cpu:.2f}%")
-        return cpu
+        try:
+            cpu_avg = float(raw_avg)
+        except (TypeError, ValueError):
+            cpu_avg = cpu_max
+
+        reported = data.get("active_instances")
+        log(f"CPU atual: max={cpu_max:.2f}% avg={cpu_avg:.2f}% (instâncias reportando={reported})")
+        return {"max": cpu_max, "avg": cpu_avg}
 
     except Exception as e:
         log(f"Erro ao coletar métricas: {e}")
@@ -175,7 +205,11 @@ def collect_metrics():
 # ================= ANALYZE =================
 def analyze(cpu, instances):
     """Decide a ação. Não muta `last_action_time` aqui — só execute() faz isso
-    em sucesso, pra que falhas de scale não disparem cooldown."""
+    em sucesso, pra que falhas de scale não disparem cooldown.
+
+    `instances` é a contagem de instâncias VIVAS (vinda do registry), não o
+    contador de nomes.
+    """
     if cpu is None:
         return "NO_ACTION"
 
@@ -186,18 +220,29 @@ def analyze(cpu, instances):
 
     log(f"""
 [MAPE-K DEBUG]
-cpu={cpu:.2f}
+cpu_max={cpu['max']:.2f}
+cpu_avg={cpu['avg']:.2f}
 instances={instances}
-threshold_up={CPU_THRESHOLD_UP}
-threshold_down={CPU_THRESHOLD_DOWN}
+threshold_up={CPU_THRESHOLD_UP} (sobre o max)
+threshold_down={CPU_THRESHOLD_DOWN} (sobre a media)
 """)
 
-    if cpu > CPU_THRESHOLD_UP and instances < MAX_INSTANCES:
-        log(f"AÇÃO: SCALE_UP (CPU {cpu:.2f} > {CPU_THRESHOLD_UP})")
+    if cpu["max"] > CPU_THRESHOLD_UP and instances < MAX_INSTANCES:
+        log(f"AÇÃO: SCALE_UP (max {cpu['max']:.2f} > {CPU_THRESHOLD_UP})")
         return "SCALE_UP"
 
-    if cpu < CPU_THRESHOLD_DOWN and instances > MIN_INSTANCES:
-        log(f"AÇÃO: SCALE_DOWN (CPU {cpu:.2f} < {CPU_THRESHOLD_DOWN})")
+    # Banda morta: só desescala se o pool estiver ocioso NA MÉDIA **e** nenhuma
+    # instância estiver acima do gatilho de subida. Sem essa segunda condição,
+    # "uma instância quente + pool ocioso" satisfaz UP e DOWN ao mesmo tempo e o
+    # pool fica oscilando entre N e N-1 indefinidamente, inflando justamente a
+    # métrica de estabilidade (scaling changes) que o experimento compara.
+    if (
+        cpu["avg"] < CPU_THRESHOLD_DOWN
+        and cpu["max"] <= CPU_THRESHOLD_UP
+        and instances > MIN_INSTANCES
+    ):
+        log(f"AÇÃO: SCALE_DOWN (avg {cpu['avg']:.2f} < {CPU_THRESHOLD_DOWN}, "
+            f"max {cpu['max']:.2f} <= {CPU_THRESHOLD_UP})")
         return "SCALE_DOWN"
 
     return "NO_ACTION"
@@ -252,12 +297,16 @@ def execute(plan):
         log(f"✅ SCALE_UP concluído. instance_numer={create_app['instance_numer']}")
 
     elif action == "SCALE_DOWN":
-        num = create_app["instance_numer"] - 1
-
-        if num < MIN_INSTANCES:
+        # Mata a instância viva de maior índice, e não `instance_numer - 1`: aquele
+        # índice podia já estar morto, e o POST falhava ciclo após ciclo no mesmo
+        # alvo, de modo que nenhuma instância era destruída dali em diante.
+        alive = live_indexes()
+        if len(alive) <= MIN_INSTANCES:
+            log(f"🧹 SCALE_DOWN abortado: {len(alive)} instância(s) viva(s), mínimo é {MIN_INSTANCES}")
             return
 
-        log(f"🧹 Removendo instância {num}")
+        num = alive[-1]
+        log(f"🧹 Removendo instância {num} (vivas: {alive})")
 
         try:
             response = requests.post(
@@ -270,9 +319,8 @@ def execute(plan):
                 timeout=15
             )
             if response.status_code == 200:
-                create_app["instance_numer"] -= 1
                 last_action_time = time.time()
-                log(f"✅ SCALE_DOWN concluído. instance_numer={create_app['instance_numer']}")
+                log(f"✅ SCALE_DOWN concluído: VideoStreamingService{num} removida")
             else:
                 log(f"⚠️ shut_down_mec_app retornou {response.status_code}: {response.text[:200]}")
 
@@ -287,13 +335,22 @@ def run():
         log("==== CICLO MAPE-K ====")
 
         cpu = collect_metrics()
-        action = analyze(cpu, create_app["instance_numer"])
+
+        # A contagem vem do registry a cada ciclo: é o único jeito de perceber
+        # instâncias que morreram sozinhas e de não travar o pool no teto.
+        alive = live_indexes()
+        instances = len(alive)
+        if instances == 0:
+            log("⚠️ Registry não retornou instâncias vivas; usando instance_numer como fallback")
+            instances = create_app["instance_numer"]
+
+        action = analyze(cpu, instances)
 
         log(f"DECISÃO FINAL: {action}")
 
         execute(plan(action))
 
-        log(f"Instâncias ativas: {create_app['instance_numer']}")
+        log(f"Instâncias ativas: {instances} (índices={alive}, próximo nome={create_app['instance_numer']})")
         time.sleep(METRICS_POLLING_INTERVAL)
 
 # ================= EXIT =================

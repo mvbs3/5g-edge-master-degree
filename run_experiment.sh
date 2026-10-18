@@ -19,12 +19,14 @@
 #
 # O script:
 #   - limpa CSVs de saída anteriores
+#   - drena o pool VidProc pra que os dois cenários partam do mesmo ponto
 #   - copia run_workload.sh pra dentro do container nr_ue
 #   - dispara o workload em background no container
-#   - aguarda 60 min (com barra de progresso simples)
-#   - mata UEs e o workload
+#   - AGUARDA o workload concluir as 5 fases (warmup/ramp/peak/drain/settle)
+#   - mata UEs remanescentes
 #   - arquiva os CSVs em runs/<scenario>_<timestamp>/
 #   - copia o rl_input_state.csv pra graficos/ com nome do cenário
+#   - drena o pool VidProc no fim, pra não deixar instâncias órfãs
 # ============================================================================
 
 set -euo pipefail
@@ -35,17 +37,50 @@ if [[ "$SCENARIO" != "mab" && "$SCENARIO" != "rr" ]]; then
     exit 1
 fi
 
+# DURATION_MIN é a duração ESPERADA do workload (as 5 fases do run_workload.sh somam
+# 60 min). Ela não corta mais o experimento: serve de referência e de base para o
+# timeout de segurança. Para mudar a duração real, ajuste as PHASE_*_SEC do workload.
 DURATION_MIN="${DURATION_MIN:-60}"
-DURATION_SEC=$((DURATION_MIN * 60))
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 RUN_TS="$(date +%Y%m%d_%H%M%S)"
-RUN_DIR="$PROJECT_ROOT/runs/${SCENARIO}_${RUN_TS}"
+# RUN_LABEL marca execuções que não são experimento (ex: o cenário curto de
+# validação), pra que elas não sobrescrevam os CSVs usados nos gráficos finais.
+# Vazio = comportamento original, intocado.
+RUN_LABEL="${RUN_LABEL:-}"
+RUN_SUFFIX=""
+[[ -n "$RUN_LABEL" ]] && RUN_SUFFIX="_${RUN_LABEL}"
+RUN_DIR="$PROJECT_ROOT/runs/${SCENARIO}${RUN_SUFFIX}_${RUN_TS}"
 GRAFICOS_DIR="$PROJECT_ROOT/graficos"
 mkdir -p "$RUN_DIR"
 
+# Derruba TODAS as instâncias VidProc e as desregistra do service_registry.
+# Sem isso o pool sobrevive de um cenário pro outro: se o MAB termina em 10
+# instâncias, o RR COMEÇA em 10, e a comparação deixa de ser válida. É também
+# o que faz a curva de instâncias voltar a zero no fim da execução.
+drain_vidproc_instances() {
+    local phase="$1"
+    echo "  Drenando instâncias VidProc ($phase)..."
+
+    local containers
+    containers=$(docker ps -a --format '{{.Names}}' | grep -E '^mec_app1_instance[0-9]+$' || true)
+
+    if [[ -z "$containers" ]]; then
+        echo "    nenhuma instância VidProc encontrada"
+        return 0
+    fi
+
+    for container in $containers; do
+        local index="${container#mec_app1_instance}"
+        echo "    parando $container (VideoStreamingService${index})"
+        python3 "$PROJECT_ROOT/mec_instance_manager.py" stop "$container" \
+            --mec_name "VideoStreamingService${index}" || \
+            echo "    AVISO: falha ao parar $container"
+    done
+}
+
 echo "============================================================"
-echo "  EXPERIMENTO: $SCENARIO ($DURATION_MIN min)"
+echo "  EXPERIMENTO: $SCENARIO (~$DURATION_MIN min, definido pelas fases do workload)"
 echo "  Saída: $RUN_DIR"
 echo "============================================================"
 
@@ -63,51 +98,96 @@ echo "         Aperte ENTER pra continuar ou Ctrl+C pra abortar."
 read -r _
 
 # 1. Limpa estado
-echo "[1/5] Limpando CSVs anteriores..."
+echo "[1/6] Limpando CSVs anteriores..."
 rm -f "$PROJECT_ROOT/mec_apps/Results/rewards.csv"
 rm -f "$PROJECT_ROOT/mec_apps/Results/arm_probabilities.csv"
 rm -f "$PROJECT_ROOT/mec_apps/rl_input_state.csv"
 
+# 1b. Zera o pool: os dois cenários precisam partir do mesmo número de instâncias
+drain_vidproc_instances "antes do cenário"
+echo "  Reinicie o mapeK agora se ele estiver rodando, pra ele recriar o mínimo"
+sleep 5
+
 # 2. Copia workload e dispara
-echo "[2/5] Disparando workload no nr_ue..."
+echo "[2/6] Disparando workload no nr_ue..."
 docker cp "$PROJECT_ROOT/5g_ran/ueransim/run_workload.sh" nr_ue:/mnt/ueransim/run_workload.sh
 docker exec nr_ue chmod +x /mnt/ueransim/run_workload.sh
-docker exec -d nr_ue bash -c \
+
+# O ambiente do host NÃO atravessa o docker exec, então cada variável de fase precisa
+# ser repassada explicitamente com -e. Sem isso o workload sempre usava os defaults
+# (60 min no total) e não havia como rodar um cenário curto de validação.
+WORKLOAD_ENV=()
+for var in WARMUP_UES PEAK_UES PHASE_WARMUP_SEC PHASE_RAMP_SEC PHASE_PEAK_SEC \
+           PHASE_DRAIN_SEC PHASE_SETTLE_SEC; do
+    if [[ -n "${!var:-}" ]]; then
+        WORKLOAD_ENV+=(-e "$var=${!var}")
+        echo "  override: $var=${!var}"
+    fi
+done
+
+# A expansão usa a forma ${A[@]+...} porque com `set -u` um array vazio quebra em
+# bash 3.2 (o do macOS): sem override nenhum, "${WORKLOAD_ENV[@]}" seria unbound.
+docker exec -d ${WORKLOAD_ENV[@]+"${WORKLOAD_ENV[@]}"} nr_ue bash -c \
     "/mnt/ueransim/run_workload.sh > /mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log 2>&1"
 START_TS=$(date +%s)
 
-# 3. Espera com progresso
-echo "[3/5] Aguardando $DURATION_MIN min..."
+# 3. Espera o workload terminar as 5 fases por conta própria
+# Antes esperávamos DURATION_MIN fixo e matávamos o workload no fim. As fases do
+# run_workload.sh somam exatamente 3600s, e os ~100s gastos subindo as UEs no warmup
+# já empurram o fim para além dos 60 min — então o pkill caía DENTRO do peak ou do
+# drain e as fases 4 e 5 nunca aconteciam. Era por isso que as UEs subiam para 100 e
+# nunca voltavam para 10: o experimento era cortado antes do drain.
+# Agora quem define o fim é o próprio workload; TIMEOUT_MIN é só rede de segurança.
+TIMEOUT_MIN="${TIMEOUT_MIN:-$((DURATION_MIN * 2))}"
+TIMEOUT_SEC=$((TIMEOUT_MIN * 60))
+echo "[3/6] Aguardando o workload concluir as 5 fases (timeout de segurança: $TIMEOUT_MIN min)..."
+workload_finished=false
 while :; do
     elapsed=$(( $(date +%s) - START_TS ))
-    if (( elapsed >= DURATION_SEC )); then break; fi
-    pct=$(( elapsed * 100 / DURATION_SEC ))
-    printf "\r  [%3d%%] %d / %d s" "$pct" "$elapsed" "$DURATION_SEC"
+
+    if ! docker exec nr_ue pgrep -f "run_workload.sh" >/dev/null 2>&1; then
+        workload_finished=true
+        printf "\r  workload concluiu as fases em %d s (%d min)\n" "$elapsed" "$((elapsed / 60))"
+        break
+    fi
+
+    if (( elapsed >= TIMEOUT_SEC )); then
+        printf "\r  AVISO: timeout de %d min atingido com o workload ainda rodando\n" "$TIMEOUT_MIN"
+        echo "         As fases de drain/settle podem não ter completado — confira o log do workload."
+        break
+    fi
+
+    printf "\r  [%d s decorridos] aguardando fim do workload..." "$elapsed"
     sleep 30
 done
-printf "\r  [100%%] %d / %d s\n" "$DURATION_SEC" "$DURATION_SEC"
 
 # 4. Mata UEs e o workload script
-echo "[4/5] Matando UEs e workload script no container..."
+echo "[4/6] Garantindo que nenhuma UE ficou viva..."
+if [[ "$workload_finished" == false ]]; then
+    docker exec nr_ue pkill -f "run_workload.sh" || true
+fi
 docker exec nr_ue pkill -f "ue_client.py" || true
-docker exec nr_ue pkill -f "run_workload.sh" || true
 sleep 5
 
 # 5. Arquiva resultados
-echo "[5/5] Arquivando resultados..."
+echo "[5/6] Arquivando resultados..."
 if [[ -f "$PROJECT_ROOT/mec_apps/rl_input_state.csv" ]]; then
     cp "$PROJECT_ROOT/mec_apps/rl_input_state.csv" "$RUN_DIR/rl_input_state.csv"
-    cp "$PROJECT_ROOT/mec_apps/rl_input_state.csv" "$GRAFICOS_DIR/rl_input_state_${SCENARIO}.csv"
+    cp "$PROJECT_ROOT/mec_apps/rl_input_state.csv" "$GRAFICOS_DIR/rl_input_state_${SCENARIO}${RUN_SUFFIX}.csv"
 else
     echo "  AVISO: rl_input_state.csv não foi gerado — verifique mec_app_inteligence."
 fi
 cp -r "$PROJECT_ROOT/mec_apps/Results" "$RUN_DIR/Results" 2>/dev/null || true
 docker cp "nr_ue:/mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log" "$RUN_DIR/" 2>/dev/null || true
 
+# 6. Zera o pool depois de arquivar, pra não deixar instâncias órfãs ligadas
+echo "[6/6] Drenando o pool VidProc..."
+drain_vidproc_instances "depois do cenário"
+
 echo "============================================================"
 echo "  Experimento $SCENARIO finalizado."
 echo "  Resultado:        $RUN_DIR"
-echo "  CSV pra gráficos: $GRAFICOS_DIR/rl_input_state_${SCENARIO}.csv"
+echo "  CSV pra gráficos: $GRAFICOS_DIR/rl_input_state_${SCENARIO}${RUN_SUFFIX}.csv"
 echo
 echo "  Próximos passos:"
 echo "    - Rode o outro cenário (mab ou rr)"

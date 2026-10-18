@@ -1,0 +1,4308 @@
+<!DOCTYPE html>
+<html style="overflow: unset !important;" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" translate="no">
+	<head>
+		<title>Duelingbook</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!--<meta name="viewport" content="width=1024">-->
+		<meta name="viewport" content="width=device-width">
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">-->
+		<meta name="title" content="Duelingbook">
+		<meta name="description" content="Duelingbook is a Yu-Gi-Oh! Trading Card Game simulator that works right in your browser.">
+		<meta name="keywords" content="yugioh">
+		<meta property="og:title" content="Duelingbook">
+		<meta property="og:type" content="website">
+		<meta property="og:description" content="Duelingbook is a Yu-Gi-Oh! Trading Card Game simulator that works right in your browser.">
+		<meta property="og:image" content="https://www.duelingbook.com//site_image.webp">
+		<meta property="og:url" content="https://www.duelingbook.com">
+		<meta property="og:site_name" content="Duelingbook">
+		
+		<link rel="stylesheet" type="text/css" href="static/main.css?v=932">
+		<link rel="stylesheet" type="text/css" href="static/jquery-ui.min.css?v=2">
+		<!--<link rel="stylesheet" type="text/css" href="static/OverlayScrollbars.min.css">-->
+		<link rel="stylesheet" type="text/css" href="static/overlayscrollbars.min.css?v=2">
+		<script src="https://static.duelingbook.com/jquery.min.js?v=2"></script>
+		<script src="https://static.duelingbook.com/jquery-ui.min.js?v=2"></script>
+		<script src="https://static.duelingbook.com/jquery.ui.touch-punch.min.js"></script>
+		<!--<script src="static/jquery.overlayScrollbars.min.js"></script>-->
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.2.0/overlayscrollbars.esm.js"></script>-->
+		<script src="https://static.duelingbook.com/overlayscrollbars.browser.es5.min.js" defer></script>
+		<!--<script src="static/es5.js" defer></script>-->
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/2.2.0/browser/overlayscrollbars.browser.es6.js" defer></script>-->
+		<script src="https://static.duelingbook.com/snap.svg-min.js"></script>
+		<script src="https://static.duelingbook.com/SnapSVGAnimator.min.js"></script>
+		<script src="https://static.duelingbook.com/TweenMax.min.js"></script>
+		<script src="https://static.duelingbook.com/watch.min.js"></script>
+		<script src="https://static.duelingbook.com/detect-zoom.js?v=2"></script>
+		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
+        <!--<script async src="https://powerad.ai/269706373536575/script.js"></script>--> 
+        <!--<script src="https://hb.vntsm.com/ab/live/hera/ad-manager.min.js" type="text/javascript" data-site-id="61559d8972dc634ba6c642fe" data-mode="scan" async></script>-->
+        <!--<script src="https://hb.vntsm.com/v4/live/vms/sites/duelingbook.com/index.js"></script>--> 
+        <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+        <script async src="//www.ezojs.com/ezoic/sa.min.js"></script>
+        <script>
+            window.ezstandalone = window.ezstandalone || {};
+            ezstandalone.cmd = ezstandalone.cmd || [];
+            ezstandalone.showAds = function(){};
+            ezstandalone.destroyPlaceholders = function(){};
+        </script>
+        <script src="//ezoicanalytics.com/analytics.js"></script>
+        <style>
+            html {
+                touch-action: manipulation;
+            }
+            #mes1 .ezoic-ad {
+                margin-top: unset !important;
+            }
+            #mes3 {
+                width: 728px !important;
+            }
+            *[class^="sd-cmp-"], .sd-cmp-b95p8 {
+                overflow: unset !important;
+            }
+            /*.deck_mask > .os-scrollbar {
+                visibility: hidden !important;
+            }*/
+            
+            #pa-unit-0:not(#mes1 #pa-unit-0), #pa-unit-1:not(#mes1 #pa-unit-1) {
+                top: 50% !important;
+                transform: translate(0, -50%) !important;
+            }
+            /*#mes2 #pa-unit-0, #mes4 #pa-unit-0, #mes2 #pa-unit-1, #mes4 #pa-unit-1 {
+                top: 50% !important;
+                transform: translate(0, -50%);
+            }*/
+            .deck_bg > .points {
+                transform: scale(0.95);
+            }
+            
+            
+            .safari #viewing {
+                perspective: none;
+            }
+            .safari #field {
+                perspective: none;
+            }
+            
+            
+            
+
+
+
+
+
+
+
+
+
+/*body.pinching {
+    overscroll-behavior-x: none;
+}
+body.pinching #duel_content > .cards > .card, body.pinching #field .card {
+    display: none !important;
+}
+body.pinching #field, body.pinching #duel_content {
+    display: none !important;
+}*/
+
+            body.testing .card .cardfront {
+                display: none !important;
+            }
+            
+            
+            
+            #msg_2 {
+                left: 212px;
+                top: 170px;
+                width: 600px;
+                height: 300px;
+                overflow: hidden;
+                
+                display: none;
+            }
+            #msg_2_gray {
+                top: -150px;
+                width: 600px;
+                height: 600px;
+                border-radius: 286px;
+                    border-radius: 300px;
+                background: radial-gradient(circle, #4d4d4d 60.75%, #c5c5c5 71%);
+                background: radial-gradient(circle, rgba(0, 0, 0, 0) 61.05%, #4d4d4d 60.75%, #c5c5c5 71%)
+            }
+            #msg_2_dark {
+                left: 41px;
+                top: -131px;
+                    top: -109px;
+                width: 518px;
+                height: 562px;
+                    height: 518px;
+                border-radius: 384px;
+                background: rgba(0, 0, 0, 0.8);
+            }
+            
+            
+            
+            
+            
+            #joining .leave_btn {
+                top: -40px;
+            }
+            #joining .waiting_txt {
+                top: -157px;
+            }
+            #joining_pool .waiting_txt {
+                top: -157px;
+            }
+            #joining_pool .status_txt {
+                top: -85px;
+            }
+            #joining_pool .ready_btn, #joining_pool .leave_btn {
+                top: -40px;
+            }
+            
+            
+            
+            #mes3 {
+                display: none !important;
+            }
+            
+            
+            
+            
+            
+            #mes1 > span > span {
+                width: 728px !important; /* helps center small ads */
+            }
+            #mes2 {
+                overflow: hidden;
+            }
+            
+            
+            
+            
+            
+    /*        
+[id^="gpt_unit"].fixed {
+    background: none !important;
+    top: 10px !important;
+    pointer-events: none !important;
+}
+[id^="gpt_unit"].fixed [id^="google_ads_iframe"] {
+    transform-origin: top center !important;
+    transform: scale(0.73) !important;
+    pointer-events: auto !important;
+}
+[id^="gpt_unit"].fixed .grippy-host {
+    display: none !important;
+}
+*/
+		</style>
+	</head>
+	<body class="body">
+		<div id="black" style="background-color: black; width: 100%; height: 100%; z-index: 99;"></div>
+		<div id="content" class="db_content unselectable" style="display: none;">
+			<img id="circuit_board" src="https://images.duelingbook.com/circuit_board_small.webp" width="1024" height="724" alt="Background">
+			<div id="circuit_cover"></div>
+			<div id="greenlines">
+				<div id="greenlines1">
+					<img src="https://images.duelingbook.com/svg/greenlines.svg" alt="Green Lines">
+				</div>
+				<div id="greenlines2">
+					<img src="https://images.duelingbook.com/svg/greenlines.svg" alt="Green Lines">
+				</div>
+			</div>
+			<div id="dark"></div>
+			<div id="frames">
+				<div id="start">
+					<div id="white"></div>
+					<img id="spiral" src="images/blank.png" width="700" height="702" alt="Spiral" data-src="https://images.duelingbook.com/spiral.webp">
+					<div class="cards">
+						<div id="card1" class="flying_card"></div>
+						<div id="card2" class="flying_card"></div>
+						<div id="card3" class="flying_card"></div>
+						<div id="card4" class="flying_card"></div>
+						<div id="card5" class="flying_card"></div>
+					</div>
+					<div id="monsters">
+						<img id="hornet" src="images/blank.png" width="700" height="700" alt="Inzektor Hornet" data-src="https://images.duelingbook.com/hornet_small.webp">
+						<img id="neptabyss" src="images/blank.png" width="700" height="700" alt="Neptabyss, the Atlantean Prince" data-src="https://images.duelingbook.com/neptabyss_small.webp">
+						<img id="hanzo" src="images/blank.png" width="700" height="700" alt="Ninja Grandmaster Hanzo" data-src="https://images.duelingbook.com/hanzo_small.webp">
+						<img id="gorilla" src="images/blank.png" width="700" height="700" alt="Brotherhood of the Fire Fist - Gorilla" data-src="https://images.duelingbook.com/gorilla_small.webp">
+						<img id="scout" src="images/blank.png" width="800" height="800" alt="Qliphort Scout" data-src="https://images.duelingbook.com/scout_small.webp">
+						<img id="brionac" src="images/blank.png" width="1900" height="1900" alt="Nekroz of Brionac" data-src="https://images.duelingbook.com/brionac_small.webp">
+					</div>
+				</div>
+				<div id="front_page">
+					<div class="content">
+						<img id="brionac_large" class="keep" src="https://images.duelingbook.com/brionac_small.webp" width="1370" height="1370" alt="Nekroz of Brionac">
+						<!--<img id="brionac_large" class="keep" src="images/pumpking_small2.webp" width="1370" height="1370" alt="Pumpking the King of Ghosts" />
+						<img id="brionac_large" class="keep" src="images/turkey_small.webp?v=2" width="1370" height="1370" alt="Mild Turkey" />
+						<!--<img id="brionac_large" class="keep" src="images/snowman_small.webp" width="1370" height="1370" alt="Snowman Eater" />-->
+						<div id="yugioh_logo">
+							<img class="keep" src="https://images.duelingbook.com/yugioh_logo_small.webp" width="501" height="174" alt="Yugioh Logo">
+						</div>
+						<div id="db_logo">
+							<img class="keep" id="db_logo_bottom" src="https://images.duelingbook.com/db_logo_bottom_small.webp" width="510" height="319" alt="Duelingbook Logo">
+							<img class="keep" id="db_logo_top" src="https://images.duelingbook.com/db_logo_top_small.webp" width="510" height="319" alt="Duelingbook Logo">
+						</div>
+						<div id="login_box">
+                            <div id="login">
+                                <div class="background"></div>
+                                <span class="username_lbl">Username</span>
+                                <input class="username_txt" type="text" maxlength="25">
+                                <span class="password_lbl">Password</span>
+                                <input class="password_txt" type="password">
+                                <input class="remember_cb" type="checkbox" checked>
+                                <span class="remember_lbl">Remember me on this computer</span>
+                                <input class="login_btn" type="submit" value="Log In">
+                                <span class="register_btn">register</span>
+                                <span class="forgot_password_btn">forgot password</span>
+                            </div>
+                            <div id="register">
+                                <div class="background"></div>
+                                <span class="username_lbl">Username</span>
+                                <input class="username_txt" type="text" maxlength="25">
+                                <span class="password_lbl">Password</span>
+                                <input class="password_txt" type="password">
+                                <span class="email_lbl">E-mail</span>
+                                <input class="email_txt" type="text">
+                                <span class="remember_lbl">Note: you will need to confirm your e-mail</span>
+                                <span class="back_btn">back</span>
+                                <input class="register_btn" type="submit" value="Register">
+                            </div>
+                            <div id="forgot_password">
+                                <div class="background"></div>
+                                <span class="desc_txt">Enter the e-mail you used to register below. An e-mail will be sent with a link to reset your account's password.</span>
+                                <span class="email_lbl">E-mail</span>
+                                <input class="email_txt" type="text">
+                                <span class="back_btn">back</span>
+                                <input class="reset_password_btn" type="submit" value="Reset Password">
+                            </div>
+                            <div id="logged_in">
+                                <div class="background"></div>
+                                <span id="logged_in_as_lbl">Logged in as:</span>
+                                <span class="username_txt"></span>
+                                <span class="logout_btn">logout</span>
+                                <span class="switch_account_btn">switch account</span>
+                            </div>
+						</div>
+						<div id="duel_btn" class="duel_btn">
+							<img src="images/blank.png" alt="Duel" data-src="https://images.duelingbook.com/svg/duel_btn_up.svg">
+							<!--<object type="image/svg+xml" data="images/svg/duel_btn_up.svg" alt="Duel"></object>-->
+						</div>
+						<div id="admin_admin_btn" class="admin_btn">
+							<img src="images/blank.png" alt="Admin" data-src="https://images.duelingbook.com/svg/admin_btn_up.svg">
+						</div>
+						<div id="admin_duel_btn" class="duel_btn">
+							<img src="images/blank.png" alt="Duel" data-src="https://images.duelingbook.com/svg/duel_btn_up.svg">
+						</div>
+						<div id="bulletin_txt" class="textarea" tabindex="0"></div>
+						<div id="donate_btn">
+							<img src="images/blank.png" width="92" height="26" alt="Donate" data-src="https://images.duelingbook.com/donate_btn.webp">
+						</div>
+						<a href="https://discord.gg/VE3xQZc" target="_blank"><div id="discord_btn" class="discord_btn social_btn">
+							<div class="social_bg"></div>
+							<img src="images/blank.png" width="30" height="30" alt="Discord" data-src="https://images.duelingbook.com/discord.webp">
+						</div></a>
+						<a href="https://www.instagram.com/duelingbook/" target="_blank"><div id="instagram_btn" class="instagram_btn social_btn">
+							<div class="social_bg"></div>
+							<img src="images/blank.png" width="30" height="30" alt="Instagram" data-src="https://images.duelingbook.com/instagram.webp">
+						</div></a>
+						<a href="https://www.facebook.com/duelingbook/" target="_blank"><div id="facebook_btn" class="facebook_btn social_btn">
+							<div class="social_bg"></div>
+							<img src="images/blank.png" width="30" height="30" alt="Facebook" data-src="https://images.duelingbook.com/facebook.webp">
+						</div></a>
+						<a href="https://www.youtube.com/user/duelingbook" target="_blank"><div id="youtube_btn" class="youtube_btn social_btn">
+							<div class="social_bg"></div>
+							<img src="images/blank.png" width="30" height="30" alt="Youtube" data-src="https://images.duelingbook.com/youtube.webp">
+						</div></a>
+						<a href="https://x.com/duelingbook" target="_blank"><div id="twitter_btn" class="twitter_btn social_btn">
+							<div class="social_bg"></div>
+							<img src="images/blank.png" width="30" height="30" alt="X" data-src="https://images.duelingbook.com/x.webp">
+						</div></a>
+						<div class="privacy_policy cyan"><a href="https://www.duelingbook.com/privacy-policy" target="_blank">Privacy Policy</a></div>
+					</div>
+				</div>
+				<div id="connecting">
+					<span class="connection_status">Connecting...</span>
+				</div>
+				<div id="lost_conn">
+					<span class="connection_status2">Lost connection!<br>Reconnecting...</span>
+				</div>
+				<div id="lost_conn2">
+					<span class="connection_status2">Lost connection!<br>Please refresh the page.</span>
+				</div>
+				<div id="closed">
+					<span class="connection_status2">The server has closed.<br>Please refresh the page.</span>
+				</div>
+				<div id="banned">
+					<span class="connection_status">You are banned!</span>
+				</div>
+				<div id="already_logged_in">
+					<span class="connection_status2">Already logged into<br>duel server elsewhere!</span>
+				</div>
+				<div id="over_limit">
+					<span class="connection_status2">Maximum user limit reached!<br>Please try again later.</span>
+				</div>
+				<div id="rejected">
+					<span class="connection_status2">Rejected by server!<br>Try logging in again.</span>
+				</div>
+				<div id="kicked">
+					<span class="connection_status2">You have been kicked from<br>the server!</span>
+				</div>
+				<div id="timed_out">
+					<span class="connection_status">Timed out due to inactivity.</span>
+				</div>
+				<div id="terminated">
+					<span class="connection_status2">Your account has<br>been terminated!</span>
+				</div>
+				<div id="main_menu">
+					<div class="arial_black2 title1">Main Menu</div>				
+					<select id="status_cb">
+					    <option value>All Statuses</option>
+				        <option value="popular">Most Liked</option>
+					    <option value="unpopular">Most Disliked</option>
+                        <option value="mine">My Statuses</option>
+                        <option value="favorite">Favorite Statuses</option>
+                        <!--<option value="following">Following</option>
+                        <option value="friends">Friends</option>-->
+                        <option value="username">Search</option>
+					</select>
+					<div id="menu_content" class="arial_black2">
+						<div id="room_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Duel Room</span>
+						</div>
+						<div id="deck_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Deck Constructor</span>
+						</div>
+						<div id="profile_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Profile Viewer</span>
+						</div>
+						<div id="my_profile_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>My Profile</span>
+						</div>
+						<div id="rankings_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Rankings</span>
+						</div>
+						<div id="main_exit_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Exit</span>
+						</div>
+						<div id="tourneys_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Tournaments</span>
+						</div>
+						<div id="administrator_btn" class="menu_btn menu_btn2">
+							<div class="content"></div>
+							<span>Administrator<br>Options</span>
+						</div>
+						<div id="moderator_btn" class="menu_btn menu_btn2">
+							<div class="content"></div>
+							<span>Moderator<br>Options</span>
+						</div>
+						<div id="settings_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Settings</span>
+						</div>
+						<div id="all_messages_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Messages</span>
+						</div>
+						<!--<div id="browse_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Browse Users</span>
+						</div>-->
+						<div id="friend_requests_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Friend Requests</span>
+						</div>
+						<div id="friends_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Friends</span>
+						</div>
+						<div id="comments_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Comments</span>
+						</div>
+						<div id="following_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Followed Users</span>
+						</div>
+						<div id="blocked_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Blocked Users</span>
+						</div>
+						<div id="password_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Change Password</span>
+						</div>
+						<div id="records_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Duel Records</span>
+						</div>
+						<div id="forum_menu_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Forum</span>
+						</div>
+						<div id="discord_menu_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Discord</span>
+						</div>
+						<div id="tournament_btn" class="menu_btn menu_btn2">
+							<div class="content"></div>
+							<span>Tournament<br>Locator</span>
+						</div>
+						<div id="custom_cards_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Custom Cards</span>
+						</div>
+						<div id="journal_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Journal</span>
+						</div>
+						<div id="customs_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Customs</span>
+						</div>
+						<div id="actions_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Admin Actions</span>
+						</div>
+						<div id="frozen_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Frozen Users</span>
+						</div>
+						<div id="beginners_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Beginners</span>
+						</div>
+						<div id="notes_btn" class="menu_btn">
+							<div class="content"></div>
+							<span>Notes</span>
+						</div>
+					</div>
+					<div id="main_menu_circles">
+						<div class="main_menu_circle">
+							<div class="background"></div>
+						</div>
+						<div class="main_menu_circle">
+							<div class="background"></div>
+						</div>
+						<div class="main_menu_circle">
+							<div class="background"></div>
+						</div>
+					</div>
+					<div id="circle_content">
+						<div id="statuses0">
+							<div id="statuses">
+							    <div id="statuses_content"></div>
+							</div>
+                            <div id="post_status">
+                                <div class="close_btn">
+                                    <img src="images/blank.png" alt="Close" data-src="https://images.duelingbook.com/svg/close_btn_up.svg">
+                                </div>
+                                <span class="title_lbl kristenitc">Post a Status Update:</span>
+                                <textarea class="status_txt"></textarea>
+                                <input class="cd_cb red_cb" type="checkbox" checked>
+                                <input class="post_btn" type="submit" value="Post Status">
+                                <span class="html_lbl">HTML</span>
+                                <input class="html_cb red_cb" type="checkbox">
+                                <span class="nsfw_lbl">NSFW</span>
+                                <input class="nsfw_cb red_cb" type="checkbox">
+                            </div>
+							<div id="tourney_sidebar">
+								<div class="subtitle_txt arial_black2 subtitle">
+									<span>Official Tourneys</span>
+									<div class="close_btn">
+										<img src="images/blank.png" alt="Close" data-src="https://images.duelingbook.com/svg/close_btn_up.svg">
+									</div>
+								</div>
+								<div class="content"></div>
+							</div>
+						</div>
+						<div id="videos0">
+							<div id="videos" class="selectable">
+								<span class="subtitle_txt arial_black2 subtitle">Latest Yugitube Videos</span>
+							</div>
+							<div id="streams">
+								<span class="subtitle_txt arial_black2 subtitle">Streams</span>
+								<div class="content"></div>
+							</div>
+						</div>
+						<div id="tourneys0">
+							<div id="tourneys" class="selectable">
+								<span class="subtitle_txt arial_black2 subtitle">Tourneys</span>
+							</div>
+							<div id="widget" class="selectable">
+								<div class="header">
+									<div class="close_btn">
+										<img src="images/blank.png" alt="Close" data-src="https://images.duelingbook.com/svg/close_btn_up.svg">
+									</div>
+									<a href="https://discord.com?utm_source=Discord%20Widget&amp;utm_medium=Logo" target="_blank">
+										<div class="logo"></div>
+									</a>
+									<div class="members_txt">0 Members Online</div>
+								</div>
+								<div class="body">
+									<div class="voice_channels"></div>
+									<div class="members_online_txt">MEMBERS ONLINE</div>
+									<div class="members"></div>
+								</div>
+								<div class="footer0"></div>
+								<div class="footer">
+									<span class="free">Free voice chat from Discord</span>
+									<a class="join_btn" href="https://discord.com/invite/VE3xQZc?utm_source=Discord%20Widget&amp;utm_medium=Connect" target="_blank">
+										<span>Connect</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<iframe id="widget" src="https://discord.com/widget?id=274074062354120704&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+					<iframe id="widget" src="https://www.duelingbook.com/widget.html" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>-->
+					<!--<div id="widget" class="selectable">
+						<div class="header">
+							<div class="close_btn">
+								<img src="images/svg/close_btn_up.svg" />
+							</div>
+							<a href="https://discord.com?utm_source=Discord%20Widget&amp;utm_medium=Logo" target="_blank">
+								<div class="logo"></div>
+							</a>
+							<div class="members_txt">0 Members Online</div>
+						</div>
+						<div class="body">
+							<div class="voice_channels"></div>
+							<div class="members_online_txt">MEMBERS ONLINE</div>
+							<div class="members"></div>
+						</div>
+						<div class="footer0"></div>
+						<div class="footer">
+							<span class="free">Free voice chat from Discord</span>
+							<a class="join_btn" href="https://discord.com/invite/VE3xQZc?utm_source=Discord%20Widget&amp;utm_medium=Connect" target="_blank">
+								<span>Connect</span>
+							</a>
+						</div>
+					</div>-->
+					<input id="statuses_rn" type="range" min="50" max="100" value="100" step="1">
+					<span id="post_status_btn">Post Status</span>
+					<div id="post_reply">
+						<span class="title_lbl kristenitc">Reply:</span>
+						<textarea class="status_txt"></textarea>
+						<input class="cd_cb red_cb" type="checkbox" checked>
+						<input class="post_btn" type="submit" value="Post Reply">
+						<span class="html_lbl">HTML</span>
+						<input class="html_cb red_cb" type="checkbox">
+						<span class="nsfw_lbl">NSFW</span>
+						<input class="nsfw_cb red_cb" type="checkbox">
+					</div>
+					<div id="liked_by">
+						<img src="images/blank.png" alt="Liked By" data-src="https://images.duelingbook.com/svg/liked_by.svg">
+						<span class="liked_by_lbl">Liked by</span>
+						<div class="users list"></div>
+					</div>
+					<div id="disliked_by">
+						<img src="images/blank.png" alt="Disliked By" data-src="https://images.duelingbook.com/svg/liked_by.svg">
+						<span class="liked_by_lbl">Disliked by</span>
+						<div class="users list"></div>
+					</div>
+				</div>
+				<div id="duel_room">
+					<div id="formats">
+						<div id="formats_inner">
+							<div id="pools1">
+								<div id="ar" class="format">
+								    <div class="border"></div>
+									<span class="format_txt arial_black2">Duelist Pool</span>
+									<div class="format_inner"></div>
+									<div id="rated_options">
+										<div class="desc_txt">Join the pool and we will find a duelist for you to duel. Given the specified constraints, we will try to find a duelist close to your skill level.</div>
+										<span class="format_lbl">Format:</span>
+										<select class="format_cb">
+										    <optgroup label="Rated Formats">
+                                                <option value="ar">Advanced (Rated)</option>
+                                                <option value="yr">Genesys Format (Rated)</option>
+                                                <option value="gr">Goat Format (Rated)</option>
+                                                <option value="er">Edison Format (Rated)</option>
+										    </optgroup>
+										    <optgroup label="Unrated Formats">
+                                                <option value="au">Advanced (Unrated)</option>
+                                                <option value="yu">Genesys Format (Unrated)</option>
+                                                <option value="cu">Custom Cards (Unrated)</option>
+                                                <option value="gu">Goat Format (Unrated)</option>
+                                                <option value="eu">Edison Format (Unrated)</option>
+                                                <option value="uu">Unlimited (Unrated)</option>
+                                                <option value="su">Speed Duels (Unrated)</option>
+                                                <option value="ru">Rush Duels (Unrated)</option>
+                                                <option value="tu">Traditional (Unrated)</option>
+										    </optgroup>
+										</select>
+										<span class="rules_lbl">Rules:</span>
+										<select class="rules_cb">
+											<option value="TCG">TCG</option>
+											<option value="OCG">OCG</option>
+										</select>
+										<span class="type_lbl">Type:</span>
+										<select class="type_cb">
+											<option value="m">Match</option>
+											<option value="s">Single (with siding)</option>
+										</select>
+										<input class="join_btn button2" type="submit" value="Join Pool">
+									</div>
+								</div>
+								<div id="au" class="format">
+                                    <div class="border"></div>
+									<span class="format_txt arial_black2">Advanced (Unrated)</span>
+									<div class="format_inner"></div>
+								</div>
+								<div id="yu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Genesys Format</span>
+									<div class="info_btn">
+										<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+									</div>
+									<div class="format_inner"></div>
+								</div>
+							</div>
+							<div id="pools2">
+								<div id="cu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Custom Cards (Unrated)</span>
+									<div class="format_inner"></div>
+								</div>
+								<div id="gu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Goat Format</span>
+									<div class="info_btn">
+										<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+									</div>
+									<div class="format_inner"></div>
+								</div>
+								<div id="eu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Edison Format</span>
+									<div class="info_btn">
+										<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+									</div>
+									<div class="format_inner"></div>
+								</div>
+							</div>
+							<div id="pools3">
+								<div id="su" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Speed Duels</span>
+									<div class="info_btn">
+										<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+									</div>
+									<div class="format_inner"></div>
+								</div>
+								<div id="ru" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Rush Duels</span>
+									<div class="info_btn">
+										<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+									</div>
+									<div class="format_inner"></div>
+								</div>
+								<div id="uu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Unlimited (Unrated)</span>
+									<div class="format_inner"></div>
+								</div>
+								<div id="tu" class="format">
+									<div class="border"></div>
+									<span class="format_txt arial_black2">Traditional (Unrated)</span>
+									<div class="format_inner"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="pools_prev_btn" class="prev_btn">
+						<img src="images/blank.png" alt="Prev" data-src="https://images.duelingbook.com/svg/prev_btn_up.svg">
+					</div>
+					<div id="pools_next_btn" class="next_btn">
+						<img src="images/blank.png" alt="Next" data-src="https://images.duelingbook.com/svg/next_btn_up.svg">
+					</div>
+					<div id="decklist">
+						<div class="border"></div>
+						<span class="arial_black2">Deck</span>
+						<select id="decklist_cb"></select>
+						<!--<input class="decklists_btn comboboxlike" type="submit" value="">-->
+						<div class="decklist_decks">
+						    <div class="combo_item">
+<input type="checkbox" value="Gemini"><span>Gemini</span>
+</div>
+						    <div class="combo_item">
+<input type="checkbox" value="Spirit"><span>Spirit</span>
+</div>
+						    <div class="combo_item">
+<input type="checkbox" value="Toon"><span>Toon</span>
+</div>
+						    <div class="combo_item">
+<input type="checkbox" value="Tuner"><span>Tuner</span>
+</div>
+						    <div class="combo_item">
+<input type="checkbox" value="Union"><span>Union</span>
+</div>
+						</div>
+						
+						<input class="default_btn" type="submit" value="Set as Default">
+					</div>
+					<div id="mode">
+						<div class="border"></div>
+						<span id="mode_lbl" class="arial_black2">Mode</span>
+						<input class="duel_rb" type="radio" name="mode" checked>
+						<span class="duel_lbl">Duel</span><br>
+						<input class="watch_rb" type="radio" name="mode">
+						<span class="watch_lbl">Watch</span>
+					</div>
+					<div id="filter">
+						<div class="border"></div>
+						<span id="filter_lbl" class="arial_black2">Filter/Sort</span>
+						<div id="filter1">
+							<span class="username_lbl">Username:</span>
+							<input class="username_txt" type="text">
+							<span class="name_lbl">Search Card:</span>
+							<input class="name_txt" type="text">
+							<span class="match_type_lbl">Match Type:</span>
+							<select class="match_type_cb">
+								<option value label=" "></option>
+								<option value="s">Single (with siding)</option>
+								<option value="n">Single (no siding)</option>
+								<option value="m">2 out of 3 Match</option>
+							</select>
+							<span class="sort_lbl">Sort By:</span>
+							<select class="sort_cb">
+								<option value="rating_high">Rating</option>
+								<option value="friends">Relevance</option>
+								<option value="experience_high">Experience</option>
+								<option value="username">Username</option>
+							</select>
+							<div class="next_btn">
+							    <div class="arrow"></div>
+							</div>
+						</div>
+						<div id="filter2">
+							<input class="rating_lower_txt" type="text">
+							<span class="rating_lbl">≤ Rating ≤</span>
+							<input class="rating_upper_txt" type="text">
+							<input class="rep_lower_txt" type="text">
+							<span class="rep_lbl">≤ Experience ≤</span>
+							<input class="rep_upper_txt" type="text">
+							<span class="rules_lbl">Rules:</span>
+							<select class="rules_cb">
+								<option value="*" label="*"></option>
+								<option value="tcg">TCG</option>
+								<option value="ocg">OCG</option>
+							</select>
+							<span class="style_lbl">Style:</span>
+							<select class="style_cb">
+								<option value label=" "></option>
+								<option value="links">Links</option>
+								<option value="classic">Classic</option>
+								<option value="tag_duel">Tag Duel</option>
+							</select>
+							<div class="prev_btn">
+							    <div class="arrow"></div>
+							</div>
+						</div>
+					</div>
+					<div id="host_bg">
+						<div class="border"></div>
+						<span id="host_lbl" class="arial_black2">Host a Duel</span>
+						<div id="host">
+							<span class="format_lbl">Format:</span>
+							<select class="format_cb">
+								<option value="au">Advanced (Unrated)</option>
+								<option value="yu">Genesys Format (Unrated)</option>
+								<option value="cu">Custom Cards (Unrated)</option>
+								<option value="gu">Goat Format (Unrated)</option>
+								<option value="eu">Edison Format (Unrated)</option>
+								<option value="uu">Unlimited (Unrated)</option>
+								<option value="su">Speed Duels (Unrated)</option>
+								<option value="ru">Rush Duels (Unrated)</option>
+								<option value="tu">Traditional (Unrated)</option>
+								<option value="so">Solo Mode</option>
+							</select>
+							<span class="type_lbl">Type:</span>
+							<select class="type_cb">
+								<option value="s">Single (with siding)</option>
+								<option value="n">Single (no siding)</option>
+								<option value="m">2 out of 3 Match</option>
+							</select>
+							<span class="rules_lbl">Rules:</span>
+							<select class="rules_cb">
+								<option value="*">TCG + OCG</option>
+								<option value="TCG">TCG</option>
+								<option value="OCG">OCG</option>
+							</select>
+							<input class="expert_cb" type="checkbox">
+							<span class="expert_lbl">Expert</span>
+							<input class="host_btn" type="submit" value="Host Duel">
+							<span class="duel_note_lbl">Duel Note:</span>
+							<input class="duel_note_txt" type="text" maxlength="100">
+							<span class="duel_password_lbl">Duel Password:</span>
+							<input class="duel_password_txt" type="password">
+							<input class="watching_cb" type="checkbox" checked>
+							<span class="watching_lbl">Watching</span>
+							<input class="classic_cb" type="checkbox">
+							<span class="classic_lbl">Classic</span>
+							<input class="tag_duel_cb" type="checkbox">
+							<span class="tag_duel_lbl">Tag Duel</span>
+							<span class="watch_note_lbl">Watch Note:</span>
+							<input class="watch_note_txt" type="text" maxlength="100">
+							<span class="watch_password_lbl">Watch Password:</span>
+							<input class="watch_password_txt" type="password">
+						</div>
+						<div id="hosting">
+							<div id="joinlist" class="list"></div>
+							<input class="accept_btn" type="submit" value="Accept User">
+							<input class="reject_btn" type="submit" value="Reject User">
+							<input class="cancel_btn" type="submit" value="Cancel Duel">
+						</div>
+						<div id="joining">
+							<span class="waiting_txt">Waiting for response from host...</span>
+							<input class="leave_btn" type="submit" value="Leave Duel">
+						</div>
+						<div id="joining_pool">
+							<span class="waiting_txt">Waiting for server to find dueling partner...</span>
+							<span class="status_txt">Partner found! Are you ready?<br>Time remaining: 10 seconds</span>
+							<input class="ready_btn" type="submit" value="Ready">
+							<input class="leave_btn" type="submit" value="Leave">
+						</div>
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="deck_constructor">
+					<!--<img class="deck_constructor" src="images/svg/deck_constructor3.svg" alt="Deck" />-->
+					<!--<img class="deck_constructor" src="images/svg/deck_constructor4-2.svg" alt="Deck" />-->
+					<div class="deck_bg">
+					    <div class="total_bg">
+					        <span class="total_txt">0</span>
+					    </div>
+					    <div class="total_effect_bg">
+					        <span class="total_effect_txt">0</span>
+					    </div>
+					    <div class="total_spell_bg">
+					        <span class="total_spell_txt">0</span>
+					    </div>
+					    <div class="total_trap_bg">
+					        <span class="total_trap_txt">0</span>
+					    </div>
+                        <div class="points">
+                            <img src="images/blank.png" alt="Points" data-src="https://images.duelingbook.com/svg/points.svg">
+                            <span class="points_txt"></span>
+                            <img class="hidden" src="images/blank.png" alt="Genesys Toggle" data-src="https://images.duelingbook.com/svg/hide.svg">
+                        </div>
+                        <div class="token_btn">
+                            <img src="images/blank.png" width="27" height="26" alt="Token" data-src="https://images.duelingbook.com/token_btn_up.webp">
+                        </div>
+                        <div class="sort_btn">
+                            <img src="images/blank.png" alt="Sort" data-src="https://images.duelingbook.com/svg/sort_btn_up.svg">
+                        </div>
+                        <div class="info_btn">
+                            <img src="images/blank.png" alt="Randomize" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+                        </div>
+                        <div class="locked_btn">
+                            <img src="images/blank.png" alt="Unlock" data-src="https://images.duelingbook.com/svg/locked_btn_up.svg">
+                        </div>
+                        <div class="unlocked_btn">
+                            <img src="images/blank.png" alt="Lock" data-src="https://images.duelingbook.com/svg/unlocked_btn_up.svg">
+                        </div>
+                        <div class="skill_btn">
+                            <div class="skill_bg"></div>
+                            <img src="images/blank.png" width="29" height="29" alt="Skill" data-src="https://images.duelingbook.com/skill_btn.webp">
+                        </div>
+					    <span class="deck_lbl">DECK</span>
+                        <div class="deck_mask">
+                            <div class="slots"></div>
+                            <div class="deck_cards"></div>
+                        </div>
+					</div>
+					<div class="side_bg">
+					    <span class="side_lbl">SIDE</span>
+                        <div class="side_mask">
+                            <div class="slots"></div>
+                            <div class="side_cards"></div>
+                        </div>
+					</div>
+					<div class="extra_bg">
+					    <span class="extra_lbl">EXTRA</span>
+                        <div class="extra_mask">
+                            <div class="slots"></div>
+                            <div class="extra_cards"></div>
+                        </div>
+					</div>
+					<div id="preview_txt" class="textarea" tabindex="0"></div>
+					<input id="upload_ydk_btn" class="nocomp" type="file" accept=".ydk, .xml, .txt">
+					<input id="import_btn" type="submit" value="Import Deck">
+					<input id="export_btn" type="submit" value="Export Deck">
+					<input id="clear_btn" type="submit" value="Clear Deck">
+					<input class="default_btn" type="submit" value="Set as Default">
+					<input id="new_btn" type="submit" value="New Deck">
+					<input id="rename_btn" type="submit" value="Rename Deck">
+					<input id="delete_btn" type="submit" value="Delete Deck">
+					<input id="save_btn" type="submit" value="Save Deck">
+					<input id="save_as_btn" type="submit" value="Save Deck As">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<div class="search">
+						<div id="search">
+							<!--<img src="images/svg/search.svg" alt="Search" />-->
+							<div class="search_bg"></div>
+							<div class="title_txt aliased">SEARCH</div>
+							<div class="more_options_btn">more<br>options</div>
+							<div class="prev_options_btn">prev<br>options</div>
+							<span class="name_lbl">Name:</span>
+							<input class="name_txt" type="text">
+							<span class="desc_lbl">Desc:</span>
+							<input class="desc_txt" type="text">
+							<span class="card_lbl">Card:</span>
+							<select class="card_cb">
+								<option value label=" "></option>
+								<option value="Monster">Monster</option>
+								<option value="Spell">Spell</option>
+								<option value="Trap">Trap</option>
+							</select>
+							<div id="search1">
+								<select class="card2_cb">
+									<option value label=" "></option>
+									<option value="Normal">Normal</option>
+									<option value="Effect">Effect</option>
+									<option value="Ritual">Ritual</option>
+									<option value="Fusion">Fusion</option>
+									<option value="Synchro">Synchro</option>
+									<option value="Xyz">Xyz</option>
+									<option value="Link">Link</option>
+									<option value="Pendulum">Pendulum</option>
+								</select>
+								<span class="type_lbl">Type:</span>
+								<select class="type_cb"></select>
+								<select class="type2_cb">
+									<option value label=" "></option>
+									<option value="Flip">Flip</option>
+									<option value="Gemini">Gemini</option>
+									<option value="Spirit">Spirit</option>
+									<option value="Toon">Toon</option>
+									<option value="Tuner">Tuner</option>
+									<option value="Union">Union</option>
+								</select>
+								<span class="attrib_lbl">Attrib:</span>
+								<select class="attrib_cb">
+									<option value label=" "></option>
+									<option value="DARK">DARK</option>
+									<option value="DIVINE">DIVINE</option>
+									<option value="EARTH">EARTH</option>
+									<option value="FIRE">FIRE</option>
+									<option value="LIGHT">LIGHT</option>
+									<option value="WATER">WATER</option>
+									<option value="WIND">WIND</option>
+								</select>
+								<input class="lvll_txt" type="text" maxlength="2">
+								<span class="lvl_compare_lbl">≤         ≤</span>
+								<span class="lvl_rank_lbl">Lvl /<br>Rank</span>
+								<input class="lvlh_txt" type="text" maxlength="2">
+								<input class="atkl_txt" type="text" maxlength="4">
+								<span class="atk_lbl">≤ ATK ≤</span>
+								<input class="atkh_txt" type="text" maxlength="4">
+								<input class="defl_txt" type="text" maxlength="4">
+								<span class="def_lbl">≤ DEF ≤</span>
+								<input class="defh_txt" type="text" maxlength="4">
+							</div>
+							<div id="search2">
+								<div class="arrows">
+									<div class="arrow arrow1">
+										<img src="images/blank.png" alt="Top Left" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+									</div>
+									<div class="arrow arrow2">
+										<img src="images/blank.png" alt="Top Center" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+									</div>
+									<div class="arrow arrow3">
+										<img src="images/blank.png" alt="Top Right" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+									</div>
+									<div class="arrow arrow4">
+										<img src="images/blank.png" alt="Middle Right" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+									</div>
+									<div class="arrow arrow5">
+										<img src="images/blank.png" alt="Bottom Right" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+									</div>
+									<div class="arrow arrow6">
+										<img src="images/blank.png" alt="Bottom Center" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+									</div>
+									<div class="arrow arrow7">
+										<img src="images/blank.png" alt="Bottom Left" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+									</div>
+									<div class="arrow arrow8">
+										<img src="images/blank.png" alt="Middle Left" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+									</div>
+								</div>
+								<input class="pendulum_cb" type="checkbox">
+								<span class="pendulum_lbl">Pend</span>
+								<input class="scalel_txt" type="text" maxlength="2">
+								<span class="scale1_lbl">SCL</span>
+								<span class="scale2_lbl">≤    ≤</span>
+								<input class="scaleh_txt" type="text" maxlength="2">
+								<input class="tcg_cb" type="checkbox">
+								<span class="tcg_lbl">TCG</span>
+								<input class="ocg_cb" type="checkbox">
+								<span class="ocg_lbl">OCG</span>
+								<span class="custom_lbl">Cardpool:</span>
+								<select class="custom_cb">
+									<option value="0">Official Cards Only</option>
+									<option value="2">My Custom Cards</option>
+									<option value="1">All Custom Cards</option>
+									<option value="4">Goat Format Cards</option>
+									<option value="5">Edison Format Cards</option>
+									<option value="6">Speed Duel Cards</option>
+									<option value="7">Rush Duel Cards</option>
+									<option value="8">Skill Cards</option>
+									<option value="9">My Favorite Cards</option>
+								</select>
+							</div>
+							<span class="limit_lbl">Limit:</span>
+							<select class="limit_cb">
+								<option value label=" "></option>
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+							</select>
+							<span class="order_lbl">Order:</span>
+							<select class="order_cb">
+								<option value="Alpha">Alpha</option>
+								<option value="New First">New First</option>
+								<option value="Date">Release Date</option>
+								<option value="Updated">Last Updated</option>
+								<option value="Points">Genesys Points</option>
+							</select>
+							<input class="search_btn" type="submit" value="Search">
+							<span class="page_txt">0</span>
+							<span class="page2_txt">/</span>
+							<span class="tot_pages_txt">0</span>
+							<div class="search_prev_btn"></div>
+							<div class="search_next_btn"></div>
+							<div id="search_mask"></div>
+						</div>
+					</div>
+					<div class="cards"></div>
+					<div id="limit_reached">
+						<div class="background"></div>
+						<span class="arial_black">LIMIT<br>REACHED</span>
+					</div>
+					
+					<!--<div class="bypass_background"></div>
+					<input class="bypass_limit_cb" type="checkbox" checked="checked" />
+					<span class="bypass_limit_lbl">Bypass Limit</span>
+					<input class="tcg_limit_rb" type="radio" name="limit" checked="checked" />
+					<span class="tcg_limit_lbl">TCG</span>
+					<input class="ocg_limit_rb" type="radio" name="limit" />
+					<span class="ocg_limit_lbl">OCG</span>-->
+					
+					<div class="bypass_background2"></div>
+					<div class="bypass_background2"></div>
+					<select id="banlists"></select>
+					<!--<span class="banlists_lbl">List:</span>-->
+					
+					<div id="kde">
+						<div class="background"></div>
+						<div class="exit_btn">
+							<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+						</div>
+						<div id="kde_decklist">
+							<span class="fullname_lbl">Full Name:</span>
+							<input class="fullname_txt" type="text">
+							<span class="date_lbl">Date:</span>
+							<input class="month_txt" type="text" maxlength="2">
+							<input class="day_txt" type="text" maxlength="2">
+							<input class="year_txt" type="text" maxlength="4">
+							<span class="initial_lbl">Last Initial:</span>
+							<input class="initial_txt" type="text">
+							<span class="id_lbl">Konami Player ID:</span>
+							<input class="id_txt" type="text" maxlength="10">
+							<span class="event_lbl">Event:</span>
+							<input class="event_txt" type="text">
+							<input class="show_totals_cb" type="checkbox" checked>
+							<span class="totals_lbl">Show Totals:</span>
+							<input class="print_btn" type="submit" value="Print">
+							<span class="error_txt"></span>
+							<div class="print_registration_btn">print regisration slip</div>
+							<div id="decklist_form">
+								<div id="decklist_content">
+									<img src="images/blank.png" alt="Decklist" data-src="https://images.duelingbook.com/blank.webp">
+									<div class="content">
+										<span class="fullname_txt"></span>
+										<span class="date1_txt"></span>
+										<span class="date2_txt"></span>
+										<span class="date3_txt"></span>
+										<span class="date4_txt"></span>
+										<span class="date5_txt"></span>
+										<span class="date6_txt"></span>
+										<span class="date7_txt"></span>
+										<span class="date8_txt"></span>
+										<span class="initial_txt"></span>
+										<span class="total_main_txt"></span>
+										<span class="id1_txt"></span>
+										<span class="id2_txt"></span>
+										<span class="id3_txt"></span>
+										<span class="id4_txt"></span>
+										<span class="id5_txt"></span>
+										<span class="id6_txt"></span>
+										<span class="id7_txt"></span>
+										<span class="id8_txt"></span>
+										<span class="id9_txt"></span>
+										<span class="id10_txt"></span>
+										<span class="event_txt"></span>
+										<span class="ma1_txt"></span>
+										<span class="ma2_txt"></span>
+										<span class="ma3_txt"></span>
+										<span class="ma4_txt"></span>
+										<span class="ma5_txt"></span>
+										<span class="ma6_txt"></span>
+										<span class="ma7_txt"></span>
+										<span class="ma8_txt"></span>
+										<span class="ma9_txt"></span>
+										<span class="ma10_txt"></span>
+										<span class="ma11_txt"></span>
+										<span class="ma12_txt"></span>
+										<span class="ma13_txt"></span>
+										<span class="ma14_txt"></span>
+										<span class="ma15_txt"></span>
+										<span class="ma16_txt"></span>
+										<span class="ma17_txt"></span>
+										<span class="ma18_txt"></span>
+										<span class="mc1_txt"></span>
+										<span class="mc2_txt"></span>
+										<span class="mc3_txt"></span>
+										<span class="mc4_txt"></span>
+										<span class="mc5_txt"></span>
+										<span class="mc6_txt"></span>
+										<span class="mc7_txt"></span>
+										<span class="mc8_txt"></span>
+										<span class="mc9_txt"></span>
+										<span class="mc10_txt"></span>
+										<span class="mc11_txt"></span>
+										<span class="mc12_txt"></span>
+										<span class="mc13_txt"></span>
+										<span class="mc14_txt"></span>
+										<span class="mc15_txt"></span>
+										<span class="mc16_txt"></span>
+										<span class="mc17_txt"></span>
+										<span class="mc18_txt"></span>
+										<span class="total_monsters_txt"></span>
+										<span class="sa1_txt"></span>
+										<span class="sa2_txt"></span>
+										<span class="sa3_txt"></span>
+										<span class="sa4_txt"></span>
+										<span class="sa5_txt"></span>
+										<span class="sa6_txt"></span>
+										<span class="sa7_txt"></span>
+										<span class="sa8_txt"></span>
+										<span class="sa9_txt"></span>
+										<span class="sa10_txt"></span>
+										<span class="sa11_txt"></span>
+										<span class="sa12_txt"></span>
+										<span class="sa13_txt"></span>
+										<span class="sa14_txt"></span>
+										<span class="sa15_txt"></span>
+										<span class="sa16_txt"></span>
+										<span class="sa17_txt"></span>
+										<span class="sa18_txt"></span>
+										<span class="sc1_txt"></span>
+										<span class="sc2_txt"></span>
+										<span class="sc3_txt"></span>
+										<span class="sc4_txt"></span>
+										<span class="sc5_txt"></span>
+										<span class="sc6_txt"></span>
+										<span class="sc7_txt"></span>
+										<span class="sc8_txt"></span>
+										<span class="sc9_txt"></span>
+										<span class="sc10_txt"></span>
+										<span class="sc11_txt"></span>
+										<span class="sc12_txt"></span>
+										<span class="sc13_txt"></span>
+										<span class="sc14_txt"></span>
+										<span class="sc15_txt"></span>
+										<span class="sc16_txt"></span>
+										<span class="sc17_txt"></span>
+										<span class="sc18_txt"></span>
+										<span class="total_spells_txt"></span>
+										<span class="ta1_txt"></span>
+										<span class="ta2_txt"></span>
+										<span class="ta3_txt"></span>
+										<span class="ta4_txt"></span>
+										<span class="ta5_txt"></span>
+										<span class="ta6_txt"></span>
+										<span class="ta7_txt"></span>
+										<span class="ta8_txt"></span>
+										<span class="ta9_txt"></span>
+										<span class="ta10_txt"></span>
+										<span class="ta11_txt"></span>
+										<span class="ta12_txt"></span>
+										<span class="ta13_txt"></span>
+										<span class="ta14_txt"></span>
+										<span class="ta15_txt"></span>
+										<span class="ta16_txt"></span>
+										<span class="ta17_txt"></span>
+										<span class="ta18_txt"></span>
+										<span class="tc1_txt"></span>
+										<span class="tc2_txt"></span>
+										<span class="tc3_txt"></span>
+										<span class="tc4_txt"></span>
+										<span class="tc5_txt"></span>
+										<span class="tc6_txt"></span>
+										<span class="tc7_txt"></span>
+										<span class="tc8_txt"></span>
+										<span class="tc9_txt"></span>
+										<span class="tc10_txt"></span>
+										<span class="tc11_txt"></span>
+										<span class="tc12_txt"></span>
+										<span class="tc13_txt"></span>
+										<span class="tc14_txt"></span>
+										<span class="tc15_txt"></span>
+										<span class="tc16_txt"></span>
+										<span class="tc17_txt"></span>
+										<span class="tc18_txt"></span>
+										<span class="total_traps_txt"></span>
+										<span class="da1_txt"></span>
+										<span class="da2_txt"></span>
+										<span class="da3_txt"></span>
+										<span class="da4_txt"></span>
+										<span class="da5_txt"></span>
+										<span class="da6_txt"></span>
+										<span class="da7_txt"></span>
+										<span class="da8_txt"></span>
+										<span class="da9_txt"></span>
+										<span class="da10_txt"></span>
+										<span class="da11_txt"></span>
+										<span class="da12_txt"></span>
+										<span class="da13_txt"></span>
+										<span class="da14_txt"></span>
+										<span class="da15_txt"></span>
+										<span class="dc1_txt"></span>
+										<span class="dc2_txt"></span>
+										<span class="dc3_txt"></span>
+										<span class="dc4_txt"></span>
+										<span class="dc5_txt"></span>
+										<span class="dc6_txt"></span>
+										<span class="dc7_txt"></span>
+										<span class="dc8_txt"></span>
+										<span class="dc9_txt"></span>
+										<span class="dc10_txt"></span>
+										<span class="dc11_txt"></span>
+										<span class="dc12_txt"></span>
+										<span class="dc13_txt"></span>
+										<span class="dc14_txt"></span>
+										<span class="dc15_txt"></span>
+										<span class="total_side_txt"></span>
+										<span class="ea1_txt"></span>
+										<span class="ea2_txt"></span>
+										<span class="ea3_txt"></span>
+										<span class="ea4_txt"></span>
+										<span class="ea5_txt"></span>
+										<span class="ea6_txt"></span>
+										<span class="ea7_txt"></span>
+										<span class="ea8_txt"></span>
+										<span class="ea9_txt"></span>
+										<span class="ea10_txt"></span>
+										<span class="ea11_txt"></span>
+										<span class="ea12_txt"></span>
+										<span class="ea13_txt"></span>
+										<span class="ea14_txt"></span>
+										<span class="ea15_txt"></span>
+										<span class="ec1_txt"></span>
+										<span class="ec2_txt"></span>
+										<span class="ec3_txt"></span>
+										<span class="ec4_txt"></span>
+										<span class="ec5_txt"></span>
+										<span class="ec6_txt"></span>
+										<span class="ec7_txt"></span>
+										<span class="ec8_txt"></span>
+										<span class="ec9_txt"></span>
+										<span class="ec10_txt"></span>
+										<span class="ec11_txt"></span>
+										<span class="ec12_txt"></span>
+										<span class="ec13_txt"></span>
+										<span class="ec14_txt"></span>
+										<span class="ec15_txt"></span>
+										<span class="total_extra_txt"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="kde_registration">
+							<span class="firstname_lbl">First Name:</span>
+							<input class="firstname_txt" type="text" maxlength="13">
+							<span class="middlename_lbl">Middle Name(s):</span>
+							<input class="middlename_txt" type="text">
+							<span class="lastname_lbl">Last Name(s):</span>
+							<input class="lastname_txt" type="text" maxlength="26">
+							<span class="id_lbl">Cossy ID:</span>
+							<input class="id_txt" type="text" maxlength="10">
+							<span class="birth_lbl">Date of Birth:</span>
+							<input class="month_txt" type="text" maxlength="2">
+							<input class="day_txt" type="text" maxlength="2">
+							<input class="year_txt" type="text" maxlength="4">
+							<span class="event_lbl">Event Name:</span>
+							<input class="event_txt" type="text">
+							<span class="residence_lbl">Country of Residence:</span>
+							<input class="residence_txt" type="text">
+							<span class="email_lbl">E-Mail:</span>
+							<input class="email_txt" type="text" maxlength="22">
+							<span class="date_lbl">Date:</span>
+							<input class="month2_txt" type="text" maxlength="2">
+							<input class="day2_txt" type="text" maxlength="2">
+							<input class="year2_txt" type="text" maxlength="4">
+							<input class="print_btn" type="submit" value="Print">
+							<div class="error_txt"></div>
+							<div class="print_decklist_btn">print decklist</div>
+							<div id="registration_form">
+								<div id="registration_content">
+									<img src="images/blank.png" alt="Registration" data-src="https://images.duelingbook.com/blank.webp">
+									<div class="content">
+										<span class="firstname1_txt"></span>
+										<span class="firstname2_txt"></span>
+										<span class="firstname3_txt"></span>
+										<span class="firstname4_txt"></span>
+										<span class="firstname5_txt"></span>
+										<span class="firstname6_txt"></span>
+										<span class="firstname7_txt"></span>
+										<span class="firstname8_txt"></span>
+										<span class="firstname9_txt"></span>
+										<span class="firstname10_txt"></span>
+										<span class="firstname11_txt"></span>
+										<span class="firstname12_txt"></span>
+										<span class="firstname13_txt"></span>
+										<span class="middlename_txt"></span>
+										<span class="lastname1_txt"></span>
+										<span class="lastname2_txt"></span>
+										<span class="lastname3_txt"></span>
+										<span class="lastname4_txt"></span>
+										<span class="lastname5_txt"></span>
+										<span class="lastname6_txt"></span>
+										<span class="lastname7_txt"></span>
+										<span class="lastname8_txt"></span>
+										<span class="lastname9_txt"></span>
+										<span class="lastname10_txt"></span>
+										<span class="lastname11_txt"></span>
+										<span class="lastname12_txt"></span>
+										<span class="lastname13_txt"></span>
+										<span class="lastname14_txt"></span>
+										<span class="lastname15_txt"></span>
+										<span class="lastname16_txt"></span>
+										<span class="lastname17_txt"></span>
+										<span class="lastname18_txt"></span>
+										<span class="lastname19_txt"></span>
+										<span class="lastname20_txt"></span>
+										<span class="lastname21_txt"></span>
+										<span class="lastname22_txt"></span>
+										<span class="lastname23_txt"></span>
+										<span class="lastname24_txt"></span>
+										<span class="lastname25_txt"></span>
+										<span class="lastname26_txt"></span>
+										<span class="id1_txt"></span>
+										<span class="id2_txt"></span>
+										<span class="id3_txt"></span>
+										<span class="id4_txt"></span>
+										<span class="id5_txt"></span>
+										<span class="id6_txt"></span>
+										<span class="id7_txt"></span>
+										<span class="id8_txt"></span>
+										<span class="id9_txt"></span>
+										<span class="id10_txt"></span>
+										<span class="dob1_txt"></span>							
+										<span class="dob2_txt"></span>							
+										<span class="dob3_txt"></span>							
+										<span class="dob4_txt"></span>							
+										<span class="dob5_txt"></span>							
+										<span class="dob6_txt"></span>													
+										<span class="dob7_txt"></span>													
+										<span class="dob8_txt"></span>													
+										<span class="event_txt"></span>
+										<span class="country_txt"></span>
+										<span class="email1_txt"></span>
+										<span class="email2_txt"></span>
+										<span class="email3_txt"></span>
+										<span class="email4_txt"></span>
+										<span class="email5_txt"></span>
+										<span class="email6_txt"></span>
+										<span class="email7_txt"></span>
+										<span class="email8_txt"></span>
+										<span class="email9_txt"></span>
+										<span class="email10_txt"></span>
+										<span class="email11_txt"></span>
+										<span class="email12_txt"></span>
+										<span class="email13_txt"></span>
+										<span class="email14_txt"></span>
+										<span class="email15_txt"></span>
+										<span class="email16_txt"></span>
+										<span class="email17_txt"></span>
+										<span class="email18_txt"></span>
+										<span class="email19_txt"></span>
+										<span class="email20_txt"></span>
+										<span class="email21_txt"></span>
+										<span class="email22_txt"></span>
+										<span class="date1_txt"></span>
+										<span class="date2_txt"></span>
+										<span class="date3_txt"></span>
+										<span class="date4_txt"></span>
+										<span class="date5_txt"></span>
+										<span class="date6_txt"></span>
+										<span class="date7_txt"></span>
+										<span class="date8_txt"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="profile_viewer">
+					<div id="all_comments">
+						<span class="title_txt">User's Comments</span>
+						<span class="back_to_profile_btn">Back to Profile</span>
+						<div class="content"></div>
+						<span class="view_more_comments_btn">View More Comments</span>
+						<input class="room_exit_btn" type="submit" value="Exit">
+					</div>
+					<div id="profile_content" class="profile_content">
+						<div class="prev_btn prev_thumb_btn">
+						    <div class="arrow"></div>
+						</div>
+						<input class="nsfw_btn" type="submit" value="NSFW">
+						<div class="next_btn next_thumb_btn">
+							<div class="arrow"></div>
+						</div>
+						<div class="stats">
+							<img class="stats_red" src="images/blank.png" alt="Stats" data-src="https://images.duelingbook.com/svg/stats_red.svg">
+							<img class="stats_teal" src="images/blank.png" alt="Stats" data-src="https://images.duelingbook.com/svg/stats_teal.svg">
+							<span class="status_lbl">Status:</span>
+							<span class="status_txt bisque">Online</span>
+							<span class="last_seen_lbl">Last Seen:</span>
+							<span class="last_seen_txt bisque">Now</span>
+							<span class="registered_lbl">Registered:</span>
+							<span class="registered_txt bisque">Jan 15, 2015, 12:38 AM</span>
+							<span class="format_txt">Advanced</span>
+							<span class="match_lbl">Match</span>
+							<span class="single_lbl">Single</span>
+							<span class="ranking_lbl">Ranking:</span>
+							<span class="match_ranking_txt bisque">Calculate</span>
+							<span class="single_ranking_txt bisque">Calculate</span>
+							<span class="rating_lbl">Rating/Exp:</span>
+							<span class="match_rating_txt bisque">100/0</span>
+							<span class="single_rating_txt bisque">100/0</span>
+							<span class="wins_lbl">Wins:</span>
+							<span class="match_wins_txt bisque">0</span>
+							<span class="single_wins_txt bisque">0</span>
+							<span class="losses_lbl">Losses:</span>
+							<span class="match_losses_txt bisque">0</span>
+							<span class="single_losses_txt bisque">0</span>
+							<span class="draws_lbl">Draws:</span>
+							<span class="match_draws_txt bisque">0</span>
+							<span class="single_draws_txt bisque">0</span>
+							<div id="stats_next_btn" class="next_btn">
+								<div class="arrow"></div>
+							</div>
+						</div>
+						<span class="username_lbl arial_black2">Username:</span>
+						<input id="profile_username_txt" type="text" maxlength="25">
+						<!--<div id="autocomplete"></div>-->
+						<input class="remove_btn" type="submit" value="Remove Image">
+						<div class="thumbs"></div>
+						<input class="nsfw_cb" type="checkbox">
+						<span class="nsfw_lbl">NSFW</span>
+						<!-- profile song -->
+						<div class="social_buttons">
+							<span class="send_pm_btn">Message</span>
+							<span class="follow_btn">Follow User</span>
+							<span class="unfollow_btn">Unfollow User</span>
+							<span class="add_friend_btn">Add Friend</span>
+							<span class="delete_friend_btn">Delete Friend</span>
+							<span class="accept_request_btn">Accept Request</span>
+							<span class="revoke_friend_btn">Revoke Request</span>
+							<span class="block_user_btn">Block User</span>
+							<span class="unblock_user_btn">Unblock User</span>
+							<span class="watch_duel_btn">Watch Duel</span>
+							<img class="key" src="images/blank.png" alt="Password Required" data-src="https://images.duelingbook.com/svg/key.svg">
+						</div>
+						<div class="social"></div>
+						<div id="profile_body">
+							<span class="profile_lbl kristenitc">Profile</span>
+							<div class="profile_txt textarea aliased" tabindex="0"></div>
+							<div id="profile_song">
+								<div class="play_btn">
+									<img src="images/blank.png" alt="Play" data-src="https://images.duelingbook.com/svg/play_btn.svg">
+								</div>
+								<div class="pause_btn">
+									<img src="images/blank.png" alt="Pause" data-src="https://images.duelingbook.com/svg/pause_btn.svg">
+								</div>
+								<div class="name_lbl">
+									<span class="name_txt">Song name</span>
+								</div>
+							</div>
+							<span class="views_lbl">Profile Views:</span>
+							<span class="views_txt bisque">9</span>
+							<!--<img class="stats2_red" src="images/svg/stats2_red.svg" alt="Stats" />
+							<div class="about_lbl">Gender:<br>Distance:<br>Location:<br>Languages:</div>
+							<div class="about_txt">Male<br>5788 miles away<br>Occitanie, FR<br>French</div>-->
+							<span class="comments_lbl kristenitc">Comments: (6)</span>
+							<div class="comments selectable"></div>
+							<span class="view_all_comments_btn">View All Comments</span>
+							<div id="profile_bottom">
+								<span class="post_a_comment_lbl kristenitc">Post a comment:</span>
+								<textarea class="comment_txt" maxlength="500"></textarea>
+								<input class="reply_cb" type="checkbox">
+								<span class="reply_lbl bisque">Reply to: n****r</span>
+								<input class="post_comment_btn" type="submit" value="Post Comment">
+								
+								<span class="add_note_btn">Add Note</span>
+							</div>
+							<span class="friends_lbl kristenitc">Friends:</span>
+							<div class="friends"></div>
+							<span class="view_all_friends_btn">View All Friends</span>
+						</div>
+						<input class="clear_profile_btn" type="submit" value="Clear Profile">
+						<input class="room_exit_btn" type="submit" value="Exit">
+					</div>
+					<div id="all_friends">
+						<span class="title_txt selectable">Users's Friends</span>
+						<span class="back_to_profile_btn">Back to Profile</span>
+						<div class="content"></div>
+						<input class="room_exit_btn" type="submit" value="Exit">
+					</div>
+				</div>
+				<div id="profile_viewer2">
+					<div class="profile_content">
+						<div class="stats">
+							<span class="status_lbl">Status:</span>
+							<span class="status_txt bisque">Online</span>
+							<span class="last_seen_lbl">Last Seen:</span>
+							<span class="last_seen_txt bisque">Now</span>
+							<span class="profile_lbl kristenitc">Profile</span>
+							<textarea id="judge_profile_txt" maxlength="500"></textarea>
+							<div class="profile_txt selectable cyan"></div>
+						</div>
+						<span class="username_lbl arial_black2">Username:</span>
+						<div class="social_buttons">
+							<span class="send_pm_btn">Message</span>
+							<span class="watch_duel_btn">Watch Duel</span>
+							<img class="key" src="images/blank.png" alt="Password Required" data-src="https://images.duelingbook.com/svg/key.svg">
+						</div>
+						<div id="profile_body2">
+							<span class="testimonials_lbl kristenitc">No Testimonials</span>
+							<div id="profile_bottom2">
+								<span class="post_a_testionial_lbl kristenitc">Post a testimonial</span>
+								<textarea class="post_testimonial_txt"></textarea>
+								<input class="reply_cb" type="checkbox">
+								<span class="reply_lbl">Reply to:</span>
+								<input class="post_testimonial_btn" type="submit" value="Post Testimonial">
+								<select class="rating_cb">
+									<option value="0" label=" "></option>
+									<option value="1">I had a good experience</option>
+									<option value="-1">I had a bad experience</option>
+								</select>
+								<input class="room_exit_btn" type="submit" value="Exit">
+							</div>
+						</div>
+						<input class="save_btn" type="submit" value="Save Profile">
+						<input class="room_exit_btn" type="submit" value="Exit">
+					</div>
+				</div>
+				<div id="my_profile">
+					<div class="prev_btn prev_thumb_btn">
+						<div class="arrow"></div>
+					</div>
+					<div class="next_btn next_thumb_btn">
+						<div class="arrow"></div>
+					</div>
+					<input class="upload_avatar_btn nocomp" type="file" accept=".jpg, .png, .jpeg, .gif, .webp">
+					<input class="remove_btn" type="submit" value="Remove Image">
+					<div class="avatars"></div>
+					<span class="donation_txt">Donation Reward: 0 seconds left</span>
+					<!--<input class="unlock_btn" type="submit" value="Unlock Free Customs!" />-->
+					<input class="redeem_btn" type="submit" value="Redeem Donation">
+					<div class="info_btn">
+						<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+					</div>
+					<div class="thumbs"></div>
+					<input class="nsfw_cb" type="checkbox">
+					<span class="nsfw_lbl">NSFW</span>
+					<span class="profile_lbl kristenitc">Profile:</span>
+					<textarea class="profile_txt" maxlength="5000"></textarea>
+					<input class="html_cb" type="checkbox">
+					<span class="html_lbl">Use HTML Text</span>
+					<input class="save_btn" type="submit" value="Save">
+					<div id="sleeve"></div>
+					<div id="prev_sleeve_btn">
+						<img src="images/blank.png" alt="Prev" data-src="https://images.duelingbook.com/svg/prev_sleeve_btn.svg">
+					</div>
+					<div id="next_sleeve_btn">
+						<img src="images/blank.png" alt="Next" data-src="https://images.duelingbook.com/svg/next_sleeve_btn.svg">
+					</div>
+					<input class="upload_btn" type="file" accept=".jpg, .png, .jpeg, .gif, .webp" label="Upload">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<div class="social">
+                        <div id="add_social_btn" class="expand_btn social_btn">
+                            <img src="images/blank.png" alt="Add Social Media" data-src="https://images.duelingbook.com/svg/expand_btn_up.svg">
+                        </div>
+					</div>
+					<div id="sleeve_select" class="subscreen">
+						<div class="background"></div>
+						<div class="background_inner">
+							<div class="background"></div>
+							<div class="exit_btn">
+								<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+							</div>
+							<span class="title_txt">SLEEVE</span>
+							<div class="content"></div>
+                            <input class="sleeve_filter_rn" type="range" min="0" max="360" value="0" step="1" style="display: none;">
+							<input class="save_sleeve_btn" type="submit" value="Save">
+							<input class="delete_sleeve_btn" type="submit" value="Delete Sleeve">
+						</div>
+					</div>
+				</div>
+				<div id="donations" class="arial_rounded18">
+					<div class="title_txt arial_black2 title1">Donations</div>
+					<div class="top">
+						<span class="email_lbl">Email:</span>
+						<span class="amount_lbl">Amount:</span>
+						<span class="transaction_lbl">Transaction ID:</span>
+						<span class="payment_lbl">Payment:</span>
+						<span class="date_lbl">Date:</span>
+						<span class="redeemed_lbl">Redeemed by:</span>
+					</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="rankings">
+				    <div class="arial_black2 title2">Rankings</div>
+					<select class="format_cb">
+						<option value="ar">Advanced</option>
+						<option value="yr">Genesys Format</option>
+						<option value="gr">Goat Format</option>
+						<option value="er">Edison Format</option>
+						<option value="sr">Speed Duels</option>
+					</select>
+					<select class="period_cb">
+						<option value="current">Current</option>
+						<option value="may_2026">May 2026</option>
+						<option value="feb_2026">Feb 2026</option>
+						<option value="sep_2025">Sep 2025</option>
+						<option value="apr_2025">Apr 2025</option>
+						<option value="dec_2024">Dec 2024</option>
+						<option value="sep_2024">Sep 2024</option>
+						<option value="apr_2024">Apr 2024</option>
+						<option value="jan_2024">Jan 2024</option>
+						<option value="sep_2023">Sep 2023</option>
+						<option value="jun_2023">Jun 2023</option>
+						<option value="feb_2023">Feb 2023</option>
+						<option value="dec_2022">Dec 2022</option>
+						<option value="oct_2022">Oct 2022</option>
+						<option value="may_2022">May 2022</option>
+						<option value="feb_2022">Feb 2022</option>
+						<option value="oct_2021">Oct 2021</option>
+						<option value="jul_2021">Jul 2021</option>
+						<option value="mar_2021">Mar 2021</option>
+						<option value="dec_2020">Dec 2020</option>
+						<option value="sep_2020">Sep 2020</option>
+						<option value="jun_2020">Jun 2020</option>
+						<option value="apr_2020">Apr 2020</option>
+						<option value="jan_2020">Jan 2020</option>
+						<option value="oct_2019">Oct 2019</option>
+						<option value="jul_2019">Jul 2019</option>
+						<option value="apr_2019">Apr 2019</option>
+						<option value="jan_2019">Jan 2019</option>
+						<option value="dec_2018">Dec 2018</option>
+						<option value="sep_2018">Sep 2018</option>
+						<option value="may_2018">May 2018</option>
+						<option value="feb_2018">Feb 2018</option>
+						<option value="nov_2017">Nov 2017</option>
+						<option value="sep_2017">Sep 2017</option>
+						<option value="jun_2017">Jun 2017</option>
+					</select>	
+					<div id="by_rating_btn"><span>By Rating</span></div>
+					<div id="by_rating_btn_activated"><span>By Rating</span></div>
+					<div id="by_wins_btn"><span>By Wins</span></div>
+					<div id="by_wins_btn_activated"><span>By Wins</span></div>
+					<div id="by_experience_btn"><span>By Experience</span></div>
+					<div id="by_experience_btn_activated"><span>By Experience</span></div>
+					<div id="by_total_experience_btn"><span>By Total Exp</span></div>
+					<div id="by_total_experience_btn_activated"><span>By Total Exp</span></div>
+					<div class="content"></div>
+					<input class="matches_rb" type="radio" name="match_type" checked>
+					<span class="matches_lbl">Matches</span>
+					<input class="singles_rb" type="radio" name="match_type">
+					<span class="singles_lbl">Singles</span>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="admin">
+					<div class="arial_black2 title2">Administrator Options</div>
+					<div class="admin_next_btn">
+						<img src="https://images.duelingbook.com/svg/admin_next_btn_up.svg" alt="Next" class="keep">
+					</div>
+					<div id="ban_status">
+						<span class="ban_status_lbl admin_lbl">Ban Status</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="get_ban_status_btn" type="submit" value="Get Ban Status">
+						<span class="status_lbl">Ban Status:</span>
+						<span class="status_txt"></span>
+						<span class="strikes_lbl">Strikes:</span>
+						<span class="strikes_txt"></span>
+						<span class="ban_note_lbl">Ban Notes:</span>
+						<div class="ban_note_txt textarea" tabindex="0"></div>
+					</div>
+					<div id="freeze_user">
+						<span class="freeze_user_lbl admin_lbl">Freeze User</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="freeze_time_lbl">Freeze time:</span>
+						<input class="days_rb" type="radio" name="days" checked>
+						<input class="days_txt" type="text" maxlength="3">
+						<span class="days_lbl">Days</span>
+						<input class="forever_rb" type="radio" name="days">
+						<span class="forever_lbl">Forever</span>
+						<span class="reason_lbl">Reason:</span>
+						<input class="reason_txt" type="text">
+						<input class="strike_cb" type="checkbox" checked>
+						<span class="strike_lbl">Increment Strike Count</span>
+						<input class="all_accounts_cb" type="checkbox" checked>
+						<span class="all_accounts_lbl">All Accounts</span>
+						<input class="freeze_user_btn" type="submit" value="Freeze User">
+					</div>
+					<div id="unban_user">
+						<span class="unban_user_lbl admin_lbl">Unban User</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="strike_cb" type="checkbox" checked>
+						<span class="strike_lbl">Decrement Strike Count</span>
+						<input class="all_accounts_cb" type="checkbox" checked>
+						<span class="all_accounts_lbl">All Accounts</span>
+						<input class="unban_user_btn" type="submit" value="Unban User">
+					</div>
+					<div id="kick_user">
+						<span class="kick_user_lbl admin_lbl">Kick User</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="kick_user_btn" type="submit" value="Kick User">
+					</div>
+					<div id="warning_note">
+						<span class="warning_note_lbl admin_lbl">Warning Note</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="warning_lbl">Warning:</span>
+						<input class="warning_txt" type="text">
+						<input class="strike_cb" type="checkbox">
+						<span class="strike_lbl">Increment Strike Count</span>
+						<input class="add_warning_btn" type="submit" value="Add Warning">
+					</div>
+					<div id="cancel_duel">
+						<span class="cancel_duel_lbl admin_lbl">Cancel Duel</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="cancel_duel_btn" type="submit" value="Cancel Duel">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="admin2">
+					<div class="arial_black2 title2">Administrator Options</div>
+					<div class="admin_prev_btn">
+						<img src="https://images.duelingbook.com/svg/admin_prev_btn_up.svg" alt="Prev" class="keep">
+					</div>
+					<div class="admin_next_btn">
+						<img src="https://images.duelingbook.com/svg/admin_next_btn_up.svg" alt="Next" class="keep">
+					</div>
+					<div id="ip_check">
+						<span class="ip_check_lbl admin_lbl">IP Check</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="check_ip_btn" type="submit" value="Check IP">
+						<span class="accounts_lbl">Accounts with Same IP Address:</span>
+						<input class="super_cb" type="checkbox" tabindex="-1">
+						<div class="alts_txt textarea" tabindex="0"></div>
+					</div>
+					<div id="computer_check">
+						<span class="computer_check_lbl admin_lbl">Computer Check</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="check_comp_btn" type="submit" value="Check Comp">
+						<span class="accounts_lbl">Accounts on the Same Computer:</span>
+						<div class="alts_txt textarea" tabindex="0"></div>
+                        <div class="next_btn">
+                            <img src="images/blank.png" alt="Next" data-src="https://images.duelingbook.com/svg/next_btn_up.svg">
+                        </div>
+					</div>
+					<div id="admin_status">
+						<span class="admin_status_lbl admin_lbl">Admin Status</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="status_lbl">Status:</span>
+						<select class="status_cb">
+							<option value="0">User</option>
+							<option value="1">Administrator</option>
+							<option value="2">Senior Administrator</option>
+						</select>
+						<input class="judge_cb" type="checkbox">
+						<span class="judge_lbl">Judge</span>
+						<input class="save_btn button2" type="submit" value="Save">
+					</div>
+					<div id="reset_stats">
+						<span class="reset_stats_lbl admin_lbl">Reset Stats</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="reset_btn" type="submit" value="Kick User and Reset Stats">
+					</div>
+					<div id="super_ban">
+						<span class="super_ban_lbl admin_lbl">Super Ban</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="reason_lbl">Reason:</span>
+						<input class="reason_txt" type="text">
+						<input class="ban_btn" type="submit" value="Super Ban">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="admin3">
+					<div class="arial_black2 title2">Administrator Options</div>
+					<div class="admin_prev_btn">
+						<img src="https://images.duelingbook.com/svg/admin_prev_btn_up.svg" alt="Prev" class="keep">
+					</div>
+					<div class="admin_next_btn">
+						<img src="https://images.duelingbook.com/svg/admin_next_btn_up.svg" alt="Next" class="keep">
+					</div>
+					<div id="alerts">
+						<span class="alerts_lbl admin_lbl">Alerts</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="add_user_btn" type="submit" value="Add User">
+						<span class="accounts_lbl">Accounts:</span>
+						<div class="users list"></div>
+					</div>
+					<div id="restricted_phrases">
+						<span class="restricted_phrases_lbl admin_lbl">Restricted Phrases</span>
+						<span class="phrase_lbl">Phrase:</span>
+						<input class="phrase_txt" type="text">
+						<input class="add_phrase_btn" type="submit" value="Add Phrase">
+						<span class="phrases_lbl">Phrases:</span>
+						<div class="phrases list"></div>
+						<input class="forever_cb" type="checkbox" tabindex="-1">
+						<span class="forever_lbl">Forever</span>
+					</div>
+					<div id="change_username">
+						<span class="change_username_lbl admin_lbl">Change Username</span>
+						<span class="current_lbl">Current:</span>
+						<input class="current_txt" type="text">
+						<span class="new_lbl">New:</span>
+						<input class="new_txt" type="text">
+						<input class="keep_cb" type="checkbox" checked>
+						<span class="keep_lbl">Keep Both</span>
+						<input class="save_btn" type="submit" value="Save">
+					</div>
+					<div id="terminate_account">
+						<span class="terminate_account_lbl admin_lbl">Terminate Account</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="terminate_btn" type="submit" value="Terminate">
+					</div>
+					<div id="change_email">
+						<span class="change_email_lbl admin_lbl">Change Email</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="email_lbl">Email:</span>
+						<input class="email_txt" type="text">
+						<input class="deactivate_cb" type="checkbox" checked>
+						<span class="deactivate_lbl">Deactivate</span>
+						<input class="save_btn" type="submit" value="Save">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="switchboard">
+					<div class="arial_black2 title2">Administrator Options</div>
+					<div class="admin_prev_btn">
+						<img src="https://images.duelingbook.com/svg/admin_prev_btn_up.svg" alt="Prev" class="keep">
+					</div>
+					<div class="switchboard">
+						<span class="switchboard_lbl admin_lbl">Switch Board</span>
+						<input class="add_banned_ip_btn" type="submit" value="Add Banned IP">
+						<input class="add_bot_btn" type="submit" value="Add Bot">
+						<input class="add_duel_btn" type="submit" value="Add Duel">
+						<input class="allow_special_chars_btn" type="submit" value="Allow Special Chars">
+						<input class="bypass_avatar_wins_btn" type="submit" value="Bypass Avatar Wins">
+						<input class="cancel_reboot_btn" type="submit" value="Cancel Reboot">
+						<input class="cards_fingerprint_btn" type="submit" value="Cards Fingerprint">
+						<input class="check_deck_cards_btn" type="submit" value="Check Deck Cards">
+						<input class="check_mentions_btn" type="submit" value="Check Mentions">
+						<input class="crash_btn" type="submit" value="Crash">
+						<input class="create_auto_tourney_btn" type="submit" value="Create Auto Tourney">
+						<input class="days_old_btn" type="submit" value="Days Old">
+						<input class="delete_all_cards_btn" type="submit" value="Delete All Cards">
+						<input class="empty_users_btn" type="submit" value="Empty Users">
+						<input class="forbid_phrase_btn" type="submit" value="Forbid Phrase">
+						<input class="garbage_collection_btn" type="submit" value="Garbage Collection">
+						<input class="get_detailed_actions_btn" type="submit" value="Get Detailed Actions">
+						<input class="get_user_id_btn" type="submit" value="Get User ID">
+						<input class="insert_messages_btn" type="submit" value="Insert Messages">
+						<input class="kick_inactive_btn" type="submit" value="Kick Inactive">
+						<input class="load_announcement_btn" type="submit" value="Load Announcement">
+						<input class="load_user_custom_cards_btn" type="submit" value="Load User Custom Cards">
+						<input class="lost_connections_btn" type="submit" value="Lost Connections">
+						<input class="reboot_server_btn" type="submit" value="Reboot Server">
+						<input class="refresh_cards_btn" type="submit" value="Refresh Cards">
+						<input class="refresh_tourneys_btn" type="submit" value="Refresh Tourneys">
+						<input class="refresh_videos_btn" type="submit" value="Refresh Videos">
+						<input class="reload_phrases_btn" type="submit" value="Reload Phrases">
+						<input class="remove_banned_ip_btn" type="submit" value="Remove Banned IP">
+						<input class="remove_bot_btn" type="submit" value="Remove Bot">
+						<input class="repair_statuses_btn" type="submit" value="Repair Statuses">
+						<input class="report_actions_btn" type="submit" value="Report Actions">
+						<input class="report_queries_btn" type="submit" value="Report Queries">
+						<input class="reset_decks_btn" type="submit" value="Reset Decks">
+						<input class="reset_searching_btn" type="submit" value="Reset Searching">
+						<input class="restrict_by_exp_btn" type="submit" value="Restrict By Exp">
+						<input class="restrict_by_new_btn" type="submit" value="Restrict By New">
+						<input class="retry_actions_btn" type="submit" value="Retry Actions">
+						<input class="retry_actions2_btn" type="submit" value="Retry Actions 2">
+						<input class="skim_clients_btn" type="submit" value="Skim Clients">
+						<input class="skim_duels_btn" type="submit" value="Skim Duels">
+						<input class="skim_errors_btn" type="submit" value="Skim Errors">
+						<input class="skim_paused_games_btn" type="submit" value="Skim Paused Games">
+						<input class="skim_queries_btn" type="submit" value="Skim Queries">
+						<input class="skim_sockets_btn" type="submit" value="Skim Sockets">
+						<input class="skim_versions_btn" type="submit" value="Skim Versions">
+						<input class="toggle_alphabetizing_btn" type="submit" value="Toggle Alphabetizing">
+						<input class="toggle_doing_threads_btn" type="submit" value="Toggle Doing Threads">
+						<input class="toggle_kicking_websockets_btn" type="submit" value="Toggle Kicking Websockets">
+						<input class="toggle_loadkeys_btn" type="submit" value="Toggle Loadkeys">
+						<input class="toggle_print_queries_btn" type="submit" value="Toggle Print Queries">
+						<input class="toggle_rated_btn" type="submit" value="Toggle Rated">
+						<input class="toggle_ratings_btn" type="submit" value="Toggle Ratings">
+						<input class="toggle_tourneys_btn" type="submit" value="Toggle Tourneys">
+						<input class="update_user_btn" type="submit" value="Update User">
+						<input class="update_version_btn" type="submit" value="Update Version">
+						<input class="watch_threads_btn" type="submit" value="Watch Threads">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="moderator">
+					<div class="arial_black2 title2">Moderator Options</div>
+					<div id="mute_user">
+						<span class="mute_user_lbl admin_lbl">Mute User</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<span class="seconds_lbl">Seconds:</span>
+						<input class="seconds_txt" type="text">
+						<input class="forever_cb" type="checkbox">
+						<span class="forever_lbl">Forever</span>
+						<input class="mute_btn" type="submit" value="Mute">
+					</div>
+					<div id="set_ignored">
+						<span class="set_ignored_lbl admin_lbl">Set Ignored</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="forever_cb" type="checkbox">
+						<span class="forever_lbl">Forever</span>
+						<input class="set_ignored_btn" type="submit" value="Set Ignored">
+					</div>
+					<div id="unmute_user">
+						<span class="unmute_user_lbl admin_lbl">Unmute User</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="unmute_btn" type="submit" value="Unmute">
+					</div>
+					<div id="unset_ignored">
+						<span class="unset_ignored_lbl admin_lbl">Unset Ignored</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="unset_ignored_btn" type="submit" value="Unset Ignored">
+					</div>
+					<div id="check_statuses">
+						<span class="check_statuses_lbl admin_lbl">Check Statuses</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="check_statuses_btn" type="submit" value="Check Statuses">
+					</div>
+					<div id="hide_messages">
+						<span class="hide_messages_lbl admin_lbl">Hide Messages</span>
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<input class="hide_messages_btn" type="submit" value="Hide Messages">
+					</div>
+					<input type="submit" class="room_exit_btn" value="Exit">
+				</div>
+				<div id="settings">
+					<div id="settings_content">
+						<div class="arial_black2 title_txt title1">Settings</div>
+						<div class="about_me">
+							<span class="about_me_lbl admin_lbl">About Me</span>
+							<span class="gender_lbl">Gender:</span>
+							<select class="gender_cb">
+								<option value label=" "></option>
+								<option value="Male">Male</option>
+								<option value="Female">Female</option>
+							</select>
+							<span class="orientation_lbl">Orientation:</span>
+							<select class="orientation_cb">
+								<option value label=" "></option>
+								<option value="Straight">Straight</option>
+								<option value="Gay">Gay</option>
+								<option value="Bi">Bi</option>
+							</select>
+							<span class="languages_lbl">Languages:</span>
+							<input class="languages_txt" type="text" maxlength="50">
+							<input class="location_cb" type="checkbox" checked>
+							<span class="location_lbl">Show Location</span>
+							<input class="distance_cb" type="checkbox" checked>
+							<span class="distance_lbl">Show Distance</span>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="profile_comments">
+							<span class="profile_comments_lbl admin_lbl">Profile Comments</span>
+							<span class="allow_comments_from_lbl">Allow Comments From:</span>
+							<select class="allow_comments_from_cb">
+								<option value="everyone">Everyone</option>
+								<option value="friends">Friends Only</option>
+								<option value="nobody">Nobody</option>
+							</select>
+							<input class="approval_cb" type="checkbox">
+							<span class="approval_lbl">Require Comment Approval</span>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="messages">
+							<span class="messages_lbl admin_lbl">Messages</span>
+							<span class="allow_messages_from_lbl">Allow Messages From:</span>
+							<select class="allow_messages_from_cb">
+								<option value="everyone">Everyone</option>
+								<option value="friends">Friends Only</option>
+							</select>
+							<input class="offline_cb" type="checkbox" checked>
+							<span class="offline_lbl">Allow Offline Messages</span>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="profile_song">
+							<span class="profile_song_lbl admin_lbl">Profile Song</span>
+							<span class="song_url_lbl">Song URL:</span>
+							<div class="info_btn">
+								<img src="images/blank.png" alt="Info" data-src="https://images.duelingbook.com/svg/info_btn_up.svg">
+							</div>
+							<input class="url_txt" type="text">
+							<span class="song_name_lbl">Song Name:</span>
+							<input class="name_txt" type="text">
+							<span class="song_artist_lbl">Song Artist:</span>
+							<input class="artist_txt" type="text">
+							<input class="remove_btn" type="submit" value="Remove Song">
+							<input class="save_btn" type="submit" value="Save Song">
+						</div>
+						<div class="duel_stats">
+							<span class="duel_stats_lbl admin_lbl">Duel Stats</span>
+							<input class="show_losses_cb" type="checkbox" checked>
+							<span class="show_losses_lbl">Show losses/draws on your profile</span>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="social_media">
+							<span class="social_media_lbl admin_lbl">Social Media</span>
+							<span class="label_txt">Username:</span>
+							<input class="url_txt" type="text">
+							<select class="social_cb">
+								<option value="facebook">Facebook</option>
+								<option value="youtube">Youtube</option>
+								<option value="twitter">Twitter</option>
+								<option value="twitch">Twitch</option>
+								<!--<option value="tumblr">Tumblr</option>-->
+								<option value="instagram">Instagram</option>
+								<option value="discord">Discord</option>
+								<!--<option value="skype">Skype</option>-->
+								<option value="snapchat">Snapchat</option>
+								<!--<option value="kik">Kik</option>-->
+								<option value="master_duel">Master Duel</option>
+								<option value="duel_links">Duel Links</option>
+								<option value="pokemon_go">Pokemon Go</option>
+							</select>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="preferences">
+							<span class="preferences_lbl admin_lbl">Preferences</span>
+							<input class="auto_cb" type="checkbox">
+							<span class="auto_lbl">Automatically Close Notifications</span>
+							<input class="nsfw_cb" type="checkbox">
+							<span class="nsfw_lbl">Always Show NSFW Content</span>
+							<input class="play_cb" type="checkbox">
+							<span class="play_lbl">Always Play Profile Songs</span>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="animation">
+							<span class="animation_lbl admin_lbl">Animation</span>
+							<span class="animation_txt">Animation:</span>
+							<select class="animation_cb">
+								<option value="min">Minimum</option>
+								<option value="max">Maximum</option>
+							</select>
+							<span class="resolution_txt">Card Artworks:</span>
+							<select class="resolution_cb">
+								<option value="l">Low Resolution</option>
+								<option value="m">Medium Resolution</option>
+								<option value="h">High Resolution</option>
+							</select>
+							<input class="save_btn" type="submit" value="Save">
+						</div>
+						<div class="account">
+							<span class="account_lbl admin_lbl">Account</span>
+							<!--<input class="remember_cb" type="checkbox" />
+							<span class="remember_lbl">Remember Me</span>
+							<div class="info_btn">
+								<img src="images/svg/info_btn_up.svg" />
+							</div>-->
+							<span class="end_all_lbl">End All Sessions:</span>
+							<input class="logout_btn" type="submit" value="Logout">
+						</div>
+						<input class="room_exit_btn" type="submit" value="Exit">
+					</div>
+				</div>
+				<div id="confirm_email">
+					<img class="email_logo" src="images/blank.png" width="434" height="434" alt="Email" data-src="https://images.duelingbook.com/email_small.webp">
+					<div class="confirm_email">
+						<span class="confirm_email_lbl admin_lbl">Confirm Email</span>
+						<span class="email_lbl">Email:</span>
+						<input class="email_txt" type="text">
+						<input class="confirm_btn" type="submit" value="Resend Email Confirmation Link">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="journal">
+				    <div class="arial_black2 title1">Journal</div>
+				    <div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="all_messages">
+					<div class="arial_black2 title1">Messages</div>
+					<div class="cout_txt textarea" tabindex="0"></div>
+					<input class="cin_txt" type="text" maxlength="500">
+					<div class="messages_content"></div>
+					<span class="search_messages_lbl">Search Messages:</span>
+					<input class="search_messages_txt" type="text">
+					<span class="filter_users_lbl">Filter Users:</span>
+					<input class="filter_users_txt" type="text">
+					<input class="timestamps_cb" type="checkbox">
+					<span class="timestamps_lbl">Show Timestamps</span>
+					<input class="html_cb" type="checkbox">
+					<span class="html_lbl">HTML</span>
+					<span class="filter_messages_lbl">Filter Messages:</span>
+					<input class="filter_messages_txt" type="text">
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="browse_users">
+					<div class="title_txt arial_black2 title1">Browse Users</div>
+					<div id="browse">
+						<div class="browse_txt aliased">BROWSE</div>
+						<span class="username_lbl">Username contains:</span>
+						<input class="username_txt" type="text">
+						<input class="online_cb" type="checkbox">
+						<span class="online_lbl">Online users only</span>
+						<input class="pics_cb" type="checkbox">
+						<span class="pics_lbl">Users with custom pics only</span>
+						<span class="gender_lbl">Gender:</span>
+						<input class="all_genders_rb" type="radio" name="gender" checked>
+						<span class="all_genders_lbl">All</span>
+						<input class="male_rb" type="radio" name="gender">
+						<span class="male_lbl">Male</span>
+						<input class="female_rb" type="radio" name="gender">
+						<span class="female_lbl">Female</span>
+						<span class="orientation_lbl">Orientation:</span>
+						<input class="all_orientations_rb" type="radio" name="orientation" checked>
+						<span class="all_orientations_lbl">All</span>
+						<input class="straight_rb" type="radio" name="orientation">
+						<span class="straight_lbl">Straight</span>
+						<input class="gay_rb" type="radio" name="orientation">
+						<span class="gay_lbl">Gay</span>
+						<input class="bi_rb" type="radio" name="orientation">
+						<span class="bi_lbl">Bi</span>
+						<span class="rating_rep_lbl">Rating/Rep:</span>
+						<input class="matches_rb" type="radio" name="match_type" checked>
+						<span class="matches_lbl">Matches</span>
+						<input class="singles_rb" type="radio" name="match_type">
+						<span class="singles_lbl">Singles</span>
+						<span class="rating_lbl">≤ Rating ≤ </span>
+						<input class="rating_lower_txt" type="text">
+						<input class="rating_upper_txt" type="text">
+						<span class="rep_lbl">≤ Experience ≤</span>
+						<input class="rep_lower_txt" type="text">
+						<input class="rep_upper_txt" type="text">
+						<span class="location_lbl">Location:</span>
+						<span class="language_lbl">Language:</span>
+						<input class="location_txt" type="text">
+						<input class="language_txt" type="text">
+						<span class="social_media_lbl">Social Media:</span>
+						<span class="distance_lbl">Distance:</span>
+						<select class="social_cb">
+							<option value label=" "></option>
+							<option value="facebook">Facebook</option>
+							<option value="youtube">Youtube</option>
+							<option value="twitter">Twitter</option>
+							<option value="twitch">Twitch</option>
+							<option value="tumblr">Tumblr</option>
+							<option value="instagram">Instagram</option>
+							<option value="discord">Discord</option>
+							<option value="skype">Skype</option>
+							<option value="snapchat">Snapchat</option>
+							<option value="kik">Kik</option>
+							<option value="master_duel">Master Duel</option>
+							<option value="duel_links">Duel Links</option>
+							<option value="pokemon_go">Pokemon Go</option>
+						</select>
+						<select class="distance_cb">
+						    <option value>Anywhere</option>
+						    <!--<option value="5">5 miles</option>
+                            <option value="25">25 miles</option>
+                            <option value="100">100 miles</option>-->
+						</select>
+						<span class="last_seen_lbl">Last seen:</span>
+						<span class="order_by_lbl">Order by:</span>
+						<select class="last_seen_cb">
+							<option value>Anytime</option>
+							<option value="hour">This Hour</option>
+							<option value="day">This Day</option>
+							<option value="week">This Week</option>
+							<option value="month">This Month</option>
+						</select>
+						<select class="order_cb">
+							<option value="login">Last Seen</option>
+							<!--<option value="distance">Distance</option>-->
+							<option value="username">Username</option>
+							<option value="rating">Rating</option>
+							<option value="experience">Experience</option>
+						</select>
+					</div>
+					<input class="update_location_btn" type="submit" value="Update Location">
+					<input class="search_btn" type="submit" value="Search">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<div class="content"></div>
+					<input class="following_cb" type="checkbox">
+					<span class="following_lbl">Following</span>
+					<input class="friends_cb" type="checkbox">
+					<span class="friends_lbl">Friends</span>
+				</div>
+				<div id="friend_requests">
+					<div class="title_txt arial_black2 title1">Friend Requests</div>
+					<select class="received_cb">
+						<option value="received">Received Requests</option>
+						<option value="sent">Sent Requests</option>
+					</select>
+					<div class="content"></div>
+					<span class="accept_all_btn arial_rounded25">Accept All Requests</span>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="friends">
+					<div class="title_txt arial_black2 title1">Friends</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="followed_users">
+					<div class="title_txt arial_black2 title1">Followed Users</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="blocked_users">
+					<div class="title_txt arial_black2 title1">Blocked Users</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="comments">
+					<div class="title_txt arial_black2 title1">Profile Comments</div>
+					<select class="received_cb">
+						<option value="received">Received Comments</option>
+						<option value="sent">Sent Comments</option>
+					</select>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="change_password">
+					<img class="boss_key keep" src="https://images.duelingbook.com/boss_key_small.webp" width="628" height="472" alt="Key">
+					<div class="change_password">
+						<span class="change_password_lbl admin_lbl">Change Password</span>
+						<span class="current_lbl">Current Password:</span>
+						<input class="current_txt" type="password">
+						<span class="new_lbl">New Password:</span>
+						<input class="new_txt" type="password">
+						<span class="confirm_lbl">Confirm New Password:</span>
+						<input class="confirm_txt" type="password">
+						<input class="change_btn" type="submit" value="Change Password">
+					</div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="duel_records">
+					<div class="title_txt arial_black2 title1">Duel Records</div>
+					<span class="username_lbl">Username:</span>
+					<input class="username_txt" type="text">
+					<select class="type_cb">
+						<option value label=" "></option>
+						<option value="Rated Matches">Rated Matches</option>
+						<option value="Rated Singles">Rated Singles</option>
+						<option value="Unrated Matches">Unrated Matches</option>
+						<option value="Unrated Singles">Unrated Singles</option>
+					</select>
+					<select class="period_cb">
+						<option value="current">Current</option>
+						<option value="may_2026">May 2026</option>
+						<option value="feb_2026">Feb 2026</option>
+						<option value="sep_2025">Sep 2025</option>
+						<option value="apr_2025">Apr 2025</option>
+						<option value="dec_2024">Dec 2024</option>
+						<option value="sep_2024">Sep 2024</option>
+						<option value="apr_2024">Apr 2024</option>
+						<option value="jan_2024">Jan 2024</option>
+						<option value="sep_2023">Sep 2023</option>
+						<option value="jun_2023">Jun 2023</option>
+						<option value="feb_2023">Feb 2023</option>
+						<option value="dec_2022">Dec 2022</option>
+						<option value="oct_2022">Oct 2022</option>
+						<option value="may_2022">May 2022</option>
+						<option value="feb_2022">Feb 2022</option>
+						<option value="oct_2021">Oct 2021</option>
+						<option value="jul_2021">Jul 2021</option>
+						<option value="mar_2021">Mar 2021</option>
+						<option value="dec_2020">Dec 2020</option>
+						<option value="sep_2020">Sep 2020</option>
+						<option value="jun_2020">Jun 2020</option>
+						<option value="apr_2020">Apr 2020</option>
+						<option value="jan_2020">Jan 2020</option>
+						<option value="oct_2019">Oct 2019</option>
+						<option value="jul_2019">Jul 2019</option>
+						<option value="apr_2019">Apr 2019</option>
+						<option value="jan_2019">Jan 2019</option>
+						<option value="dec_2018">Dec 2018</option>
+						<option value="sep_2018">Sep 2018</option>
+						<option value="may_2018">May 2018</option>
+						<option value="feb_2018">Feb 2018</option>
+						<option value="nov_2017">Nov 2017</option>
+						<option value="sep_2017">Sep 2017</option>
+						<option value="jun_2017">Jun 2017</option>
+						<option value>All Time</option>
+					</select>
+					<div class="info arial_rounded18">
+						<span class="opponent_lbl">Opponent</span>
+						<span class="rating_lbl">Rating/Exp</span>
+						<span class="rules_lbl">Rules</span>
+						<span class="result_lbl">Result</span>
+						<span class="points_lbl">Points</span>
+						<span class="new_lbl">New Rating</span>
+						<span class="date_lbl">Date</span>
+					</div>
+					<div class="content"></div>
+					<span class="filter_lbl">Filter Users:</span>
+					<input class="filter_txt" type="text">
+					<span class="search_lbl">Search Content:</span>
+					<input class="search_txt" type="text">
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="tournament_locator">
+					<div class="title_txt arial_black2 title1">Tournament Locator</div>
+					<div class="store_header bisque">
+						<span class="location_lbl">LOCATION</span>
+						<span class="distance_lbl">DISTANCE</span>
+						<span class="contact_lbl">CONTACT</span>
+					</div>
+					<div class="store_search">
+						<div class="desc">Find an Official Konami Tournament Store in your area that  holds Yu-Gi-Oh! TRADING CARD GAME Tournaments.  Please contact your local Official Tournament Store directly  for more information about their Tournaments.</div>
+						<span class="tourney_lbl">Search Store/Event:</span>
+						<select class="tourney_cb">
+							<option value="ots">Official Tournament Store</option>
+							<option value="rts">Regional Qualifier Location</option>
+							<option value="ycs">YCS Events</option>
+							<option value="past">Past Events</option>
+						</select>
+						<span class="location_lbl">City and State or Zip Code:</span>
+						<input class="location_txt" type="text">
+						<span class="position_lbl">Use Current Position:</span>
+						<input class="position_cb" type="checkbox">
+						<input class="search_btn" type="submit" value="Search">
+					</div>
+					<div class="content"></div>
+					<span class="reviews_lbl kristenitc">Reviews:</span>
+					<div class="reviews_content"></div>
+					<div id="post_review">
+						<span class="post_review_lbl kristenitc">Post a Review</span>
+						<textarea class="review_txt"></textarea>
+						<input class="post_review_btn" type="submit" value="Post Review">
+					</div>
+					<input class="back_btn" type="submit" value="Back">
+					<input class="add_event_btn" type="submit" value="Add Event">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<span id="post_review_btn">Post Review</span>
+                    <div id="add_event" class="subscreen">
+                        <div class="background"></div>
+                        <div class="background_inner">
+                            <div class="background"></div>
+                            <div class="exit_btn">
+                                <img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+                            </div>
+                            <span class="title_txt">Add Event</span>
+                            <div class="inner_content">
+                                <span class="event_name_lbl">Event Name:</span>
+                                <input type="text" class="event_name_txt"><br>
+                                <span class="event_host_lbl">Event Host:</span>
+                                <input type="text" class="event_host_txt">
+                                <span class="address_lbl">Address:</span>
+                                <input type="text" class="address_txt">
+                                        <!--<textarea class="address_txt"></textarea>-->
+                                <span class="city_lbl">City:</span>
+                                <input type="text" class="city_txt">
+                                <span class="state_lbl">State:</span>
+                                <input type="text" class="state_txt">
+                                <span class="zip_lbl">Zip Code:</span>
+                                <input type="text" class="zip_txt">
+                                <span class="country_lbl">Country:</span>
+                                <input type="text" class="country_txt">
+                                <span class="cap_lbl">Attendance Cap:</span>
+                                <input type="text" class="cap_txt">
+                                <span class="email_lbl">Email:</span>
+                                <input type="text" class="email_txt">
+                                <span class="phone_lbl">Phone:</span>
+                                <input type="text" class="phone_txt">
+                                <span class="date_lbl">Date:</span>
+                                <input class="date_dp" type="date">
+                                <span class="time_lbl">Time:</span>
+                                <input type="text" class="time_txt" value="10:00 AM">
+                                <input type="checkbox" class="dragon_duel_cb">
+                                <span class="dragon_duel_lbl">Dragon Duel:</span>
+                                <input class="save_event_btn" type="submit" value="Add Event">
+                            </div>
+                        </div>
+                    </div>
+					<div id="map">
+						<div class="exit_btn">
+							<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+						</div>
+						<div class="map_content"></div>
+					</div>
+				</div>
+				<div id="custom_cards">
+				    <div id="m_lbl">M</div>
+					<span class="card_passcode_lbl">Passcode:</span>
+					<input class="card_passcode_txt" type="text">
+					<span class="card_tcg_lbl">TCG:</span>
+					<input class="card_tcg_cb" type="checkbox">
+					<span class="show_effect_lbl">Show Effect:</span>
+					<input class="is_effect_cb" type="checkbox">
+					<span class="card_ocg_lbl">OCG:</span>
+					<input class="card_ocg_cb" type="checkbox">
+					<input id="upload_card_btn" type="submit" value="Upload Card">
+					<input id="edit_card_btn" type="submit" value="Edit Card">
+					<input id="my_cards_btn" type="submit" value="My Cards">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<div id="my_card"></div>
+					<input class="id_txt" type="text">
+					<div class="prev_btn">
+						<div class="arrow"></div>
+					</div>
+					<div class="next_btn">
+						<div class="arrow"></div>
+					</div>
+					<input class="clear_btn" type="submit" value="Clear Card">
+					<input class="delete_btn" type="submit" value="Delete Card">
+					<input class="resize_btn" type="submit" value="Resize Image">
+					<div id="upload_card" class="uploader">
+						<div class="background"></div>
+						<div class="title_txt aliased">UPLOAD</div>
+						<span class="name_lbl">Name:</span>
+						<input class="name_txt" type="text" maxlength="100">
+						<span class="desc_lbl">Effect:</span>
+						<textarea class="desc_txt"></textarea>
+						<span class="card_lbl">Card Type:</span>
+						<select class="card_cb">
+							<option value label=" "></option>
+							<option value="Monster">Monster</option>
+							<option value="Spell">Spell</option>
+							<option value="Trap">Trap</option>
+						</select>
+						<span class="card2_lbl">Category:</span>
+						<select class="card2_cb">
+							<option value label=" "></option>
+							<option value="Normal">Normal</option>
+							<option value="Effect">Effect</option>
+							<option value="Ritual">Ritual</option>
+							<option value="Fusion">Fusion</option>
+							<option value="Synchro">Synchro</option>
+							<option value="Xyz">Xyz</option>
+							<option value="Link">Link</option>
+						</select>
+						<span class="type_lbl">Type:</span>
+						<select class="type_cb"></select>
+						<span class="type2_lbl">Ability:</span>
+						<!--<select class="type2_cb">
+							<option value="" label=" "></option>
+							<option value="Gemini">Gemini</option>
+							<option value="Spirit">Spirit</option>
+							<option value="Toon">Toon</option>
+							<option value="Tuner">Tuner</option>
+							<option value="Union">Union</option>
+							<option value="Multiple">(Choose Multiple)</option>
+						</select>-->
+						<input class="ability_btn comboboxlike" type="submit" value>
+						<div class="abilities">
+						    <div class="ability_item">
+<input type="checkbox" value="Gemini"><span>Gemini</span>
+</div>
+						    <div class="ability_item">
+<input type="checkbox" value="Spirit"><span>Spirit</span>
+</div>
+						    <div class="ability_item">
+<input type="checkbox" value="Toon"><span>Toon</span>
+</div>
+						    <div class="ability_item">
+<input type="checkbox" value="Tuner"><span>Tuner</span>
+</div>
+						    <div class="ability_item">
+<input type="checkbox" value="Union"><span>Union</span>
+</div>
+						</div>
+						<span class="attrib_lbl">Attribute:</span>
+						<select class="attrib_cb">
+							<option value label=" "></option>
+							<option value="DARK">DARK</option>
+							<option value="DIVINE">DIVINE</option>
+							<option value="EARTH">EARTH</option>
+							<option value="FIRE">FIRE</option>
+							<option value="LIGHT">LIGHT</option>
+							<option value="WATER">WATER</option>
+							<option value="WIND">WIND</option>
+						</select>
+						<span class="level_lbl">Level / Rank / Link:</span>
+						<input class="level_txt" type="text" maxlength="2">
+						<span class="atk_lbl">ATK:</span>
+						<input class="atk_txt" type="text" maxlength="4">
+						<span class="def_lbl">DEF:</span>
+						<input class="def_txt" type="text" maxlength="4">
+						<span class="pendulum_lbl">Pendulum:</span>
+						<input class="pendulum_cb" type="checkbox">
+                        <select class="pendulum_sel">
+                            <option value="1">Auto Size</option>
+                            <option value="2">Style 1</option>
+                            <option value="3">Style 2</option>
+                            <option value="4">Style 3</option>
+                        </select>
+						<span class="scale_lbl">Pendulum Scale:</span>
+						<input class="scale_txt" type="text" maxlength="2">
+						<span class="pendulum_effect_lbl">Pend.<br>Effect:</span>
+						<textarea class="pendulum_effect_txt"></textarea>
+						<span class="arrows_lbl">Link<br>Markers:</span>
+						<div class="arrows">
+							<div class="arrow arrow1">
+								<img src="images/blank.png" alt="Top Left" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+							</div>
+							<div class="arrow arrow2">
+								<img src="images/blank.png" alt="Top Center" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+							</div>
+							<div class="arrow arrow3">
+								<img src="images/blank.png" alt="Top Right" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+							</div>
+							<div class="arrow arrow4">
+								<img src="images/blank.png" alt="Middle Right" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+							</div>
+							<div class="arrow arrow5">
+								<img src="images/blank.png" alt="Bottom Right" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+							</div>
+							<div class="arrow arrow6">
+								<img src="images/blank.png" alt="Bottom Center" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+							</div>
+							<div class="arrow arrow7">
+								<img src="images/blank.png" alt="Bottom Left" data-src="https://images.duelingbook.com/card/black_arrow_corner.webp">
+							</div>
+							<div class="arrow arrow8">
+								<img src="images/blank.png" alt="Middle Left" data-src="https://images.duelingbook.com/card/black_arrow_side.webp">
+							</div>
+						</div>
+						<span class="rush_lbl">Rush:</span>
+						<input class="rush_cb" type="checkbox">
+						<!--<span class="legend_lbl">Legend:</span>-->
+						<input class="legend_cb" type="checkbox">
+						<span class="limit_lbl">Limit:</span>
+						<select class="limit_sel">
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+						<span class="privacy_lbl">Available To:</span>
+						<select class="privacy_cb">
+							<option value="2">Myself Only</option>
+							<option value="1">Everyone</option>
+						</select>
+						<input class="upload_btn" type="submit" value="Upload">
+						<input class="browse_btn" type="submit" value="Browse Image">
+					</div>
+					<div id="edit_card"></div>
+					<div class="cards"></div>
+					<input class="ocg_limit_rb" type="radio" name="limit">
+					<input class="browse2_btn nocomp" type="file" accept=".jpg, .png, .jpeg, .gif, .webp">
+				</div>
+				<div id="customs">
+					<div class="title_txt arial_black2 title1">Customs</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="admin_actions">
+					<div class="title_txt arial_black2 title1">Admin Actions</div>
+					<div class="top">
+						<span class="admin_lbl">Admin:</span>
+						<input class="admin_txt" type="text">
+						<span class="user_lbl">User:</span>
+						<input class="user_txt" type="text">
+						<span class="action_lbl">Action:</span>
+						<select class="action_cb"></select>
+						<span class="limit_lbl">Limit:</span>
+						<select class="limit_cb">
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="200">200</option>
+							<option value="500">500</option>
+						</select>
+					</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="frozen_users">
+					<div class="title_txt arial_black2 title2">Frozen Users</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="beginners">
+					<div class="title_txt arial_black2 title2">Beginners</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="notes">
+					<div class="title_txt arial_black2 title2">Notes</div>
+					<div class="content"></div>
+					<input class="room_exit_btn" type="submit" value="Exit">
+				</div>
+				<div id="tournaments">
+					<div class="title_txt arial_black2 title1">Tournaments</div>
+					<div class="subtitle_txt arial_black2 subtitle"></div>
+					<select class="period_sel">
+						<option value="current">Current Tournaments</option>
+						<option value="past">Past Tournaments</option>
+					</select>
+					<div class="content">
+						<input type="submit" class="join_tourney_btn" value="Join Tournament">		
+						<div id="tourney_members">
+							<div class="adjudicators_list">
+								<div class="adjudicators_txt kristenitc">Organizers:</div>
+								<div class="expand_btn">
+									<img src="images/blank.png" alt="Add Adjudicator" data-src="https://images.duelingbook.com/svg/expand_btn_up.svg">
+								</div>
+							</div>
+							<div class="members_list">
+								<div class="title_txt kristenitc">Players:</div>
+								<div class="expand_btn">
+									<img src="images/blank.png" alt="Invite Friend" data-src="https://images.duelingbook.com/svg/expand_btn_up.svg">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="accept_members_bg">
+						<div class="border"></div>
+						<span class="host_lbl arial_black2">Add Players</span>
+						<div id="accept_members" class="detachable">
+							<div class="joinlist list"></div>
+							<input class="accept_btn" type="submit" value="Accept User">
+							<input class="reject_btn" type="submit" value="Reject User">
+							<input class="check_btn" type="submit" value="Check Deck">
+							<input class="invite_btn" type="submit" value="Invite Friends">
+						</div>
+					</div>
+					<div id="pairings"></div>
+					<div id="standings">
+						<span class="rank_lbl">Rank</span>
+						<span class="player_lbl">Player</span>
+						<span class="score_lbl">Score</span>
+						<div class="players"></div>
+					</div>
+					<input class="create_tourney_btn" type="submit" value="Create Tourney">
+					<input class="back_btn" type="submit" value="Back">
+					<input class="room_exit_btn" type="submit" value="Exit">
+					<div id="create_tourney" class="subscreen">
+						<div class="background"></div>
+						<div class="background_inner">
+							<div class="background"></div>
+							<div class="exit_btn">
+								<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+							</div>
+							<span class="title_txt">Create Tourney</span>
+							<div class="inner_content">
+								<span class="name_lbl">Name:</span>
+								<input type="text" class="name_txt">
+								<span class="desc_lbl">Description:</span>
+								<textarea class="desc_txt"></textarea>
+								<span class="match_type_lbl">Match Type:</span>
+								<select class="match_type_sel">
+									<option value="s">Singles</option>
+									<option value="m">Matches</option>
+								</select>
+								<span class="match_format_lbl">Match Format:</span>
+								<select class="match_format_sel">
+									<option value="single elimination">Single Elimination</option>
+									<!--<option value="double elimination">Double Elimination</option>-->
+									<option value="swiss">Swiss</option>
+								</select>
+								<span class="signups_lbl">Sign-ups:</span>
+								<select class="signups_sel">
+									<option value="0">Anyone can join</option>
+									<option value="1">Require approval</option>
+								</select>
+								<span class="max_lbl">Max participants:</span>
+								<input type="text" class="max_txt" value="16">
+								<span class="restrict_lbl">Allow 1 player per IP:</span>
+								<input type="checkbox" class="restrict_cb">
+								
+								<!--<input type="checkbox" class="signups_at_cb" />
+								<span class="signups_at_lbl">Signups at:</span>
+								<input class="signups_at_dp" type="datetime-local" />
+								<input type="checkbox" class="starts_at_cb" />
+								<span class="starts_at_lbl">Starts at:</span>
+								<input class="starts_at_dp" type="datetime-local" />
+								<span class="rewards_lbl">Rewards:</span>
+								<input type="text" class="rewards_txt" />
+								<input class="rewards_rn" type="range" min="0" max="10" value="6" step="3">-->
+								
+								<span class="deck_check_lbl">Require deck check:</span>
+								<input type="checkbox" class="deck_check_cb">
+								<!--<span class="max_date_lbl">Max date:</span>
+								<input class="max_date_dp" type="date" min="2002-03-08" />-->
+								<span class="banlist_lbl">Banlist/Cardpool:</span>
+								<select class="banlist_sel"></select>
+									<!--<span class="starts_at_lbl">Starts at:</span>
+									<input class="starts_at_dp" type="date" min="2002-03-08" />-->
+									<span class="waiting_lbl">Waiting:</span>
+									<input type="checkbox" class="waiting_cb">
+								<div class="preview"></div>
+								<input class="browse_btn" type="submit" value="Browse Image">
+								<input class="browse2_btn nocomp" type="file" accept=".jpg, .png, .jpeg, .gif, .webp">
+								<input class="start_registration_btn" type="submit" value="Create Tourney">
+								<input class="my_banlists_btn" type="submit" value="My Banlists">
+							</div>
+						</div>
+					</div>
+					<div id="my_banlists" class="subscreen">
+						<div class="background"></div>
+						<div class="background_inner">
+							<div class="background"></div>
+							<div class="exit_btn">
+								<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+							</div>
+							<span class="title_txt">My Banlists</span>
+							<div class="inner_content banlists1">
+								<span class="edit_lbl">Edit Banlist:</span>
+								<select class="edit_sel">
+									<option value></option>
+								</select>
+								<input class="create_banlist_btn" type="submit" value="Create New Banlist">
+							</div>
+							<div class="inner_content banlists2">
+								<span class="banlist_name_lbl">Name:</span>
+								<input type="text" class="banlist_name_txt">
+								<span class="extends_lbl">Extension of:</span>
+								<select class="extends_sel"></select>
+								
+								<span class="cardpool_lbl">Cardpool:</span>
+								<select class="cardpool_sel">
+									<!--<option value="0">(Only cards in this list can be used)</option>-->
+									<option value="0">(Only specified cards are allowed)</option>
+									<option value="1">Official Cards</option>
+									<option value="2">Official &amp; Custom Cards</option>
+									<option value="3">Goat Format Cards</option>
+                                    <option value="4">Edison Format Cards</option>
+                                    <option value="5">Speed Duel Cards</option>
+                                    <option value="6">Rush Duel Cards</option>
+                                    <option value="7">Genesys Cards</option>
+								</select>
+								
+								<!--<input type="checkbox" class="official_cb" />
+								<span class="official_lbl">Only allow official cards</span>-->
+								
+								<input type="checkbox" class="tcg_cb">
+								<span class="tcg_lbl">Cards must be TCG legal</span>
+								
+								<input type="checkbox" class="ocg_cb">
+								<span class="ocg_lbl">Cards must be OCG legal</span>
+								
+								<input type="checkbox" class="min_date_cb">
+								<span class="min_date_lbl">Only allow cards released after:</span>
+								<input class="min_date_dp" type="date" min="2002-03-08">
+								
+								<input type="checkbox" class="max_date_cb">
+								<span class="max_date_lbl">Only allow cards released before:</span>
+								<input class="max_date_dp" type="date" min="2002-03-08">
+								
+								<!--<input class="deck_total_rn" type="range" min="20" max="60">
+								<div class="deck_total_sl"></div>
+								<span class="deck_total_lbl">Deck may contain 40-60 cards</span>-->
+								
+								<div class="banlist_sections">
+									<div class="forbidden_section">
+										<span class="list_lbl">Forbidden:</span>
+										<span class="advanced_btn">Advanced</span>
+										<div class="banlist_cards"></div>
+									</div>
+									<div class="limited_section">
+										<span class="list_lbl">Limited:</span>
+										<span class="advanced_btn">Advanced</span>
+										<div class="banlist_cards"></div>
+									</div>
+									<div class="semi_limited_section">
+										<span class="list_lbl">Semi-Limited:</span>
+										<span class="advanced_btn">Advanced</span>
+										<div class="banlist_cards"></div>
+									</div>
+									<div class="unlimited_section">
+										<span class="list_lbl">Unlimited:</span>
+										<span class="advanced_btn">Advanced</span>
+										<div class="banlist_cards"></div>
+									</div>
+									<div class="save_banlist">
+										<input class="save_btn" type="submit" value="Save Changes">
+										<input class="delete_btn" type="submit" value="Delete Banlist">
+										<span class="banlist_link"></span>
+									</div>
+								</div>
+							</div>
+							<div class="inner_content banlists3">
+								<span class="name_lbl">Forbidden:</span>
+								<input type="checkbox" class="all_cards_cb">
+								<span class="all_cards_lbl">Apply to all cards</span>
+								<input type="checkbox" class="min_date_cb">
+								<span class="min_date_lbl">Min Legality Date:</span>
+								<input class="min_date_dp" type="date" min="2002-03-08">
+								<input type="checkbox" class="max_date_cb">
+								<span class="max_date_lbl">Max Legality Date:</span>
+								<input class="max_date_dp" type="date" min="2002-03-08">
+							</div>
+							<input class="banlist_back_btn" type="submit" value="Back">
+						</div>
+					</div>
+					<div class="cards"></div>
+				</div>
+				<div id="duel">
+					<!--<img id="field_spell_pic" src="images/blank.webp" alt="Field Spell" />-->
+					<!--<div id="field_spell_pic" class="field_spell_mask">
+					    <div class="top-left"></div>
+					    <div class="bottom-right"></div>
+					</div>-->
+					<!--<div id="field_spell_pic">
+					    <div class="top-left"></div>
+					    <div class="bottom-right"></div>
+					</div>-->
+					<div id="field_spell_pic">
+					    <img class="top-left" src="images/blank.png" alt="Field Spell" data-src="https://images.duelingbook.com/blank.webp">
+					    <img class="bottom-right" src="images/blank.png" alt="Field Spell" data-src="https://images.duelingbook.com/blank.webp">
+					</div>
+					<div id="rps_start" class="duel_frame"></div>
+					<div id="tp_start" class="duel_frame">
+						<img id="field_decks" class="field_decks" src="images/blank.png" alt="Decks" data-src="https://images.duelingbook.com/svg/field_decks.svg">
+					</div>
+					<div id="tp_start2" class="duel_frame">
+						<img id="field_decks2" class="field_decks" src="images/blank.png" alt="Decks" data-src="https://images.duelingbook.com/svg/field_decks2.svg">
+					</div>
+					<div id="duel_start" class="duel_frame">
+						<img id="field_zones" class="field_zones" src="images/blank.png" alt="Field" data-src="https://images.duelingbook.com/svg/field_zones.svg">
+					</div>
+					<div id="duel_start1" class="duel_frame">
+						<img id="field_zones1" class="field_zones" src="images/blank.png" alt="Field" data-src="https://images.duelingbook.com/svg/field_zones1.svg">
+					</div>
+					<div id="duel_start2" class="duel_frame">
+						<img id="field_zones2" class="field_zones" src="images/blank.png" alt="Field" data-src="https://images.duelingbook.com/svg/field_zones2.svg">
+					</div>
+					<div id="duel_start3" class="duel_frame">
+						<img id="field_zones3" class="field_zones" src="images/blank.png" alt="Field" data-src="https://images.duelingbook.com/svg/field_zones3.svg">
+					</div>
+					<div id="duel_start4" class="duel_frame">
+						<img id="field_zones4" class="field_zones" src="images/blank.png" alt="Field" data-src="https://images.duelingbook.com/svg/field_zones4.svg">
+					</div>
+					<div id="ss_spiral">
+						<img src="images/blank.png" alt="Spiral" data-src="https://images.duelingbook.com/ss_spiral_small.webp">
+					</div>
+					<div id="ss_glow">
+						<img src="images/blank.png" alt="Glow" data-src="https://images.duelingbook.com/ss_glow_small.webp">
+					</div>
+					<div id="field"></div>
+					<div class="preview"></div>
+					<div id="duel_content" class="duel_frame">
+						<div id="field_content">
+							<div id="die_btn">
+								<img src="images/blank.png" alt="Die" data-src="https://images.duelingbook.com/svg/die_btn_up.svg">
+							</div>
+							<div id="coin_btn">
+								<img src="images/blank.png" alt="Coin" data-src="https://images.duelingbook.com/svg/coin_btn_up.svg">
+							</div>
+							<div class="token_btn">
+								<img src="images/blank.png" width="30" height="28" alt="Tokwn" data-src="https://images.duelingbook.com/token_btn_up.webp">
+							</div>
+							<span id="lp_txt">LP:</span>
+							<input id="life_txt" type="text" maxlength="7" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+							<div id="minus_bg"></div>
+							<div id="plus_btn">
+								<img src="images/blank.png" alt="Plus" data-src="https://images.duelingbook.com/svg/plus_btn.svg">
+							</div>
+							<div id="minus_btn">
+								<img src="images/blank.png" alt="Minus" data-src="https://images.duelingbook.com/svg/minus_btn.svg">
+							</div>
+							<div id="turn">
+							    <div class="background">
+							        <div class="background_inner"></div>
+							    </div>
+							    
+								<div class="blue"></div>
+								<div class="red"></div>
+								<span class="arial_rounded20">TURN</span>
+							</div>
+							<div id="start_turn">
+							    <div class="background">
+							        <div class="background_inner"></div>
+							    </div>
+								<div class="red"></div>
+								<div class="green"></div>
+								<div class="yellow"></div>
+								<span class="start_turn_txt arial_rounded20">Start Turn</span>
+								<div class="white_glow"></div>
+							</div>
+							<div id="end_turn">
+							    <div class="background">
+							        <div class="background_inner"></div>
+							    </div>
+								<div class="red"></div>
+								<div class="green"></div>
+								<div class="yellow"></div>
+								<span class="end_turn_txt arial_rounded20">End Turn</span>
+								<div class="white_glow"></div>
+							</div>
+						</div>
+						<div id="field_stats">
+							<span id="hm1_txt"></span>
+							<span id="hm2_txt"></span>
+							<span id="hm3_txt"></span>
+							<span id="hm4_txt"></span>
+							<span id="hm5_txt"></span>
+							<span id="om1_txt"></span>
+							<span id="om2_txt"></span>
+							<span id="om3_txt"></span>
+							<span id="om4_txt"></span>
+							<span id="om5_txt"></span>
+							<span id="hl_txt"></span>
+							<span id="ol_txt"></span>					
+						</div>
+						<div id="counters"></div>
+						<div id="hidden_spots">
+							<div class="untouchable">
+								<span id="m1_hidden"></span>
+								<span id="m2_hidden"></span>
+								<span id="m3_hidden"></span>
+								<span id="m4_hidden"></span>
+								<span id="m5_hidden"></span>							
+								<span id="opp_m1_hidden"></span>
+								<span id="opp_m2_hidden"></span>
+								<span id="opp_m3_hidden"></span>
+								<span id="opp_m4_hidden"></span>
+								<span id="opp_m5_hidden"></span>
+								<span id="link_left_hidden"></span>
+								<span id="link_right_hidden"></span>
+							</div>
+							<span id="deck_hidden"></span>
+							<span id="grave_hidden"></span>
+							<span id="banished_hidden"></span>
+							<span id="extra_hidden"></span>
+							<span id="opp_deck_hidden"></span>
+							<span id="opp_grave_hidden"></span>
+							<span id="opp_banished_hidden"></span>
+							<span id="opp_extra_hidden"></span>
+						</div>
+						<div id="numbers">
+							<span id="cid1_txt"></span>
+							<span id="cig1_txt"></span>
+							<span id="cib1_txt"></span>
+							<span id="cie1_txt"></span>
+							<span id="cid2_txt"></span>
+							<span id="cig2_txt"></span>
+							<span id="cib2_txt"></span>
+							<span id="cie2_txt"></span>
+						</div>
+						<div id="select_zones" class="glowing">
+							<div id="m1_select"></div>
+							<div id="m2_select"></div>
+							<div id="m3_select"></div>
+							<div id="m4_select"></div>
+							<div id="m5_select"></div>
+							
+							<div id="m1_select2"></div>
+							<div id="m2_select2"></div>
+							<div id="m3_select2"></div>
+							<div id="m4_select2"></div>
+							<div id="m5_select2"></div>
+							
+							<div id="s1_select"></div>
+							<div id="s2_select"></div>
+							<div id="s3_select"></div>
+							<div id="s4_select"></div>
+							<div id="s5_select"></div>
+							
+							<div id="field_spell1_select"></div>
+							<div id="field_spell2_select"></div>
+							
+							<div id="link_left_select"></div>
+							<div id="link_right_select"></div>
+						</div>
+						
+						<div class="cards"></div>
+						<div id="spark"></div>
+						
+						<div id="red_stream"></div>
+						<div id="blue_stream"></div>
+						<div class="red_target target">
+							<img src="images/blank.png" alt="Target" data-src="https://images.duelingbook.com/svg/red_target.svg">
+						</div>
+						<div class="blue_target target">
+							<img src="images/blank.png" alt="Target" data-src="https://images.duelingbook.com/svg/blue_target.svg">
+						</div>
+						<div class="green_target target">
+							<img src="images/blank.png" alt="Target" data-src="https://images.duelingbook.com/svg/green_target.svg">
+						</div>
+						<div id="sword">
+							<img src="images/blank.png" alt="Sword" data-src="https://images.duelingbook.com/svg/sword.svg">
+						</div>
+						<div id="coin">
+							<img class="tails" src="images/blank.png" alt="Tails" data-src="https://images.duelingbook.com/coin_tails.webp">
+							<img class="heads" src="images/blank.png" alt="Heads" data-src="https://images.duelingbook.com/coin_heads.webp">
+						</div>
+						<div id="die" class="reset">
+							<div id="side1" class="face">
+								<div class="shader"></div>
+							</div>
+							<div id="side2" class="face">
+								<div class="shader"></div>
+							</div>
+							<div id="side3" class="face">
+								<div class="shader"></div>
+							</div>
+							<div id="side4" class="face">
+								<div class="shader"></div>
+							</div>
+							<div id="side5" class="face">
+								<div class="shader"></div>
+							</div>
+							<div id="side6" class="face">
+								<div class="shader"></div>
+							</div>
+						</div>
+						<div id="shine"></div>
+						<div id="choose_zones">
+							<div class="background"></div>
+							<input id="choose_zones_cb" type="checkbox" checked>
+							<span id="choose_zones_lbl">Choose Zones</span>
+						</div>
+						<!-- think_btn -->
+						<div id="good_btn" class="like_btn">
+							<img src="images/blank.png" alt="All Good" data-src="https://images.duelingbook.com/svg/like_btn_up.svg">
+						</div>
+						<input id="auto_shuffle_cb" type="checkbox" checked>
+						<span id="auto_shuffle_lbl">Auto-Shuffle</span>
+						<input id="auto_draw_cb" type="checkbox" checked>
+						<span id="auto_draw_lbl">Auto-Draw</span>
+						<div id="shuffle_btn">
+							<img src="images/blank.png" width="30" height="30" alt="Shuffle" data-src="https://images.duelingbook.com/hand_cards.webp">
+							<div class="blue">
+								<span class="shuffle_lbl">Shuffle</span>
+							</div>
+						</div>
+						<div id="show_hand_btn">
+							<img class="hand" src="images/blank.png" alt="Hand" data-src="https://images.duelingbook.com/svg/hand.svg">
+							<img src="images/blank.png" width="30" height="30" alt="Show Hand" data-src="https://images.duelingbook.com/hand_cards.webp">
+							<div class="blue">
+								<span class="show_lbl">Show</span>
+							</div>
+						</div>
+						<div id="view">
+							<div class="background"></div>
+							<div class="background_inner"></div>
+							<div class="top"></div>
+							<span class="title_txt arial_rounded20">Viewing Graveyard</span>
+							<input class="search_txt" type="text">
+							<div class="expand_btn">
+								<img src="images/blank.png" alt="Add Card" data-src="https://images.duelingbook.com/svg/expand_btn_up.svg">
+							</div>
+							<div class="exit_btn">
+								<img src="images/blank.png" alt="Exit" data-src="https://images.duelingbook.com/svg/exit_btn_up.svg">
+							</div>
+							<div class="content"></div>
+						</div>
+					</div>
+					<div id="siding" class="duel_frame">
+						<!--<img class="deck_constructor" src="images/svg/deck_constructor4-2.svg" alt="Deck" />-->
+                        <div class="deck_bg">
+                            <div class="total_bg">
+                                <span class="total_txt">0</span>
+                            </div>
+                            <div class="total_effect_bg">
+                                <span class="total_effect_txt">0</span>
+                            </div>
+                            <div class="total_spell_bg">
+                                <span class="total_spell_txt">0</span>
+                            </div>
+                            <div class="total_trap_bg">
+                                <span class="total_trap_txt">0</span>
+                            </div>
+                            <div class="sort_btn">
+                                <img src="images/blank.png" alt="Sort" data-src="https://images.duelingbook.com/svg/sort_btn_up.svg">
+                            </div>
+                            <div class="skill_btn">
+                                <div class="skill_bg"></div>
+                                <img src="images/blank.png" width="29" height="29" alt="Skill" data-src="https://images.duelingbook.com/skill_btn.webp">
+                            </div>
+                            <span class="deck_lbl">DECK</span>
+                            <div class="deck_mask">
+                                <div class="slots"></div>
+                                <div class="deck_cards"></div>
+                                <div class="holes"></div>
+                            </div>
+                        </div>
+                        <div class="side_bg">
+                            <span class="side_lbl">SIDE</span>
+                            <div class="side_mask">
+                                <div class="slots"></div>
+                                <div class="side_cards"></div>
+                                <div class="holes"></div>
+                            </div>
+                        </div>
+                        <div class="extra_bg">
+                            <span class="extra_lbl">EXTRA</span>
+                            <div class="extra_mask">
+                                <div class="slots"></div>
+                                <div class="extra_cards"></div>
+                                <div class="holes"></div>
+                            </div>
+                        </div>
+						<span id="siding_in_progress">Siding in progress! Please wait...</span>
+						<!--<div class="cards"></div> This is used if card dragging is enabled during siding. It existing breaks eyal's extension when drawing cards -->
+					</div>
+					<div id="viewing"></div>
+					<div id="overlay">
+						<img src="images/blank.png" alt="Overlay" data-src="https://images.duelingbook.com/svg/overlay.svg">
+					</div>
+					<div id="watchers_btn">
+						<img src="images/blank.png" width="34" height="34" alt="Watchers" data-src="https://images.duelingbook.com/watchers_btn_up.webp">
+					</div>
+					<div id="log_btn">
+						<img src="images/blank.png" width="41" height="37" alt="Duel Log" data-src="https://images.duelingbook.com/log_btn_up.webp">
+					</div>
+					<input id="siding_btn" type="submit" value="Begin Siding">
+					<input id="defeat_btn" type="submit" value="Admit Defeat">
+					<input id="swap_btn" type="submit" value="Swap Cards">
+					<input id="opponent_loss_btn" type="submit" value="Opponent Loss">
+						<!--<input id="mulligan_btn" type="submit" value="Mulligan" />-->
+					<input id="draw_btn" type="submit" value="Offer Draw">
+					<input id="reset_btn" type="submit" value="Reset Deck">
+					<input id="host_loss_btn" type="submit" value="Host Loss">
+					<input id="call_admin_btn" type="submit" value="Call Judge">
+					<input id="rematch_btn" type="submit" value="Offer Rematch">
+					<input id="cancel_duel_btn" type="submit" value="Cancel Duel">
+					<input id="duel_quit_btn" type="submit" value="Quit">
+					<div id="watchers">
+						<span class="watchers_txt">Watchers: 0</span>
+						<div class="users list"></div>
+					</div>
+					<div id="lifepoints2" class="lifepoints">
+						<div class="life_bar">
+							<div class="black_bar"></div>
+						</div>
+						<div class="life_border"></div>
+						<span class="life_txt">8000</span>
+					</div>
+					<span id="done_siding2">Done siding!</span>
+					<div id="avatar2" class="duel_avatar">
+						<img class="image" src="images/blank.png" alt="Loading" data-src="https://images.duelingbook.com/loading.gif">
+						<div class="nsfw"></div>
+						<img class="think" src="images/blank.png" alt="Thinking" data-src="https://images.duelingbook.com/think.webp">
+						<div class="all_good">
+						    <img src="images/blank.png" alt="All Good" data-src="https://images.duelingbook.com/svg/like_btn_up.svg">
+						    <span class="keep_going">Keep<br>Going!</span>
+						</div>
+						<div id="bubbles2" class="bubbles"></div>
+						<div class="rating">
+							<span class="rating_txt">rating/rep</span>
+						</div>
+						<input class="nsfw_btn" type="submit" value="Show Image">
+						<span class="username_txt selectable">Username</span>
+					</div>
+					<div id="avatar4" class="duel_avatar">
+						<img class="image" src="images/blank.png" alt="Loading" data-src="https://images.duelingbook.com/loading.gif">
+						<div class="nsfw"></div>
+						<img class="think" src="images/blank.png" alt="Thinking" data-src="https://images.duelingbook.com/think.webp">
+						<div class="all_good">
+						    <img src="images/blank.png" alt="All Good" data-src="https://images.duelingbook.com/svg/like_btn_up.svg">
+						    <span class="keep_going">Keep<br>Going!</span>
+						</div>
+						<div id="bubbles4" class="bubbles"></div>
+						<div class="rating">
+							<span class="rating_txt">rating/rep</span>
+						</div>
+						<input class="nsfw_btn" type="submit" value="Show Image">
+						<span class="username_txt selectable">Username</span>
+					</div>
+					<div id="status2" class="duel_status">
+						<span class="status_txt arial_rounded25"></span>
+					</div>
+					<div id="gone2" class="gone"></div>
+					<div id="countdown2">300</div>
+					<div class="cout_txt textarea" tabindex="0"></div>
+					<div class="refresh_btn">
+						<div class="refresh_bg"></div>
+						<img src="images/blank.png" alt="Refresh" data-src="https://images.duelingbook.com/svg/refresh_btn.svg">
+					</div>
+					<input class="cin_txt" type="text" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+					<!--<input class="html_cb" type="checkbox" />-->
+					<div id="think_btn">
+						<img src="images/blank.png" alt="Think" data-src="https://images.duelingbook.com/think.webp">
+					</div>
+					<div id="avatar1" class="duel_avatar">
+						<img class="image" src="images/blank.png" alt="Loading" data-src="https://images.duelingbook.com/loading.gif">
+						<div class="nsfw"></div>
+						<img class="think" src="images/blank.png" alt="Thinking" data-src="https://images.duelingbook.com/think.webp">
+						<div id="bubbles1" class="bubbles"></div>
+						<div class="rating">
+							<span class="rating_txt">rating/rep</span>
+						</div>
+						<input class="nsfw_btn" type="submit" value="Show Image">
+						<div class="all_good">
+						    <img src="images/blank.png" alt="All Good" data-src="https://images.duelingbook.com/svg/like_btn_up.svg">
+						    <span class="keep_going">Keep<br>Going!</span>
+						</div>
+                        <div id="siding_note">
+                            <span class="arial_rounded25">To swap cards, click on the cards to be swapped, then click Swap Cards</span>
+                        </div>
+						<span class="username_txt selectable">Username</span>
+					</div>
+					<div id="avatar3" class="duel_avatar">
+						<img class="image" src="images/blank.png" alt="Loading" data-src="https://images.duelingbook.com/loading.gif">
+						<div class="nsfw"></div>
+						<img class="think" src="images/blank.png" alt="Thinking" data-src="https://images.duelingbook.com/think.webp">
+						<div class="all_good">
+						    <img src="images/blank.png" alt="All Good" data-src="https://images.duelingbook.com/svg/like_btn_up.svg">
+						    <span class="keep_going">Keep<br>Going!</span>
+						</div>
+						<div id="bubbles3" class="bubbles"></div>
+						<div class="rating">
+							<span class="rating_txt">rating/rep</span>
+						</div>
+						<input class="nsfw_btn" type="submit" value="Show Image">
+						<span class="username_txt selectable">Username</span>
+					</div>
+					<div id="status1" class="duel_status">
+						<span class="status_txt arial_rounded25"></span>
+					</div>
+					<input id="pause_btn" type="submit" value="Pause Game">
+					<div id="gone1" class="gone"></div>
+					<div id="countdown1">300</div>
+					<div id="over">
+						<img src="images/blank.png" alt="Over" data-src="https://images.duelingbook.com/svg/over.svg">
+						<span class="title_txt">Duel Over</span>
+						<span class="body_txt"></span>
+						<div class="ok_btn">
+							<img src="images/blank.png" alt="OK" data-src="https://images.duelingbook.com/svg/ok_btn_up.svg">
+						</div>
+					</div>
+					<div id="lifepoints1" class="lifepoints">
+						<div class="life_bar">
+							<div class="black_bar"></div>
+						</div>
+						<div class="life_border"></div>
+						<span class="life_txt">8000</span>
+					</div>
+					<input id="done_siding_btn" type="submit" value="Done Siding">
+					<span id="done_siding1">Done siding!</span>
+				</div>
+			</div>
+			<div id="chats">
+				<div id="online_users" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Online Users</span>
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="users list"></div>
+						<input class="search_txt" type="text">
+						<div class="black_line"></div>
+						<span class="total_txt">Users online:  0</span>
+					</div>
+				</div>
+				<div id="calls" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Admin</span>
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="calls_btn tab_btn selected">Calls</div>
+						<div class="tools_btn tab_btn">Tools</div>
+						<div class="log_btn tab_btn">Log</div>
+					</div>
+					<div class="calls list"></div>
+					<div class="tools">
+						<span class="username_lbl">Username:</span>
+						<input class="username_txt" type="text">
+						<select class="action_cb"></select>
+						<input class="days_rb" type="radio" name="days2" checked>
+						<input class="days_txt" type="text" maxlength="25">
+						<span class="days_lbl">Days</span>
+						<input class="forever_rb" type="radio" name="days2">
+						<span class="forever_lbl">Forever</span>
+						<span class="reason_lbl">Reason:</span>
+						<input class="reason_txt" type="text">
+						<!--<select class="reason_cb">
+						    <option value="Cheating">Cheating</option>
+						    <option value="Malicious AFK">Malicious AFK</option>
+						    <option value="Lying to an Administrator">Lying to an Administrator</option>
+						    <option value="Harassment">Harassment</option>
+						    <option value="Spam">Spam</option>
+						    <option value="Objectionable Material">Objectionable Material</option>
+						    <option value="Making Threats">Making Threats</option>
+						    <option value="Extend">Extend a previous freeze</option>
+						</select>-->
+						<input class="strike_cb" type="checkbox" checked>
+						<span class="strike_lbl">Increment Strike Count</span>
+						<input class="all_accounts_cb" type="checkbox" checked>
+						<span class="all_accounts_lbl">All Accounts</span>
+						<span class="status_txt">Status:</span>
+						<span class="strikes_txt">Strikes:</span>
+						<input class="submit_btn" type="submit" value="Freeze User">
+						<div class="result_txt textarea" tabindex="0"></div>
+					</div>
+					<div class="log">
+						<div class="log_txt textarea" tabindex="0"></div>
+						<div id="log_cycle"></div>
+						<div class="log_tools">
+							<input class="chat_cb" type="checkbox" checked>
+							<span class="chat_lbl">Chat</span>
+							<input class="duel_cb" type="checkbox" checked>
+							<span class="duel_lbl">Duel</span>
+							<input class="game_cb" type="checkbox" checked>
+							<span class="game_lbl">Game</span>
+							<div class="refresh_btn">
+								<div class="refresh_bg"></div>
+								<img src="https://images.duelingbook.com/svg/refresh_btn.svg" alt="Refresh">
+							</div>
+							<input class="private_cb" type="checkbox" checked>
+							<span class="private_lbl">Private Info</span>
+							<input class="usernames_cb" type="checkbox">
+							<span class="usernames_lbl">Usernames</span>
+							<div class="black_line"></div>
+							<input class="search_txt" type="text">
+							<img class="lookup" src="https://images.duelingbook.com/svg/lookup.svg" alt="Search">
+							<input class="export_btn" type="submit" value="Export">
+						</div>
+					</div>
+					<div class="black_line"></div>
+					<span class="calls_lbl">Calls:   0</span>
+				</div>
+				<div id="public_chat" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Public Chat</span>
+						</div>
+						<div class="refresh_btn">
+							<div class="refresh_bg"></div>
+							<img src="https://images.duelingbook.com/svg/refresh_btn.svg" alt="Refresh">
+						</div>
+						<div class="expand_btn">
+							<img src="https://images.duelingbook.com/svg/expand_btn_up.svg" alt="Expand">
+						</div>
+						<div class="minimize2_btn">
+							<img src="https://images.duelingbook.com/svg/minimize2_btn_up.svg" alt="Minimize">
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="cout_txt textarea" tabindex="0"></div>
+						<div id="public_chat_cycle"></div>
+						<input class="cin_txt" type="text" maxlength="500">
+						<input class="html_cb" type="checkbox">
+					</div>
+				</div>
+				<div id="private_chat" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Private Chat</span>
+						</div>
+						<div class="refresh_btn">
+							<div class="refresh_bg"></div>
+							<img src="https://images.duelingbook.com/svg/refresh_btn.svg" alt="Refresh">
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+						<div class="exit_btn">
+							<img src="https://images.duelingbook.com/svg/exit_btn_up.svg" alt="Exit">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="cout_txt textarea" tabindex="0"></div>
+						<div id="private_chat_cycle"></div>
+						<input class="cin_txt" type="text" maxlength="500">
+						<div class="users list"></div>
+						<input class="html_cb" type="checkbox">
+					</div>
+				</div>
+				<div id="watch_chat" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Watcher's Chat</span>
+						</div>
+						<div class="refresh_btn">
+							<div class="refresh_bg"></div>
+							<img src="https://images.duelingbook.com/svg/refresh_btn.svg" alt="Refresh">
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="cout_txt textarea" tabindex="0"></div>
+						<div id="watch_chat_cycle"></div>
+						<input class="cin_txt" type="text" maxlength="500">
+						<input class="html_cb" type="checkbox">
+					</div>
+				</div>
+				<div id="duel_log" class="chat">
+					<div class="chat_top">
+						<div class="chat_top_bg">
+							<span>Duel Log</span>
+						</div>
+						<div class="export_btn">
+							<img src="https://images.duelingbook.com/svg/export_btn.svg" alt="Export">
+						</div>
+						<div class="minimize_btn">
+							<img src="https://images.duelingbook.com/svg/minimize_btn_up.svg" alt="Minimize">
+						</div>
+					</div>
+					<div class="chat_background">
+						<div class="log">
+							<div class="log_txt textarea" tabindex="0"></div>
+							<div class="log_tools">
+								<input class="chat_cb" type="checkbox" checked>
+								<span class="chat_lbl">Chat</span>
+								<input class="duel_cb" type="checkbox" checked>
+								<span class="duel_lbl">Duel</span>
+								<input class="game_cb" type="checkbox" checked>
+								<span class="game_lbl">Game</span>
+								<input class="private_cb" type="checkbox" checked>
+								<span class="private_lbl">Private Info</span>
+								<input class="usernames_cb" type="checkbox">
+								<span class="usernames_lbl">Usernames</span>
+								<div class="black_line"></div>
+								<input class="search_txt" type="text">
+								<img class="lookup" src="https://images.duelingbook.com/svg/lookup.svg" alt="Search">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="action_list"></div>
+			</div>
+			<div id="screenshot_btn">
+				<div class="hidden"></div>
+				<img src="https://images.duelingbook.com/svg/screenshot_btn_up.svg" alt="Screenshot">
+			</div>
+			<div id="welcome_buttons">
+				<span id="skip_intro_btn">Skip Intro</span>
+				<span id="welcome_btn">Welcome</span>
+				<span id="forum_btn">Forum</span>
+				<span id="rules_btn">Rules</span>
+				<span id="blog_btn">Blog</span>
+			</div>
+			<div id="chat_buttons">
+				<div id="online_btn">
+					<img src="https://images.duelingbook.com/svg/online_btn_up.svg" alt="Online Users">
+				</div>
+				<div id="tools_btn">
+					<img src="https://images.duelingbook.com/svg/tools_btn_up.svg" alt="Admin">
+				</div>
+				<div id="chat_btn">
+					<img src="https://images.duelingbook.com/svg/chat_btn_up.svg" alt="Public Chat">
+				</div>
+				<div id="private_btn">
+					<img src="https://images.duelingbook.com/svg/private_btn_up.svg" alt="Private Chat">
+				</div>
+				<div id="private_btn_anim">
+					<img src="https://images.duelingbook.com/svg/private_btn_anim.svg" alt="Private Chat">
+				</div>
+			</div>
+			<div id="mute_btn">
+				<img src="https://images.duelingbook.com/svg/mute_btn_up.svg" alt="Sound">
+			</div>
+			<div id="cross">
+				<img src="https://images.duelingbook.com/svg/cross.svg" alt="Sound Off">
+			</div>
+			<img id="genesys_arrow" src="https://images.duelingbook.com/svg/arrow.svg" alt="Arrow">
+			<div id="tooltips" class="aliased">
+				<div id="online_users_tooltip">Online Users</div>
+				<div id="public_chat_tooltip">Public Chat</div>
+				<div id="private_chat_tooltip">Private Chat</div>
+				<div id="call_tooltip">Admin</div>
+				<div id="watch_chat_tooltip">Watchers</div>
+				<div id="log_tooltip">Log</div>
+				<div id="points_tooltip">Genesys Toggle</div>
+				<div id="token_tooltip">Token Select</div>
+				<div id="sort_tooltip">Sort Deck</div>
+				<div id="randomize_tooltip">Randomize</div>
+				<div id="lock_tooltip">Deck Privacy</div>
+				<div id="skill_tooltip">Skill Card</div>
+			</div>
+			
+            <div id="token_select" class="subscreen">
+                <div class="background"></div>
+                <div class="background_inner">
+                    <div class="background"></div>
+                    <div class="exit_btn">
+                        <img src="https://images.duelingbook.com/svg/exit_btn_up.svg" alt="Exit">
+                    </div>
+                    <span class="title_txt">TOKEN</span>
+                    <div class="content"></div>
+                    <div class="preview"></div>
+                    <input class="filter_txt" type="text">
+                    <input class="save_token_btn" type="submit" value="Save">
+                    <input class="delete_token_btn" type="submit" value="Delete Token">
+                    <input class="browse_btn" type="file" accept=".jpg, .png, .jpeg, .gif, .webp" label="Upload">
+                </div>
+            </div>
+			<div id="notifications"></div>
+			<div id="actions">
+				<div class="background"></div>
+				<div class="background_inner">
+					<div class="background"></div>
+					<div class="exit_btn">
+						<img src="https://images.duelingbook.com/svg/exit_btn_up.svg" alt="Exit">
+					</div>
+					<div class="actions_txt textarea" tabindex="0"></div>
+				</div>
+			</div>
+			<div id="dim">
+			    <div class="background"></div>
+			</div>
+			<span id="reconnecting" class="connection_status2">Reconnecting...</span>
+			<!--<div id="reconnecting" class="connection_status2">
+				<span>Reconnecting...</span>
+			</div>-->
+			<div id="msg">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable"></div>
+				<div class="ok_btn">
+					<img src="https://images.duelingbook.com/svg/ok_btn_up.svg" alt="OK">
+				</div>
+			</div>
+			<div id="link">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable cyan">Link:</div>
+				<input class="input_txt" type="text" readonly>
+				<div class="ok_btn">
+					<img src="https://images.duelingbook.com/svg/ok_btn_up.svg" alt="OK">
+				</div>
+			</div>
+			<div id="confirm">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable"></div>
+				<div class="yes_btn">
+					<img src="https://images.duelingbook.com/svg/yes_btn_up.svg" alt="Yes">
+				</div>
+				<div class="no_btn">
+					<img src="https://images.duelingbook.com/svg/no_btn_up.svg" alt="No">
+				</div>
+			</div>
+			<div id="confirm2">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable"></div>
+				<div class="yes_btn">
+					<img src="https://images.duelingbook.com/svg/yes_btn_up.svg" alt="Yes">
+				</div>
+				<div class="no_btn">
+					<img src="https://images.duelingbook.com/svg/no_btn_up.svg" alt="No">
+				</div>
+				<div class="cancel_btn">
+					<img src="https://images.duelingbook.com/svg/cancel_btn_up.svg" alt="Cancel">
+				</div>
+			</div>
+			<div id="input">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable">Enter your input below</div>
+				<input class="input_txt" type="text">
+				<div class="ok_btn">
+					<img src="https://images.duelingbook.com/svg/ok_btn_up.svg" alt="OK">
+				</div>
+				<div class="cancel_btn">
+					<img src="https://images.duelingbook.com/svg/cancel_btn_up.svg" alt="Cancel">
+				</div>
+			</div>
+			<div id="input2">
+				<span class="title_txt">Edit Stats</span>
+				<div class="body_txt selectable">Enter your input below</div>
+				<div class="atk_lbl selectable">ATK:</div>
+				<input class="atk_txt" type="text" maxlength="5">
+				<div class="def_lbl selectable">DEF:</div>
+				<input class="def_txt" type="text" maxlength="5">
+				<div class="reset_btn">Reset</div>
+				<div class="ok_btn">
+					<img src="https://images.duelingbook.com/svg/ok_btn_up.svg" alt="OK">
+				</div>
+				<div class="cancel_btn">
+					<img src="https://images.duelingbook.com/svg/cancel_btn_up.svg" alt="Cancel">
+				</div>
+			</div>
+			<div id="combo">
+				<span class="title_txt">Message</span>
+				<div class="body_txt selectable">Enter your input below</div>
+				<select class="combo_cb"></select>
+				<div class="ok_btn">
+					<img src="https://images.duelingbook.com/svg/ok_btn_up.svg" alt="OK">
+				</div>
+				<div class="cancel_btn">
+					<img src="https://images.duelingbook.com/svg/cancel_btn_up.svg" alt="Cancel">
+				</div>
+			</div>
+			
+			<div id="msg_2">
+			    <div id="msg_2_gray"></div>
+			    <div id="msg_2_dark"></div>
+			</div>
+			
+			<!--<div id="recaptcha_bg">
+				<div class="recaptcha"></div>
+			</div>-->
+			<!--<div id="recaptcha_bg2">
+				<div class="recaptcha"></div>
+			</div>-->
+            <div id="turnstile_bg">
+                <div id="turnstile"></div>
+            </div>
+			<div id="mobile_txt" class="textarea"></div>
+		</div>
+		<!--<div id="mes1"></div>
+		<div id="mes2"></div>
+		<div id="mes3"></div>
+		<div id="mes4"></div>
+		<div id="mes1">
+			<div id="ezoic-pub-ad-placeholder-101" class="vm-placement vm-banner-ad" data-id="61572783ec3b93764e77eec0"></div>
+			<div class=pa-direct-inject><script>(()=>{const _injectAtElem=document.currentScript.parentElement;let _paInt;const _injectAd=()=>{if(!window.paGlobal)return;clearInterval(_paInt);paGlobal.directInject(59939,_injectAtElem)};if(!window.paGlobal){_paInt=setInterval(_injectAd,100);setTimeout(()=>clearInterval(_paInt),4000);return};_injectAd()})()</script></div>
+		</div>
+		<div id="mes2">
+			<div id="ezoic-pub-ad-placeholder-102" class="vm-placement" data-id="62de362b8922672aafb908d6"></div>
+		</div>
+		<div id="mes3">
+			<div id="ezoic-pub-ad-placeholder-103" class="vm-placement vm-banner-ad" data-id="61572783ec3b93764e77eec0"></div>
+		</div>
+		<div id="mes4">
+			<div id="ezoic-pub-ad-placeholder-104"></div>
+		</div>-->
+        <div id="mes1">
+			<div id="ezoic-pub-ad-placeholder-101"></div>
+		</div>
+		<div id="mes2">
+			<div id="ezoic-pub-ad-placeholder-102"></div>
+		</div>
+		<div id="mes3">
+			<div id="ezoic-pub-ad-placeholder-103"></div>
+		</div>
+		<div id="mes4">
+			<div id="ezoic-pub-ad-placeholder-104"></div>
+		</div>
+		<script>
+            $('img').each(function(i, img){
+                /*if (img.complete) { // returns true for images that are still loading
+                    if (img.naturalWidth === 0) {
+                        replaceSrc(img);
+                    }
+                    return true;
+                }*/
+                img.onerror = function(e){
+                    if (e.target.tagName === 'IMG') {
+                        replaceSrc(img);
+                    }
+                };
+            });
+            
+            function replaceSrc(img) {
+                img.src = img.src.replace('.webp', '.png');
+            }
+		</script>
+		<script src="https://static.duelingbook.com/utils.js?v=932"></script>
+		<script src="https://static.duelingbook.com/duel.js?v=932"></script>
+		<script src="https://static.duelingbook.com/main.js?v=932"></script>
+		<script>
+		     watchForFloatingAds();
+		
+		    if (GET('raf') == 'false') {
+		        console.log('useRAF = false');
+		        TweenMax.ticker.useRAF(false);
+                setTimeout(function(){
+                    console.log('useRAF = false');
+                    TweenMax.ticker.useRAF(false);
+                }, 4000);
+		    }
+		    //var DATE = new Date("2025-11-29T00:00:00-07:00"); // Mountain Time 
+		    //blackFridayTimer.callback = blackFridayE;
+		    //blackFridayTimer.start();
+		    
+		    function addTesting() {
+		        $('body').addClass("testing");
+		    }
+		    
+		    //watchForAnchorAd();
+		    
+function addSkyscraperAd2() {
+	/*ezstandalone.cmd.push(function() {
+		ezstandalone.showAds(104);
+	});
+	console.log('Adding mes4');*/
+}
+
+/*function addBannerAd1() {
+	
+}
+
+function watchForAnchorAd() {
+    console.log('watchForAnchorAd');
+	if ($('[id^="gpt_unit"]').length > 0) {
+		finish();
+		return;
+	}
+    var targetNode = $('html')[0];
+    if (!targetNode) {
+    	return;
+    }
+    var observer = new MutationObserver(function(mutationsList, observer) {
+        mutationsList.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if ($('[id^="gpt_unit"]').length > 0) {
+                    finish(observer);
+                }
+            });
+        });
+    });
+    var config = { childList: true, subtree: true };
+    observer.observe(targetNode, config);
+    
+    function finish(observer) {
+        $('[id^="gpt_unit"]').addClass("fixed");
+        $('[id^="gpt_unit"]')[0].style.setProperty('background', 'none', 'important');
+		if (observer) {
+		    observer.disconnect();
+		}
+    }
+}*/
+
+function watchForTopAd() {
+	if (mes1.data("watching")) {
+		return;
+	}
+	mes1.data("watching", true);
+    console.log('watchForTopAd');
+    var targetNode = $('#mes1')[0];
+    if (!targetNode) {
+    	return;
+    }
+    var observer = new MutationObserver(function(mutationsList, observer) {
+        mutationsList.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if ($('#mes1 > #ezoic-pub-ad-placeholder-101 > div > .ezoic-ad').length > 0) {
+                    finish(observer);
+                }
+            });
+        });
+    });
+    var config = { childList: true, subtree: true };
+    observer.observe(targetNode, config);
+	if (mes1.find('> #ezoic-pub-ad-placeholder-101 > div > .ezoic-ad').length > 0) {
+		finish();
+	}
+    
+    function finish(observer) {
+        console.log('correcting mes1');
+        mes1.data("filled", true);
+        mes1.find('> #ezoic-pub-ad-placeholder-101 > div > .ezoic-ad')[0].style.setProperty('margin-top', 'unset', 'important');
+		//if (observer) {
+		//    observer.disconnect();
+		//}
+    }
+}
+
+function searchCards(e) {
+	console.time("searchCards");
+	console.time("searchCards2");
+
+	if (saved_search == null) {
+		return;
+	}
+	if (e) {
+		showDim();
+		$('#dim').css("pointer-events", "none");
+	}
+	if (awaiting_cards) {
+		return;
+	}
+	awaiting_cards = true;
+	var search = {"action":"Search cards", "search":saved_search, "page":~~pageNumber};
+	//if (!cards_fingerprint || saved_search.custom > 0) {
+	//if (!cards_fingerprint || ~~saved_search.custom != 0 && ~~saved_search.custom != 6) {
+	//if (!cards_fingerprint || [1,2,3,9].includes(saved_search.custom)) {
+	if (!cards_fingerprint || [1,2,3].includes(saved_search.custom) || saved_search.custom == 9 && hasCustomFavorites()) {
+		filterObject(search.search);
+		Send(search);
+		return;
+	}
+	searching = true;
+	var name = saved_search.name;
+	var effect = saved_search.effect.replace(/● /g, '●');
+	var card_type = saved_search.card_type;
+	var monster_color = saved_search.monster_color;
+	var type = str(saved_search.type);
+	var ability = saved_search.ability;
+	var attribute = saved_search.attribute;
+	var level_low = saved_search.level_low;
+	var level_high = saved_search.level_high;
+	var atk_low = saved_search.atk_low;
+	var atk_high = saved_search.atk_high;
+	var def_low = saved_search.def_low;
+	var def_high = saved_search.def_high;
+	var limit = saved_search.limit;
+	var order = saved_search.order ?? "Alpha";
+	var pendulum = saved_search.pendulum;
+	var scale_low = saved_search.scale_low;
+	var scale_high = saved_search.scale_high;
+	var tcg = saved_search.tcg;
+	var ocg = saved_search.ocg;
+	var ocg_list = saved_search.ocg_list;
+	var arrows = saved_search.arrows ?? "00000000";
+	/*	var name = saved_search.name ?? "";
+	var effect = saved_search.effect ?? "";
+	var card_type = saved_search.card_type ?? "";
+	var monster_color = saved_search.monster_color ?? "";
+	var type = str(saved_search.type) ?? "";
+	var ability = saved_search.ability ?? "";
+	var attribute = saved_search.attribute ?? "";
+	var level_low = saved_search.level_low ?? "";
+	var level_high = saved_search.level_high ?? "";
+	var atk_low = saved_search.atk_low ?? "";
+	var atk_high = saved_search.atk_high ?? "";
+	var def_low = saved_search.def_low ?? "";
+	var def_high = saved_search.def_high ?? "";
+	var limit = saved_search.limit ?? "";
+	var order = saved_search.order ?? "";
+	var pendulum = saved_search.pendulum ?? 0;
+	var scale_low = saved_search.scale_low ?? "";
+	var scale_high = saved_search.scale_high ?? "";
+	var tcg = saved_search.tcg ?? 0;
+	var ocg = saved_search.ocg ?? 0;
+	var ocg_list = saved_search.ocg_list ?? 0;
+	var arrows = saved_search.arrows ?? "";*/
+	var total = 0;
+	var page = pageNumber;
+		page = (20 * page) - 20;
+	var full_search = false;
+	var cards = [];
+	if (name.length >= 3 || effect.length >= 3) {
+		//full_search = true;
+	}
+	var names = name.toLowerCase().split('*');
+	var effects = effect.toLowerCase().split('*');
+	var cards0 = Cards.slice();
+	switch(order) {
+		case "Date":
+		case "Release Date":
+			cards0.sort(sortCardsByDate);
+			break;
+		case "Updated":
+		case "Last Updated":
+			cards0.sort(sortCardsByUpdated);
+			break;
+		case "Alpha":
+			cards0.sort(sortByName);
+			break;
+		case "Least":
+			cards0.sort(sortByText);
+			break;
+		case "Points":
+			cards0.sort(sortByPoints);
+			break;
+		default:
+		case "New First":
+			cards0.reverse();
+			break;
+	}
+	
+	
+	var BANLIST = getBanlist(banlists.val());
+	
+	outerloop:
+	for (var i = 0; i < cards0.length; i++) {
+		if (cards0[i].name == null) {
+			continue;
+		}
+		if (cards0[i].name == "") {
+			continue;
+		}
+		//if (cards0[i].hidden == 1) {
+		if (cards0[i].hidden == 1 && (saved_search.custom != 9 || !favorites.includes(cards0[i].id))) {
+			continue;
+		}
+		switch(saved_search.custom) {
+			case 0:
+				if (cards0[i].rush) {
+					continue;
+				}
+				if (cards0[i].card_type == "Skill") {
+					continue;
+				}
+				
+				
+				
+				// untested
+				if (BANLIST.id != 176) {
+					var legality = getLegality(cards0[i].id, cards0[i].tcg, cards0[i].ocg, cards0[i].tcg_date, cards0[i].ocg_date, cards0[i].card_type == "Skill" || cards0[i].rush);
+					switch(legality) {
+						case 3:
+							break;
+						case 2:
+							if (!ocg) {
+								//continue;
+							}
+							break;
+						case 1:
+							if (!tcg) {
+								//continue;
+							}
+							break;
+						case 0:
+							continue;
+					}
+				}
+				
+				
+				
+				
+				break;
+			case 4:
+				if (!GoatCards.includes(cards0[i].id)) {
+					continue;
+				}
+				break;
+			case 5:
+				if (!EdisonCards.includes(cards0[i].id)) {
+					continue;
+				}
+				break;
+			/*case 4:
+				if (!cards0[i].date || cards0[i].rush || cards0[i].date >= '2005-08-01' && !["Archfiend of Gilfer","Embodiment of Apophis","Mesmeric Control"].includes(cards0[i].name) || ["Kanan the Swordmistress","Victory Dragon"].includes(cards0[i].name)) {
+					continue;
+				}
+				break;
+			case 5:
+				if (!cards0[i].date || cards0[i].rush || cards0[i].date > '2010-04-25' || ["Genex Controller","X-Saber Palomuro","X-Saber Pashuul","X-Saber Wayne"].includes(cards0[i].name)) {
+					continue;
+				}
+				break;*/
+			case 6:
+				if (!SpeedCards.includes(cards0[i].id)) {
+					continue;
+				}
+				break;
+			case 7:
+				if (!cards0[i].rush) {
+					continue;
+				}
+				break;
+			case 8:
+				if (cards0[i].card_type != "Skill") {
+					continue;
+				}
+				break;
+			case 9:
+				if (!favorites.includes(cards0[i].id)) {
+					continue;
+				}
+				break;
+		}
+		/*for (var j = 0; j < names.length; j++) {
+			if (cards0[i].name_lowercase.indexOf(names[j]) < 0) {
+				continue outerloop;
+			}
+		}
+		for (var j = 0; j < effects.length; j++) {
+			if (cards0[i].effect_lowercase.indexOf(effects[j]) < 0 && (!cards0[i].pendulum_effect || cards0[i].pendulum_effect_lowercase.indexOf(effects[j]) < 0)) {
+				continue outerloop;
+			}
+		}*/
+		for (var j = 0; j < names.length; j++) {
+			if (cards0[i].name_lowercase.indexOf(names[j]) >= 0) {
+				continue;
+			}
+			if (names[j].indexOf("-") === 0) {
+				if (cards0[i].name_lowercase.indexOf(names[j].substring(1, names[j].length)) >= 0) {
+					continue outerloop;
+				}
+				continue;
+			}
+			continue outerloop;
+		}
+		for (var j = 0; j < effects.length; j++) {
+			if (cards0[i].effect_lowercase.indexOf(effects[j]) >= 0) {
+				continue;
+			}
+			if (cards0[i].pendulum_effect_lowercase && cards0[i].pendulum_effect_lowercase.indexOf(effects[j]) >= 0) {
+				continue;
+			}
+			if (effects[j].indexOf("-") === 0) {
+				if (cards0[i].effect_lowercase.indexOf(effects[j].substring(1, effects[j].length)) >= 0) {
+					continue outerloop;
+				}
+				if (cards0[i].pendulum_effect_lowercase && cards0[i].pendulum_effect_lowercase.indexOf(effects[j].substring(1, effects[j].length)) >= 0) {
+					continue outerloop;
+				}
+				continue;
+			}
+			continue outerloop;
+		}
+		if (full_search == true) {
+			cards.push(cards0[i]);
+			total++;
+			continue;
+		}
+		if (card_type != "") {
+			if (cards0[i].card_type.indexOf(card_type) < 0) {
+				continue;
+			}
+		}
+		if (monster_color != "") {
+			if (monster_color == "Pendulum") {
+				if (!cards0[i].pendulum) {
+					continue;
+				}
+			}
+			else if (!cards0[i].monster_color || cards0[i].monster_color.indexOf(monster_color) < 0) {
+				continue;
+			}
+		}
+		if (type != "") {
+			if (cards0[i].type != type) {
+				continue;
+			}
+		}
+		if (ability == "Flip") {
+			if (!cards0[i].flip) {
+				continue;
+			}
+		}
+		else if (ability != "") {
+			if (!cards0[i].ability || cards0[i].ability.indexOf(ability) < 0) {
+				continue;
+			}
+		}
+		if (attribute != "") {
+			if (cards0[i].attribute.indexOf(attribute) < 0) {
+				continue;
+			}
+		}
+		if (level_low != "") {
+			if (cards0[i].card_type != "Monster" || cards0[i].level < parseInt(level_low)) {
+				continue;
+			}
+		}
+		if (level_high != "") {
+			if (cards0[i].card_type != "Monster" || cards0[i].level > parseInt(level_high)) {
+				continue;
+			}
+		}
+		if (atk_low != "") {
+			if (atk_low == "?") {
+				if (cards0[i].atk != "?") {
+					continue;
+				}
+			}
+			else {
+				if (cards0[i].atk == "?") {
+					continue;
+				}
+				if (cards0[i].card_type != "Monster" || cards0[i].atk < parseInt(atk_low)) {
+					continue;
+				}
+			}
+		}
+		if (atk_high != "") {
+			if (atk_high == "?") {
+				if (cards0[i].atk != "?") {
+					continue;
+				}
+			}
+			else {
+				if (cards0[i].atk == "?") {
+					continue;
+				}
+				if (cards0[i].card_type != "Monster" || cards0[i].atk > parseInt(atk_high)) {
+					continue;
+				}
+			}
+		}
+		if (def_low != "") {
+			if (def_low == "?") {
+				if (cards0[i].def != "?") {
+					continue;
+				}
+			}
+			else {
+				if (cards0[i].def == "?") {
+					continue;
+				}
+				if (cards0[i].card_type != "Monster" || cards0[i].def < parseInt(def_low)) {
+					continue;
+				}
+			}
+		}
+		if (def_high != "") {
+			if (def_high == "?") {
+				if (cards0[i].def != "?") {
+					continue;
+				}
+			}
+			else {
+				if (cards0[i].def == "?") {
+					continue;
+				}
+				if (cards0[i].card_type != "Monster" || cards0[i].def > parseInt(def_high)) {
+					continue;
+				}
+			}
+		}
+		if (pendulum) {
+			if (!cards0[i].pendulum) {
+				continue;
+			}
+		}
+		if (scale_low != "") {
+			if (!cards0[i].pendulum || cards0[i].scale < parseInt(scale_low)) {
+				continue;
+			}
+		}
+		if (scale_high != "") {
+			if (!cards0[i].pendulum || cards0[i].scale > parseInt(scale_high)) {
+				continue;
+			}
+		}
+		if (tcg == 1 || ocg == 1) {
+			if (tcg == 1 && cards0[i].tcg == 0) {
+				continue;
+			}
+			if (ocg == 1 && cards0[i].ocg == 0) {
+				continue;
+			}
+		}
+		if (limit != "") {
+			if (saved_search.custom == 7) {
+				if (cards0[i].ocg_limit == null) {
+					cards0[i].ocg_limit = 3;
+				}
+				//if (getLimit(cards0[i].id, cards0[i].ocg_limit) != parseInt(limit)) {
+				//if (cards0[i].ocg_limit != parseInt(limit)) {
+				if (cards0[i].ocg_limit != parseInt(limit) && parseInt(limit) < 3) {
+					//if (!(cards0[i].rush == 2 && limit == 0)) {
+					if (!(cards0[i].rush == 2 && limit == 1)) {
+						continue;
+					}
+				}
+			}
+			/*else if (ocg_list == 1) {
+				if (cards0[i].ocg_limit == null) {
+					cards0[i].ocg_limit = 3;
+				}
+				if (cards0[i].ocg_limit != parseInt(limit)) {
+					continue;
+				}
+			}
+			else {
+				if (cards0[i].tcg_limit == null) {
+					cards0[i].tcg_limit = 3;
+				}
+				if (cards0[i].tcg_limit != parseInt(limit)) {
+					continue;
+				}
+			}*/
+			else {
+				if (cards0[i].tcg_limit == null) {
+					cards0[i].tcg_limit = 3;
+				}
+				var card_limit = getLimit(cards0[i].id, cards0[i].tcg_limit);
+				//if (card_limit != parseInt(limit)) {
+				//if (card_limit != parseInt(limit) && parseInt(limit) < 3) {
+				if (card_limit != parseInt(limit) && (parseInt(limit) < 3 || saved_search.custom == 6)) { // 6 = Speed Duel Cards
+					continue;
+				}
+			}
+		}
+		if (arrows != "00000000") {
+			if (!cards0[i].arrows) {
+				continue;
+			}
+			if (arrows.substring(0, 1) == "1" && cards0[i].arrows.substring(0, 1) != "1") {
+				continue;
+			}
+			if (arrows.substring(1, 2) == "1" && cards0[i].arrows.substring(1, 2) != "1") {
+				continue;
+			}
+			if (arrows.substring(2, 3) == "1" && cards0[i].arrows.substring(2, 3) != "1") {
+				continue;
+			}
+			if (arrows.substring(3, 4) == "1" && cards0[i].arrows.substring(3, 4) != "1") {
+				continue;
+			}
+			if (arrows.substring(4, 5) == "1" && cards0[i].arrows.substring(4, 5) != "1") {
+				continue;
+			}
+			if (arrows.substring(5, 6) == "1" && cards0[i].arrows.substring(5, 6) != "1") {
+				continue;
+			}
+			if (arrows.substring(6, 7) == "1" && cards0[i].arrows.substring(6, 7) != "1") {
+				continue;
+			}
+			if (arrows.substring(7, 8) == "1" && cards0[i].arrows.substring(7, 8) != "1") {
+				continue;
+			}
+		}
+		total++;
+		if ((total > page && total <= page + 20) && full_search == false) {
+			cards.push(cards0[i]);
+		}
+	}
+	var result = {
+		"action":"Search cards",
+		"cards":cards,
+		"total":total,
+		"full_search":full_search
+	};
+	searchCardsResponse(result);
+	
+	console.timeEnd("searchCards");
+}
+		</script>
+		<script src="https://static.duelingbook.com/dom-to-image.min.js" async></script>
+		<script src="https://static.duelingbook.com/html2canvas.min.js" async></script>
+		<script src="https://maps.google.com/maps/api/js?key=AIzaSyCqQoQ3PGTEyg8vGyYlwQJP0MXZ_mOXI4o" async></script>
+	</body>
+</html>
+<script>showMes = 1; banner_ad = '<div class="banner-ad" align="center"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"><\/script><ins class="adsbygoogle" style="display: inline-block; width: 728px; height: 90px; pointer-events: auto;" data-ad-client="ca-pub-8917830655675593" data-ad-slot="2153284745"><\/ins><script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script><\/div>'; skinny_ad = '<span class="skinny-ad" align="right"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"><\/script><ins class="adsbygoogle" style="display: inline-block; width: 160px; height: 600px; pointer-events: auto;" data-ad-client="ca-pub-8917830655675593" data-ad-slot="2898742749"><\/ins><script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script><\/span>'; ShowingMes4 = false; IMGBB_KEY = 'ee578b4d37a6492ccab69fb1baf5f071';</script><script>cards_fingerprint = 776; VERSION = 932; loadkey = 'e3b1af882f4a734adb6cb5df394152ce'</script><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ML8JVNMSQY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ML8JVNMSQY');
+</script>

@@ -56,6 +56,8 @@ metrics_history_buffer = deque(maxlen=100) # Valor inicial seguro, ajustado depo
 
 # Configuration
 cpu_percentage = 0
+cpu_percentage_avg = 0
+cpu_active_instances = 0
 PORT = 8078
 MEC_HOST = os.getenv("MEC_HOST", "10.0.0.186")
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "192.168.70.2")
@@ -348,6 +350,7 @@ def cleanup_inactive_users():
 def metric_catcher():
     """Thread function to periodically fetch metrics from traffic catcher"""
     global mec_metrics, topics, cpu_percentage, metrics_history_buffer, loaded_model, inference_params
+    global cpu_percentage_avg, cpu_active_instances
     global service_latency_stats, topic_latency_stats
 
     service_latency_stats = {}
@@ -470,9 +473,16 @@ def metric_catcher():
                     if isinstance(v, (int, float)):
                         cpu_values.append(v)
 
+                # MAX e MÉDIA são expostos separadamente: o MAPE-K precisa dos dois, porque
+                # decidir scale down pelo MAX exige que TODAS as instâncias estejam ociosas,
+                # o que nunca acontece com 100 UEs e trava o pool no teto.
                 cpu_percentage = max(cpu_values) if cpu_values else "N/A"
+                cpu_percentage_avg = (sum(cpu_values) / len(cpu_values)) if cpu_values else "N/A"
+                cpu_active_instances = len(cpu_values)
             else:
                 cpu_percentage = "N/A"
+                cpu_percentage_avg = "N/A"
+                cpu_active_instances = 0
                 logger.warning("Não foi possível calcular avg_cpu_percent para VidProc.")
 
             # --- ATUALIZAÇÃO DO HISTÓRICO EM MEMÓRIA PARA O GRU ---
@@ -760,6 +770,7 @@ def publish_message():
 def get_avg_percent():
     """Return the current metrics data"""
     global cpu_percentage, loaded_model, loaded_scaler, inference_params, metrics_history_buffer
+    global cpu_percentage_avg, cpu_active_instances
 
     predicted_cpu_percent = "N/A" # Valor padrão se a predição não for possível
 
@@ -803,7 +814,12 @@ def get_avg_percent():
 
 
     return jsonify({
+        # Mantido pelo nome antigo por compatibilidade com análises já escritas, mas o valor
+        # SEMPRE foi o máximo entre as instâncias, não a média. Use os campos explícitos abaixo.
         "current_avg_cpu_percent": cpu_percentage,
+        "cpu_max_percent": cpu_percentage,
+        "cpu_avg_percent": cpu_percentage_avg,
+        "active_instances": cpu_active_instances,
         #"predicted_next_avg_cpu_percent": "N/A"
         "predicted_next_avg_cpu_percent": predicted_cpu_percent
     })
