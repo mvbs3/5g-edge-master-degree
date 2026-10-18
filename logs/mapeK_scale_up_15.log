@@ -1,0 +1,74 @@
+
+=== 2026-10-18 19:44:26 | python3 mec_instance_manager.py start mec_app1_instance15 8105 examples/mec_app1.py --mec_name VideoStreamingService15 --mec_host 150.161.121.210 ===
+Registro na API MEC bem-sucedido: {'description': 'Video Streaming Service with real-time metrics', 'endpoints': [{'description': 'Streams live video feed', 'method': 'GET', 'name': 'video_feed', 'parameters': [], 'path': '/video'}, {'description': 'Uploads a video frame', 'method': 'POST', 'name': 'upload_frame', 'parameters': [], 'path': '/upload'}, {'description': 'Uploads a file to the service', 'method': 'POST', 'name': 'upload_file', 'parameters': [], 'path': '/upload_file'}, {'description': 'Returns system and streaming metrics', 'method': 'GET', 'name': 'get_metrics', 'parameters': [], 'path': '/metric'}, {'description': 'Simple hello world endpoint', 'method': 'GET', 'name': 'get_hello', 'parameters': [], 'path': '/hello-api'}], 'host': '172.22.0.162', 'name': 'VideoStreamingService15', 'path': '/VideoStreamingService15/apiFlask/v1', 'port': '80', 'sid': '6ad54bcc99b8956a307248f1', 'type': 'VidProc', 'uid': 'VideoStreamingService15-uid'}
+Starting Video Streaming Service
+Container ID: ebe4b7d6252b
+Maximum frames buffer: 5
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8105
+ * Running on http://172.22.0.16:8105
+[33mPress CTRL+C to quit[0m
+172.22.0.1 - - [18/Oct/2026 22:44:46] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:44:58] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:45:11] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:45:23] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:45:36] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:45:50] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:46:03] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:46:17] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:46:32] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:46:46] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:47:01] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:47:15] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:47:30] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:47:44] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:47:58] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:48:13] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:48:27] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:48:41] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:48:56] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:49:10] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:49:25] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:49:39] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:49:53] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:50:08] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:50:22] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:50:37] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:50:51] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:51:05] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:51:20] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:51:34] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:51:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:52:03] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:52:17] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:52:32] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:52:46] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:53:01] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:53:15] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:53:29] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:53:44] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:53:58] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:54:13] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:54:27] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:54:42] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:54:56] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:55:10] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:55:25] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:55:39] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:55:54] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:56:08] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:56:22] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:56:37] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:56:51] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:57:06] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:57:20] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:57:34] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:57:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:58:03] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:58:18] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:58:32] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:58:46] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [18/Oct/2026 22:59:01] "GET /metric HTTP/1.1" 200 -
