@@ -73,17 +73,38 @@ else
     echo "  stack no ar"
 
     passo "SUBINDO AS 2 INSTÂNCIAS MEC BASE"
+    # Não dá pra usar `mec_instance_manager.py start`: ele termina chamando
+    # show_logs(), que é um `docker logs -f` e nunca retorna (mec_instance_manager.py:115).
+    # O automacao_script.py não trava nisso porque abre cada instância num terminal
+    # próprio; aqui seria o fim do script. Então replicamos o docker run dele.
+    IP_LOCAL="$(hostname -I | awk '{print $1}')"
     for i in 0 1; do
         if docker ps --format '{{.Names}}' | grep -qx "mec_app1_instance$i"; then
-            echo "  mec_app1_instance$i já existe"
+            echo "  mec_app1_instance$i já está no ar"
             continue
         fi
-        python3 mec_instance_manager.py start "mec_app1_instance$i" "$((8090 + i))" \
-            examples/mec_app1.py --mec_name "VideoStreamingService$i" \
-            --mec_host "$(hostname -I | awk '{print $1}')" || \
-            echo "  AVISO: falha ao subir a instância $i"
+        docker rm -f "mec_app1_instance$i" >/dev/null 2>&1 || true
+        if docker run -d --name "mec_app1_instance$i" \
+            -v "$RAIZ/examples/mec_app1.py:/app/app.py" \
+            -v "$RAIZ/uploads:/app/uploads" \
+            -e "MEC_NAME=VideoStreamingService$i" \
+            -e "MEC_PORT=$((8090 + i))" \
+            -e "MEC_HOST=$IP_LOCAL" \
+            -e MEC_APP=app.py \
+            -p "$((8090 + i)):$((8090 + i))" \
+            --network docker_open5gs_default \
+            --memory 512m --memory-reservation 256m --cpus 0.20 \
+            --add-host host.docker.internal:host-gateway \
+            mec_app:latest >/dev/null; then
+            echo "  mec_app1_instance$i no ar (porta $((8090 + i)))"
+        else
+            echo "  ERRO ao subir mec_app1_instance$i"
+        fi
         sleep 3
     done
+
+    echo "  aguardando as instâncias se registrarem no service_registry..."
+    sleep 10
 fi
 
 # ------------------------------------------------- 2. matar UEs avulsas
