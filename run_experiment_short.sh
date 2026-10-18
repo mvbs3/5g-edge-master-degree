@@ -29,17 +29,30 @@ fi
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-# Fases: 60 + 120 + 60 + 120 + 30 = 390s (~6,5 min) + ~40s subindo UEs
+# Fases: 60 + 180 + 90 + 300 + 120 = 750s (~12,5 min) + ~40s subindo UEs
+#
+# Os tempos de drain e settle são MAIORES que o resto de propósito — eles são o que
+# este teste existe pra provar, e cada um tem um relógio do sistema que precisa caber
+# dentro da fase:
+#
+#   drain 300s  → o mapeK tem COOLDOWN_SEC=30 e remove UMA instância por vez, então
+#                 120s davam no máximo ~4 scale-downs. Com 300s cabem ~10, o
+#                 suficiente pra ver o pool voltar ao baseline e não só esboçar a
+#                 descida.
+#   settle 120s → uma UE morta só some do ues_json depois do INACTIVITY_TIMEOUT=30s
+#                 do mec_app_inteligence (reaper roda a cada 15s). Com settle de 30s o
+#                 experimento acabava ANTES de as últimas UEs serem removidas e o CSV
+#                 nunca mostrava a volta ao valor de warmup.
 export WARMUP_UES=10
 export PEAK_UES=40
 export PHASE_WARMUP_SEC=60
-export PHASE_RAMP_SEC=120
-export PHASE_PEAK_SEC=60
-export PHASE_DRAIN_SEC=120
-export PHASE_SETTLE_SEC=30
+export PHASE_RAMP_SEC=180
+export PHASE_PEAK_SEC=90
+export PHASE_DRAIN_SEC=300
+export PHASE_SETTLE_SEC=120
 
-# Só define o timeout de segurança do script-pai (16 min), não corta o workload
-export DURATION_MIN=8
+# Só define o timeout de segurança do script-pai (30 min), não corta o workload
+export DURATION_MIN=15
 
 # Separa os artefatos dos experimentos de verdade
 export RUN_LABEL="short"
@@ -48,12 +61,14 @@ echo "============================================================"
 echo "  CENÁRIO CURTO DE VALIDAÇÃO — $SCENARIO"
 echo "  UEs:   $WARMUP_UES → $PEAK_UES → $WARMUP_UES"
 echo "  Fases: warmup ${PHASE_WARMUP_SEC}s | ramp ${PHASE_RAMP_SEC}s | peak ${PHASE_PEAK_SEC}s |"
-echo "         drain ${PHASE_DRAIN_SEC}s | settle ${PHASE_SETTLE_SEC}s"
+echo "         drain ${PHASE_DRAIN_SEC}s | settle ${PHASE_SETTLE_SEC}s  (~13 min no total)"
 echo
 echo "  O que conferir no resultado:"
-echo "    1. num_services sobe E desce (hoje só sobe)"
-echo "    2. contagem de UEs volta a $WARMUP_UES no fim (hoje fica no pico)"
-echo "    3. o script imprime 'workload concluiu as fases', sem aviso de timeout"
+echo "    1. num_services sobe E desce        (hoje: 8 subidas, 0 descidas)"
+echo "    2. UEs voltam a $WARMUP_UES no settle      (hoje: ficam no pico pra sempre)"
+echo "    3. 'workload concluiu as fases'     (hoje: cortado por timeout no drain)"
+echo
+echo "  Depois rode:  python3 analisa_execucao.py graficos/rl_input_state_${SCENARIO}_short.csv"
 echo "============================================================"
 echo
 

@@ -19,14 +19,15 @@
 #
 # O script:
 #   - limpa CSVs de saída anteriores
-#   - drena o pool VidProc pra que os dois cenários partam do mesmo ponto
+#   - devolve o pool VidProc ao baseline (mantém KEEP_MIN instâncias) pra que os
+#     dois cenários partam do mesmo ponto
 #   - copia run_workload.sh pra dentro do container nr_ue
 #   - dispara o workload em background no container
 #   - AGUARDA o workload concluir as 5 fases (warmup/ramp/peak/drain/settle)
 #   - mata UEs remanescentes
 #   - arquiva os CSVs em runs/<scenario>_<timestamp>/
 #   - copia o rl_input_state.csv pra graficos/ com nome do cenário
-#   - drena o pool VidProc no fim, pra não deixar instâncias órfãs
+#   - devolve o pool ao baseline no fim, pra não deixar instâncias órfãs
 # ============================================================================
 
 set -euo pipefail
@@ -54,29 +55,47 @@ RUN_DIR="$PROJECT_ROOT/runs/${SCENARIO}${RUN_SUFFIX}_${RUN_TS}"
 GRAFICOS_DIR="$PROJECT_ROOT/graficos"
 mkdir -p "$RUN_DIR"
 
-# Derruba TODAS as instâncias VidProc e as desregistra do service_registry.
-# Sem isso o pool sobrevive de um cenário pro outro: se o MAB termina em 10
-# instâncias, o RR COMEÇA em 10, e a comparação deixa de ser válida. É também
-# o que faz a curva de instâncias voltar a zero no fim da execução.
-drain_vidproc_instances() {
+# Devolve o pool VidProc ao baseline, matando as instâncias de índice >= KEEP_MIN e
+# desregistrando-as do service_registry. Mantém 0..KEEP_MIN-1 vivas: zerar o pool
+# deixaria as UEs sem nenhuma instância pra atender ("Nenhum app disponível para
+# app_type") e o MAPE-K não recria instâncias por conta própria — ele só escala a
+# partir do que existe. Mesma semântica de cleanup_extra_mec_instances() no
+# automacao_script.py, repetida aqui pra que o experimento não dependa dele.
+# Sem este reset, o pool sobrevive de um cenário pro outro: se o MAB termina em 10
+# instâncias, o RR COMEÇA em 10 e a comparação deixa de ser válida.
+KEEP_MIN="${KEEP_MIN:-2}"
+
+reset_vidproc_pool() {
     local phase="$1"
-    echo "  Drenando instâncias VidProc ($phase)..."
+    echo "  Devolvendo o pool VidProc ao baseline de $KEEP_MIN instância(s) ($phase)..."
 
     local containers
     containers=$(docker ps -a --format '{{.Names}}' | grep -E '^mec_app1_instance[0-9]+$' || true)
 
     if [[ -z "$containers" ]]; then
-        echo "    nenhuma instância VidProc encontrada"
+        echo "    AVISO: nenhuma instância VidProc encontrada — o stack está de pé?"
         return 0
     fi
 
+    local removed=0
     for container in $containers; do
         local index="${container#mec_app1_instance}"
+        if (( index < KEEP_MIN )); then
+            continue
+        fi
         echo "    parando $container (VideoStreamingService${index})"
         python3 "$PROJECT_ROOT/mec_instance_manager.py" stop "$container" \
-            --mec_name "VideoStreamingService${index}" || \
+            --mec_name "VideoStreamingService${index}" >/dev/null 2>&1 || \
             echo "    AVISO: falha ao parar $container"
+        docker rm -f "$container" >/dev/null 2>&1 || true
+        removed=$((removed + 1))
     done
+
+    if (( removed == 0 )); then
+        echo "    pool já estava no baseline"
+    else
+        echo "    $removed instância(s) removida(s)"
+    fi
 }
 
 echo "============================================================"
@@ -104,8 +123,7 @@ rm -f "$PROJECT_ROOT/mec_apps/Results/arm_probabilities.csv"
 rm -f "$PROJECT_ROOT/mec_apps/rl_input_state.csv"
 
 # 1b. Zera o pool: os dois cenários precisam partir do mesmo número de instâncias
-drain_vidproc_instances "antes do cenário"
-echo "  Reinicie o mapeK agora se ele estiver rodando, pra ele recriar o mínimo"
+reset_vidproc_pool "antes do cenário"
 sleep 5
 
 # 2. Copia workload e dispara
@@ -180,9 +198,9 @@ fi
 cp -r "$PROJECT_ROOT/mec_apps/Results" "$RUN_DIR/Results" 2>/dev/null || true
 docker cp "nr_ue:/mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log" "$RUN_DIR/" 2>/dev/null || true
 
-# 6. Zera o pool depois de arquivar, pra não deixar instâncias órfãs ligadas
-echo "[6/6] Drenando o pool VidProc..."
-drain_vidproc_instances "depois do cenário"
+# 6. Volta o pool ao baseline depois de arquivar, pra não deixar instâncias órfãs
+echo "[6/6] Devolvendo o pool VidProc ao baseline..."
+reset_vidproc_pool "depois do cenário"
 
 echo "============================================================"
 echo "  Experimento $SCENARIO finalizado."
