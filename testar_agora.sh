@@ -107,6 +107,55 @@ else
     sleep 10
 fi
 
+# ------------------------------------------- 1b. Prometheus + cAdvisor
+# O catcher tira a CPU das instâncias do Prometheus (mec_app_metric_catcher.py:16),
+# que lê do cAdvisor. A opção 1 do menu subia os dois via start_prometheus_grafana()
+# (automacao_script.py:213) antes do core; sem eles toda CPU vira N/A e o mapeK
+# decide NO_ACTION o teste inteiro. Roda mesmo com PULAR_SETUP=1.
+# Mesmo host que o catcher consulta: MEC_HOST do mec_apps/.env.
+PROM_HOST="$(grep -s '^MEC_HOST=' "$RAIZ/mec_apps/.env" | cut -d= -f2 || true)"
+PROM_HOST="${PROM_HOST:-$(hostname -I | awk '{print $1}')}"
+PROM_URL="http://${PROM_HOST}:9090"
+passo "PROMETHEUS ($PROM_URL)"
+if curl -s --max-time 5 "$PROM_URL/-/ready" >/dev/null; then
+    echo "  já está no ar"
+else
+    # O menu encadeia `docker swarm init && ...`: se o nó já é swarm o init falha e o
+    # deploy nunca roda. Aqui só inicia o swarm quando ele não está ativo.
+    if [[ "$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]]; then
+        docker swarm init --advertise-addr "$PROM_HOST" >/dev/null
+    fi
+    (cd "$RAIZ/prometheus" && HOSTNAME=$(hostname) docker stack deploy -c docker-stack.yml prom) >/dev/null
+    echo -n "  aguardando o Prometheus responder"
+    for _ in $(seq 1 30); do
+        curl -s --max-time 2 "$PROM_URL/-/ready" >/dev/null && break
+        echo -n "."
+        sleep 2
+    done
+    echo
+fi
+
+# O rate()[1m] precisa de ~2 scrapes do cAdvisor antes de devolver algo.
+echo -n "  aguardando CPU de mec_app1_instance0 no Prometheus"
+cpu_ok=0
+for _ in $(seq 1 30); do
+    if curl -s --max-time 5 "$PROM_URL/api/v1/query" \
+        --data-urlencode 'query=rate(container_cpu_usage_seconds_total{name="mec_app1_instance0"}[1m])' \
+        | grep -q '"value"'; then
+        cpu_ok=1
+        break
+    fi
+    echo -n "."
+    sleep 5
+done
+echo
+if [[ "$cpu_ok" != "1" ]]; then
+    echo "  ERRO: o Prometheus não devolve CPU das instâncias MEC — o teste não mediria nada."
+    echo "  Confira: docker stack ps prom   e   curl $PROM_URL/api/v1/targets"
+    exit 1
+fi
+echo "  CPU das instâncias chegando"
+
 # ------------------------------------------------- 2. matar UEs avulsas
 # A opção 1 sobe 100 UEs direto, sem fases. Elas precisam morrer: o cenário curto
 # é quem controla a carga, e 100 UEs fixas por cima mascaram todo o resultado.
