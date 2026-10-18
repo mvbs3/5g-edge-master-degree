@@ -110,11 +110,15 @@ if ! docker ps --format '{{.Names}}' | grep -q '^nr_ue$'; then
 fi
 
 # 0. Recheck do controller que está em uso
-echo
-echo "ATENÇÃO: confirme que mec_app_inteligence.py foi iniciado com"
-echo "         CONTROLLER_TYPE=$SCENARIO."
-echo "         Aperte ENTER pra continuar ou Ctrl+C pra abortar."
-read -r _
+# AUTO_CONFIRM=1 pula a confirmação (usado pelo testar_agora.sh, que já reinicia a
+# inteligência com o CONTROLLER_TYPE certo antes de chamar este script).
+if [[ "${AUTO_CONFIRM:-0}" != "1" ]]; then
+    echo
+    echo "ATENÇÃO: confirme que mec_app_inteligence.py foi iniciado com"
+    echo "         CONTROLLER_TYPE=$SCENARIO."
+    echo "         Aperte ENTER pra continuar ou Ctrl+C pra abortar."
+    read -r _
+fi
 
 # 1. Limpa estado
 echo "[1/6] Limpando CSVs anteriores..."
