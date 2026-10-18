@@ -111,7 +111,7 @@ fi
 # A opção 1 sobe 100 UEs direto, sem fases. Elas precisam morrer: o cenário curto
 # é quem controla a carga, e 100 UEs fixas por cima mascaram todo o resultado.
 passo "LIMPANDO UEs AVULSAS"
-vivas=$(docker exec nr_ue pgrep -f ue_client.py 2>/dev/null | wc -l | tr -d ' ')
+vivas=$( (docker exec nr_ue pgrep -f ue_client.py 2>/dev/null || true) | wc -l | tr -d ' ')
 if [[ "$vivas" != "0" ]]; then
     echo "  $vivas UE(s) rodando fora do workload — matando"
     docker exec nr_ue pkill -f ue_client.py || true
