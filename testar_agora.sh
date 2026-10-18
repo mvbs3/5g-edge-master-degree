@@ -31,23 +31,59 @@ passo() { echo; echo "=============== $* ==============="; }
 no_ar() { docker ps --format '{{.Names}}' | grep -qx "$1"; }
 
 # ---------------------------------------------------------------- 1. stack
+# O automacao_script.py NÃO serve aqui: ele roda `docker-compose up` anexado
+# (sem -d, automacao_script.py:208), então sair do menu com Ctrl+C derruba os
+# composes junto — foi o que fez o nr_ue sumir entre uma checagem e outra. E sair
+# com 'q' chama o shutdown geral. Subimos os composes direto, em modo detached.
+subir_compose() {
+    local arquivo="$1" dir="$2" nome="$3"
+    echo "  subindo $nome..."
+    (cd "$RAIZ/$dir" && docker-compose -f "$arquivo" up -d) >/dev/null 2>&1 || {
+        echo "  ERRO ao subir $nome — rode à mão pra ver o erro:"
+        echo "    cd $RAIZ/$dir && docker-compose -f $arquivo up -d"
+        return 1
+    }
+}
+
 if [[ "${PULAR_SETUP:-0}" == "1" ]]; then
     passo "SETUP PULADO (PULAR_SETUP=1)"
 elif no_ar nr_ue; then
     passo "STACK JÁ ESTÁ DE PÉ — pulando setup"
 else
-    passo "SUBINDO O STACK"
-    echo "Isso abre vários terminais e leva alguns minutos."
-    echo "No menu, escolha 1 e aguarde ate aparecer 'Ues iniciadas com sucesso'."
-    echo "Entao saia com Ctrl+C -- NAO use 'q', que derruba o stack inteiro."
-    echo
-    read -r -p "Enter para abrir o automacao_script.py..." _
-    python3 automacao_script.py || true
+    passo "SUBINDO O STACK (detached, sem o menu interativo)"
+    # Nomes e diretórios vêm do DockerConfig do automacao_script.py (linhas 44-50),
+    # na mesma ordem em que a opção 1 os sobe.
+    subir_compose sa-deploy.yaml          5g_core "Core (Open5GS)"
+    sleep 20
+    subir_compose docker-compose-ran.yaml 5g_ran  "RAN (gNB)"
+    sleep 10
+    subir_compose docker-compose-cm.yaml  5g_mep  "Config Manager"
+    sleep 5
+    subir_compose docker-compose-mep.yaml 5g_mep  "MEP"
+    sleep 10
+    subir_compose docker-compose-nrue.yaml 5g_ran "UE (nr_ue)"
+    sleep 5
 
     if ! no_ar nr_ue; then
-        echo "ERRO: o container nr_ue continua fora do ar. O setup falhou."
+        echo
+        echo "ERRO: nr_ue não subiu. Veja o que falhou com:"
+        echo "  cd $RAIZ/5g_ran && docker-compose -f docker-compose-nrue.yaml up"
         exit 1
     fi
+    echo "  stack no ar"
+
+    passo "SUBINDO AS 2 INSTÂNCIAS MEC BASE"
+    for i in 0 1; do
+        if docker ps --format '{{.Names}}' | grep -qx "mec_app1_instance$i"; then
+            echo "  mec_app1_instance$i já existe"
+            continue
+        fi
+        python3 mec_instance_manager.py start "mec_app1_instance$i" "$((8090 + i))" \
+            examples/mec_app1.py --mec_name "VideoStreamingService$i" \
+            --mec_host "$(hostname -I | awk '{print $1}')" || \
+            echo "  AVISO: falha ao subir a instância $i"
+        sleep 3
+    done
 fi
 
 # ------------------------------------------------- 2. matar UEs avulsas
@@ -69,12 +105,21 @@ echo "  UEs vivas agora: $(docker exec nr_ue pgrep -f ue_client.py 2>/dev/null |
 passo "REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=$CENARIO) E MAPE-K"
 pkill -f mec_app_inteligence.py 2>/dev/null || true
 pkill -f mapeK.py 2>/dev/null || true
+pkill -f mec_app_metric_catcher.py 2>/dev/null || true
 sleep 3
 
 mkdir -p logs
 cd mec_apps
 # shellcheck disable=SC1091
 [[ -f mec_app1/bin/activate ]] && source mec_app1/bin/activate
+
+# O catcher vem primeiro: é ele que recebe /latency e /app_metrics das instâncias.
+# Sem ele não há métrica de CPU, o mapeK decide NO_ACTION pra sempre e o teste não
+# mede nada. A opção 1 do menu o subia; como não usamos mais o menu, sobe aqui.
+nohup python3 mec_app_metric_catcher.py > "$RAIZ/logs/catcher_${CENARIO}.log" 2>&1 &
+echo "  catcher iniciado (log: logs/catcher_${CENARIO}.log)"
+sleep 10
+
 CONTROLLER_TYPE="$CENARIO" nohup python3 mec_app_inteligence.py \
     > "$RAIZ/logs/inteligencia_${CENARIO}.log" 2>&1 &
 echo "  inteligência iniciada (log: logs/inteligencia_${CENARIO}.log)"
@@ -88,9 +133,19 @@ sleep 5
 
 # Confere que os campos novos estão no ar — sem eles o teste não prova nada
 passo "CONFERINDO O ENDPOINT DE CPU"
-MEP="${MEP_ADDRESS:-172.22.0.162}"
-resposta=$(curl -s --max-time 10 "http://${MEP}/traffic_inteligence/cpu_percent" || true)
-echo "  $resposta"
+# A inteligência usa 192.168.70.2 por default e o mapeK usa 172.22.0.162
+# (mec_app_inteligence.py:63 vs mapeK.py:36). Tenta os dois: na execução anterior a
+# resposta veio vazia justamente porque só o endereço do mapeK foi consultado.
+resposta=""
+for MEP in "${MEP_ADDRESS:-}" 192.168.70.2 172.22.0.162; do
+    [[ -z "$MEP" ]] && continue
+    resposta=$(curl -s --max-time 5 "http://${MEP}/traffic_inteligence/cpu_percent" || true)
+    if [[ -n "$resposta" ]]; then
+        echo "  [$MEP] $resposta"
+        break
+    fi
+    echo "  [$MEP] sem resposta"
+done
 if [[ "$resposta" != *"cpu_avg_percent"* ]]; then
     echo
     echo "  AVISO: 'cpu_avg_percent' não apareceu na resposta."
