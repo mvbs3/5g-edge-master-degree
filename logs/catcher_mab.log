@@ -3386,3 +3386,460 @@ App: traffic_catcher (Type: Traffic)
 App: traffic_inteligence (Type: Traffic)
      • queue_size: N/A
 172.22.0.162 - - [18/Oct/2026 20:32:22] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:32:32] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:32:42] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:32:52] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:33:02] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:33:12] "GET /app_metrics HTTP/1.1" 200 -
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.14
+     • throughput_kbps(prometheus): 0.31
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.14
+     • throughput_kbps(prometheus): 0.31
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.14
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.26
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.29
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.29
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.07
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.14
+     • throughput_kbps(prometheus): 0.31
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.07
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.14
+     • throughput_kbps(prometheus): 0.31
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.3
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.28
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.28
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+172.22.0.162 - - [18/Oct/2026 20:33:22] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:33:32] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:33:42] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:33:52] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:34:02] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:34:12] "GET /app_metrics HTTP/1.1" 200 -
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.07
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.18
+     • network_tx_kbps: 0.15
+     • throughput_kbps(prometheus): 0.33
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.07
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.18
+     • network_tx_kbps: 0.15
+     • throughput_kbps(prometheus): 0.33
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.3
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.3
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.17
+     • network_tx_kbps: 0.13
+     • throughput_kbps(prometheus): 0.3
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.18
+     • network_tx_kbps: 0.15
+     • throughput_kbps(prometheus): 0.33
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.18
+     • network_tx_kbps: 0.15
+     • throughput_kbps(prometheus): 0.33
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.28
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.28
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+===========================================
+
+[METRIC ERROR] VideoStreamingService0: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+Container name: mec_app1_instance1
+[OK] Metrics collected for VideoStreamingService1
+
+===== CURRENT MEC APPLICATION METRICS =====
+App: VideoStreamingService0 (Type: VidProc)
+     • queue_size: No Metric
+     • cpu_percent(prometheus): N/A
+App: VideoStreamingService1 (Type: VidProc)
+     • queue_size: 1
+     • cpu_percent(prometheus): 0.06
+     • memory_percent(prometheus): 8.46
+     • network_rx_kbps: 0.16
+     • network_tx_kbps: 0.12
+     • throughput_kbps(prometheus): 0.28
+     • latency_ms: N/A
+App: traffic_catcher (Type: Traffic)
+     • queue_size: N/A
+App: traffic_inteligence (Type: Traffic)
+     • queue_size: N/A
+172.22.0.162 - - [18/Oct/2026 20:34:22] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:34:32] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:34:42] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:34:52] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:35:02] "GET /app_metrics HTTP/1.1" 200 -
+172.22.0.162 - - [18/Oct/2026 20:35:12] "GET /app_metrics HTTP/1.1" 200 -
