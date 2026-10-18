@@ -38,78 +38,9 @@ Traceback (most recent call last):
 redis.exceptions.ConnectionError: Error 111 connecting to 150.161.121.210:6379. Connection refused.
 ue_id = 22
 [UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 834.8 ms
-[UE 22] Infer latency: 901.7 ms
-[UE 22] Infer latency: 995.5 ms
-[UE 22] Infer latency: 909.5 ms
-[UE 22] Infer latency: 1880.7 ms
-[UE 22] Infer latency: 780.1 ms
-[UE 22] Infer latency: 1271.0 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 1112.7 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Infer latency: 1478.2 ms
-[UE 22] Infer latency: 362.6 ms
-[UE 22] Infer latency: 320.2 ms
-[UE 22] Infer latency: 579.1 ms
-[UE 22] Infer latency: 948.9 ms
-[UE 22] Infer latency: 682.9 ms
-[UE 22] Infer latency: 268.5 ms
-[UE 22] Infer latency: 423.5 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 1387.7 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 720.6 ms
-[UE 22] Infer latency: 602.6 ms
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Infer latency: 1835.3 ms
-[UE 22] Infer latency: 1349.3 ms
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Infer latency: 958.3 ms
-[UE 22] Infer latency: 366.7 ms
-[UE 22] Infer latency: 515.0 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 1692.5 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 277.7 ms
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Infer latency: 761.8 ms
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 22] Infer latency: 1119.1 ms
-[UE 22] Infer latency: 650.9 ms
-[UE 22] Infer latency: 469.7 ms
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
 [UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
@@ -134,179 +65,16 @@ ue_id = 22
 [UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 950.7 ms
-[UE 22] Infer latency: 540.4 ms
-[UE 22] Infer latency: 909.8 ms
-[UE 22] Infer latency: 510.8 ms
-[UE 22] Infer latency: 378.6 ms
-[UE 22] Infer latency: 324.9 ms
-[UE 22] Infer latency: 517.3 ms
-[UE 22] Infer latency: 662.5 ms
-[UE 22] Infer latency: 272.7 ms
-[UE 22] Infer latency: 1084.8 ms
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 496.6 ms
-[UE 22] Infer latency: 211.7 ms
-[UE 22] Infer latency: 386.1 ms
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 616.3 ms
-[UE 22] Infer latency: 411.1 ms
-[UE 22] Infer latency: 841.3 ms
-[UE 22] Infer latency: 673.7 ms
-[UE 22] Infer latency: 473.5 ms
-[UE 22] Infer latency: 320.5 ms
-[UE 22] Infer latency: 165.4 ms
-[UE 22] Infer latency: 508.8 ms
-[UE 22] Infer latency: 300.3 ms
-[UE 22] Infer latency: 920.0 ms
-[UE 22] Infer latency: 1150.9 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 370.1 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 622.8 ms
-[UE 22] Infer latency: 394.4 ms
-[UE 22] Infer latency: 379.4 ms
-[UE 22] Infer latency: 335.5 ms
-[UE 22] Infer latency: 515.8 ms
-[UE 22] Infer latency: 329.9 ms
-[UE 22] Infer latency: 290.2 ms
-[UE 22] Infer latency: 324.9 ms
-[UE 22] Infer latency: 526.5 ms
-[UE 22] Infer latency: 308.3 ms
-[UE 22] Infer latency: 486.5 ms
-[UE 22] Infer latency: 703.4 ms
-[UE 22] Infer latency: 266.8 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 1519.6 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 871.4 ms
-[UE 22] Infer latency: 226.9 ms
-[UE 22] Infer latency: 273.6 ms
-[UE 22] Infer latency: 1399.7 ms
-[UE 22] Infer latency: 416.2 ms
-[UE 22] Infer latency: 294.2 ms
-[UE 22] Infer latency: 1906.2 ms
-[UE 22] Infer latency: 547.3 ms
-[UE 22] Infer latency: 350.1 ms
-[UE 22] Infer latency: 546.4 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 576.5 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 1626.7 ms
-[UE 22] Infer latency: 454.7 ms
-[UE 22] Infer latency: 697.8 ms
-[UE 22] Infer latency: 1355.7 ms
-[UE 22] Infer latency: 816.7 ms
-[UE 22] Infer latency: 439.2 ms
-[UE 22] Infer latency: 448.1 ms
-[UE 22] Infer latency: 336.5 ms
-[UE 22] Infer latency: 443.5 ms
-[UE 22] Infer latency: 313.6 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 340.1 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 425.5 ms
-[UE 22] Infer latency: 534.0 ms
-[UE 22] Infer latency: 354.6 ms
-[UE 22] Infer latency: 358.3 ms
-[UE 22] Infer latency: 297.4 ms
-[UE 22] Infer latency: 498.7 ms
-[UE 22] Infer latency: 631.0 ms
-[UE 22] Infer latency: 378.7 ms
-[UE 22] Infer latency: 792.6 ms
-[UE 22] Infer latency: 574.9 ms
-[UE 22] Infer latency: 421.3 ms
-[UE 22] Infer latency: 450.3 ms
-[UE 22] Infer latency: 243.2 ms
-[UE 22] Infer latency: 506.8 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 376.4 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 318.3 ms
-[UE 22] Infer latency: 403.5 ms
-[UE 22] Infer latency: 466.8 ms
-[UE 22] Infer latency: 439.0 ms
-[UE 22] Infer latency: 1173.2 ms
-[UE 22] Infer latency: 321.6 ms
-[UE 22] Infer latency: 424.5 ms
-[UE 22] Infer latency: 289.7 ms
-[UE 22] Infer latency: 492.7 ms
-[UE 22] Infer latency: 951.3 ms
-[UE 22] Infer latency: 821.1 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 395.9 ms
-[UE 22] Infer latency: 186.6 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 1797.1 ms
-[UE 22] Infer latency: 543.1 ms
-[UE 22] Infer latency: 219.7 ms
-[UE 22] Infer latency: 460.7 ms
-[UE 22] Infer latency: 421.6 ms
-[UE 22] Infer latency: 292.1 ms
-[UE 22] Infer latency: 233.5 ms
-[UE 22] Infer latency: 1218.4 ms
-[UE 22] Infer latency: 863.6 ms
-[UE 22] Infer latency: 375.7 ms
-[UE 22] Infer latency: 566.6 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 1516.5 ms
-[UE 22] Infer latency: 367.2 ms
-[UE 22] Infer latency: 363.5 ms
-[UE 22] Infer latency: 363.2 ms
-[UE 22] Infer latency: 731.7 ms
-[UE 22] Infer latency: 547.7 ms
-[UE 22] Infer latency: 735.6 ms
-[UE 22] Infer latency: 262.7 ms
-[UE 22] Infer latency: 393.3 ms
-[UE 22] Infer latency: 844.2 ms
-[UE 22] Infer latency: 435.2 ms
-[UE 22] Infer latency: 559.5 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 314.1 ms
-[UE 22] Infer latency: 312.0 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 358.7 ms
-[UE 22] Infer latency: 667.9 ms
-[UE 22] Infer latency: 365.7 ms
-[UE 22] Infer latency: 321.6 ms
-[UE 22] Infer latency: 308.6 ms
-[UE 22] Infer latency: 323.8 ms
-[UE 22] Infer latency: 263.6 ms
-[UE 22] Infer latency: 245.1 ms
-[UE 22] Infer latency: 500.7 ms
-[UE 22] Infer latency: 403.6 ms
-[UE 22] Infer latency: 416.1 ms
-[UE 22] Infer latency: 899.0 ms
-[UE 22] Infer latency: 374.5 ms
-[UE 22] Infer latency: 501.9 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Infer latency: 656.6 ms
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 337.9 ms
-[UE 22] Infer latency: 403.7 ms
-[UE 22] Infer latency: 571.7 ms
-[UE 22] Infer latency: 323.0 ms
-[UE 22] Infer latency: 298.6 ms
-[UE 22] Infer latency: 204.2 ms
-[UE 22] Infer latency: 279.9 ms
-[UE 22] Infer latency: 248.3 ms
-[UE 22] Infer latency: 518.7 ms
-[UE 22] Infer latency: 306.0 ms
-[UE 22] Infer latency: 470.3 ms
-[UE 22] Infer latency: 136.4 ms
-[UE 22] Infer latency: 532.1 ms
-[UE 22] Infer latency: 263.6 ms
-[UE 22] Infer latency: 288.7 ms
-[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 22] Infer latency: 769.4 ms
-[UE 22] Infer latency: 424.3 ms
-[UE 22] Infer latency: 737.4 ms
-[UE 22] Infer latency: 645.5 ms
-[UE 22] Infer latency: 239.5 ms
-[UE 22] Infer latency: 1424.7 ms
-[UE 22] Infer latency: 907.0 ms
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
@@ -326,4 +94,111 @@ ue_id = 22
 [UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 22] Streaming de http://172.22.0.162/VideoStreamingService0/video
 [UE 22] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
