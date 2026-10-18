@@ -179,8 +179,20 @@ def metric_catcher():
     while True:
         try:
             # Discover available MEC services
-            response = requests.get(f"http://{MEP_ADDRESS}/service_registry/v1/discover")
+            response = requests.get(f"http://{MEP_ADDRESS}/service_registry/v1/discover", timeout=5)
             discovered_services = response.json()
+
+            # Esquece instâncias que saíram do registry. Sem isso uma instância morta
+            # no scale-down fica para sempre com a última CPU medida (saturada, ~20%),
+            # o max da inteligência nunca cai abaixo do gatilho e o SCALE_DOWN nunca
+            # dispara.
+            discovered_names = {(s["type"], s["name"]) for s in discovered_services}
+            with metrics_lock:
+                for app_type in list(mec_apps_found):
+                    for app_name in list(mec_apps_found[app_type]):
+                        if (app_type, app_name) not in discovered_names:
+                            print(f"[REMOVED] {app_name} saiu do registry")
+                            del mec_apps_found[app_type][app_name]
 
             for service in discovered_services:
                 service_type = service["type"]
@@ -268,6 +280,8 @@ def metric_catcher():
                     with metrics_lock:
                         mec_apps_found[service_type][service_name]["queue_size"] = "No Metric"
                         mec_apps_found[service_type][service_name]["error"] = str(e)
+                        # Não deixa a CPU da última coleta boa valer como atual
+                        mec_apps_found[service_type][service_name]["cpu_percent(prometheus)"] = "N/A"
 
             # Print current metrics summary
             print("\n===== CURRENT MEC APPLICATION METRICS =====")
