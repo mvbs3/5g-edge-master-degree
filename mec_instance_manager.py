@@ -3,6 +3,15 @@ import argparse
 import os
 import requests
 import random
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:  # python3 do sistema, fora do venv: vale o default abaixo
+    pass
+# Mesmo default do mapeK e do catcher. O 192.168.70.2 fixo que havia aqui não
+# responde no srv3, e sem timeout cada stop ficava preso até o TCP desistir.
+MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
+
 def build_image():
     print("🔨 Building Docker image 'mec_app:latest'...")
     subprocess.run([
@@ -69,15 +78,15 @@ def start_instance(name, port, py_file, mec_name="VideoStreamingService", mec_ho
 
 def stop_instance(name, mec_name):
     print(f"🛑 Stopping and removing container '{mec_name}'")
-    response = requests.get("http://192.168.70.2/service_registry/v1/discover")
+    response = requests.get(f"http://{MEP_ADDRESS}/service_registry/v1/discover", timeout=5)
     discovered_services = response.json()
-    
+
     for service in discovered_services:
         print(service["uid"])
         print(mec_name)
         if mec_name in service["uid"]:
             print(f"🛑 Stopping and removing container '{mec_name}'")
-            requests.delete("http://192.168.70.2/service_registry/v1/register/" + service["sid"])
+            requests.delete(f"http://{MEP_ADDRESS}/service_registry/v1/register/" + service["sid"], timeout=5)
     subprocess.run(["docker", "rm", "-f", name], check=True)
 def show_logs(name):
     print(f"📜 Logs for container '{name}':\n")
