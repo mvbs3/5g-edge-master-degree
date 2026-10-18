@@ -1,0 +1,22 @@
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Creating nr_gnb ... 
+Creating nr_gnb ... done
+Attaching to nr_gnb
+[36mnr_gnb    |[0m Deploying component: 'ueransim-gnb'
+[36mnr_gnb    |[0m [?2004h]0;root@af9e75f45733: /UERANSIM/buildroot@af9e75f45733:/UERANSIM/build# UERANSIM v3.2.6
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.787] [sctp] [[32minfo[m] Trying to establish SCTP connection... (172.22.0.10:38412)
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.789] [sctp] [[32minfo[m] SCTP connection established (172.22.0.10:38412)
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.789] [sctp] [[36mdebug[m] SCTP association setup ascId[27125]
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.789] [ngap] [[36mdebug[m] Sending NG Setup Request
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.795] [ngap] [[36mdebug[m] NG Setup Response received
+[36mnr_gnb    |[0m [2026-06-15 09:30:05.795] [ngap] [[32minfo[m] NG Setup procedure is successful
+[36mnr_gnb    |[0m [2026-06-15 09:30:59.899] [rrc] [[36mdebug[m] UE[1] new signal detected
+[36mnr_gnb    |[0m [2026-06-15 09:30:59.900] [rrc] [[32minfo[m] RRC Setup for UE[1]
+[36mnr_gnb    |[0m [2026-06-15 09:30:59.900] [ngap] [[36mdebug[m] Initial NAS message received from UE[1]
+[36mnr_gnb    |[0m [2026-06-15 09:30:59.914] [ngap] [[36mdebug[m] Initial Context Setup Request received
+[36mnr_gnb    |[0m [2026-06-15 09:31:00.139] [ngap] [[32minfo[m] PDU session resource(s) setup for UE[1] count[1]

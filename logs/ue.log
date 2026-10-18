@@ -1,0 +1,39 @@
+The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Found orphan containers (nr_gnb) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
+Creating nr_ue ... 
+Creating nr_ue ... done
+Attaching to nr_ue
+[36mnr_ue    |[0m Deploying component: 'ueransim-ue'
+[36mnr_ue    |[0m UERANSIM v3.2.6
+[36mnr_ue    |[0m [2026-06-15 09:30:59.899] [nas] [[32minfo[m] UE switches to state [MM-DEREGISTERED/PLMN-SEARCH]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [rrc] [[36mdebug[m] New signal detected for cell[1], total [1] cells in coverage
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[32minfo[m] Selected plmn[001/01]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [rrc] [[32minfo[m] Selected cell plmn[001/01] tac[1] category[SUITABLE]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[32minfo[m] UE switches to state [MM-DEREGISTERED/PS]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[32minfo[m] UE switches to state [MM-DEREGISTERED/NORMAL-SERVICE]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[36mdebug[m] Initial registration required due to [MM-DEREG-NORMAL-SERVICE]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[36mdebug[m] UAC access attempt is allowed for identity[0], category[MO_sig]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[36mdebug[m] Sending Initial Registration
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[32minfo[m] UE switches to state [MM-REGISTER-INITIATED]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [rrc] [[36mdebug[m] Sending RRC Setup Request
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [rrc] [[32minfo[m] RRC connection established
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [rrc] [[32minfo[m] UE switches to state [RRC-CONNECTED]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.900] [nas] [[32minfo[m] UE switches to state [CM-CONNECTED]
+[36mnr_ue    |[0m [?2004h]0;root@51c325167460: /UERANSIM/buildroot@51c325167460:/UERANSIM/build# [2026-06-15 09:30:59.906] [nas] [[36mdebug[m] Authentication Request received
+[36mnr_ue    |[0m [2026-06-15 09:30:59.908] [nas] [[36mdebug[m] Security Mode Command received
+[36mnr_ue    |[0m [2026-06-15 09:30:59.908] [nas] [[36mdebug[m] Selected integrity[2] ciphering[0]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[36mdebug[m] Registration accept received
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[32minfo[m] UE switches to state [MM-REGISTERED/NORMAL-SERVICE]
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[36mdebug[m] Sending Registration Complete
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[32minfo[m] Initial Registration is successful
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[36mdebug[m] Sending PDU Session Establishment Request
+[36mnr_ue    |[0m [2026-06-15 09:30:59.914] [nas] [[36mdebug[m] UAC access attempt is allowed for identity[0], category[MO_sig]
+[36mnr_ue    |[0m [2026-06-15 09:31:00.117] [nas] [[36mdebug[m] Configuration Update Command received
+[36mnr_ue    |[0m [2026-06-15 09:31:00.139] [nas] [[36mdebug[m] PDU Session Establishment Accept received
+[36mnr_ue    |[0m [2026-06-15 09:31:00.139] [nas] [[32minfo[m] PDU Session establishment is successful PSI[1]
+[36mnr_ue    |[0m [2026-06-15 09:31:00.153] [app] [[32minfo[m] Connection setup for PDU session[1] is successful, TUN interface[uesimtun0, 192.168.100.2] is up.

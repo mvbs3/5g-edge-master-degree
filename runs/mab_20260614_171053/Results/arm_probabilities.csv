@@ -1,0 +1,16 @@
+timestamp,event,arm,alpha_before,beta_before,sampled_prob
+1781467733.46636,select,VideoStreamingService1,1.0,1.0,0.569391
+1781467733.46636,select,VideoStreamingService0,1.0,1.0,0.768737
+1781467743.481047,update,VideoStreamingService1,1.0,1.0,
+1781467743.481047,update,VideoStreamingService0,1.0,1.0,
+1781467753.497607,update,VideoStreamingService1,1.0,1.0,
+1781467753.497607,update,VideoStreamingService0,1.0,2.0,
+1781467763.514642,update,VideoStreamingService1,1.0,1.0,
+1781467763.514642,update,VideoStreamingService0,1.0,3.0,
+1781467763.515152,select,VideoStreamingService1,1.0,1.0,0.617701
+1781467763.515152,select,VideoStreamingService0,1.0,4.0,0.072724
+1781467793.564949,select,VideoStreamingService1,1.0,1.0,0.48231
+1781467793.564949,select,VideoStreamingService0,1.0,4.0,0.003525
+1781467823.616648,select,VideoStreamingService1,1.0,1.0,0.283277
+1781467823.616648,select,VideoStreamingService0,1.0,4.0,0.302125
+1781467823.616648,select,VideoStreamingService2,1.0,2.5,0.50229
