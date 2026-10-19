@@ -1,286 +1,1080 @@
-Exception in thread Thread-1 (listen_updates):
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 1003, in connect_check_health
-    sock = self._connect()
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 1515, in _connect
-    raise err
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 1499, in _connect
-    sock.connect(socket_address)
-ConnectionRefusedError: [Errno 111] Connection refused
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
-    self.run()
-  File "/usr/lib/python3.10/threading.py", line 953, in run
-    self._target(*self._args, **self._kwargs)
-  File "/mnt/ueransim/ue_client.py", line 44, in listen_updates
-    pubsub.subscribe(topic_id)
-  File "/usr/local/lib/python3.10/dist-packages/redis/client.py", line 1265, in subscribe
-    ret_val = self.execute_command("SUBSCRIBE", *new_channels.keys())
-  File "/usr/local/lib/python3.10/dist-packages/redis/client.py", line 1023, in execute_command
-    self.connection = self.connection_pool.get_connection()
-  File "/usr/local/lib/python3.10/dist-packages/redis/utils.py", line 236, in wrapper
-    return func(*args, **kwargs)
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 3041, in get_connection
-    connection.connect()
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 976, in connect
-    self.retry.call_with_retry(
-  File "/usr/local/lib/python3.10/dist-packages/redis/retry.py", line 132, in call_with_retry
-    raise error
-  File "/usr/local/lib/python3.10/dist-packages/redis/retry.py", line 120, in call_with_retry
-    return do()
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 977, in <lambda>
-    lambda: self.connect_check_health(
-  File "/usr/local/lib/python3.10/dist-packages/redis/connection.py", line 1025, in connect_check_health
-    raise e
-redis.exceptions.ConnectionError: Error 111 connecting to 150.161.121.210:6379. Connection refused.
 ue_id = 15
 [UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Inscrito no topic: topic_15
+[UE 15] Infer latency: 147.8 ms
+[UE 15] Infer latency: 120.1 ms
+[UE 15] Infer latency: 161.0 ms
+[UE 15] Infer latency: 139.5 ms
+[UE 15] Infer latency: 117.4 ms
+[UE 15] Infer latency: 113.0 ms
+[UE 15] Infer latency: 165.8 ms
+[UE 15] Infer latency: 152.8 ms
+[UE 15] Infer latency: 136.3 ms
+[UE 15] Infer latency: 138.2 ms
+[UE 15] Infer latency: 174.1 ms
+[UE 15] Infer latency: 105.7 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 151.7 ms
+[UE 15] Infer latency: 183.3 ms
+[UE 15] Infer latency: 169.9 ms
+[UE 15] Infer latency: 151.9 ms
+[UE 15] Infer latency: 59.9 ms
+[UE 15] Infer latency: 140.3 ms
+[UE 15] Infer latency: 155.2 ms
+[UE 15] Infer latency: 152.8 ms
+[UE 15] Infer latency: 73.6 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 63.2 ms
+[UE 15] Infer latency: 110.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 167.2 ms
+[UE 15] Infer latency: 84.6 ms
+[UE 15] Infer latency: 68.4 ms
+[UE 15] Infer latency: 87.8 ms
+[UE 15] Infer latency: 146.3 ms
+[UE 15] Infer latency: 147.6 ms
+[UE 15] Infer latency: 133.1 ms
+[UE 15] Infer latency: 163.1 ms
+[UE 15] Infer latency: 60.7 ms
+[UE 15] Infer latency: 112.6 ms
+[UE 15] Infer latency: 68.0 ms
+[UE 15] Infer latency: 134.7 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 186.8 ms
+[UE 15] Infer latency: 168.6 ms
+[UE 15] Infer latency: 94.0 ms
+[UE 15] Infer latency: 112.6 ms
+[UE 15] Infer latency: 201.0 ms
+[UE 15] Infer latency: 121.4 ms
+[UE 15] Infer latency: 145.5 ms
+[UE 15] Infer latency: 84.9 ms
+[UE 15] Infer latency: 206.3 ms
+[UE 15] Infer latency: 177.7 ms
+[UE 15] Infer latency: 130.0 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 153.8 ms
+[UE 15] Infer latency: 157.5 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 162.4 ms
+[UE 15] Infer latency: 196.4 ms
+[UE 15] Infer latency: 106.9 ms
+[UE 15] Infer latency: 98.0 ms
+[UE 15] Infer latency: 66.8 ms
+[UE 15] Infer latency: 104.7 ms
+[UE 15] Infer latency: 152.9 ms
+[UE 15] Infer latency: 203.9 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 75.8 ms
+[UE 15] Infer latency: 104.5 ms
+[UE 15] Infer latency: 143.8 ms
+[UE 15] Infer latency: 249.7 ms
+[UE 15] Infer latency: 119.6 ms
+[UE 15] Infer latency: 476.6 ms
+[UE 15] Infer latency: 390.8 ms
+[UE 15] Infer latency: 269.1 ms
+[UE 15] Infer latency: 138.2 ms
+[UE 15] Infer latency: 214.2 ms
+[UE 15] Infer latency: 205.3 ms
+[UE 15] Infer latency: 140.0 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 508.2 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 222.7 ms
+[UE 15] Infer latency: 418.6 ms
+[UE 15] Infer latency: 541.4 ms
+[UE 15] Infer latency: 291.1 ms
+[UE 15] Infer latency: 337.8 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 132.5 ms
+[UE 15] Infer latency: 127.4 ms
+[UE 15] Infer latency: 124.1 ms
+[UE 15] Infer latency: 118.9 ms
+[UE 15] Infer latency: 125.3 ms
+[UE 15] Infer latency: 79.9 ms
+[UE 15] Infer latency: 200.9 ms
+[UE 15] Infer latency: 233.4 ms
+[UE 15] Infer latency: 286.0 ms
+[UE 15] Infer latency: 186.7 ms
+[UE 15] Infer latency: 155.3 ms
+[UE 15] Infer latency: 257.5 ms
+[UE 15] Infer latency: 265.7 ms
+[UE 15] Infer latency: 294.6 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 123.0 ms
+[UE 15] Infer latency: 123.0 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 611.0 ms
+[UE 15] Infer latency: 329.8 ms
+[UE 15] Infer latency: 149.3 ms
+[UE 15] Infer latency: 251.0 ms
+[UE 15] Infer latency: 134.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 168.8 ms
+[UE 15] Infer latency: 187.9 ms
+[UE 15] Infer latency: 338.9 ms
+[UE 15] Infer latency: 307.3 ms
+[UE 15] Infer latency: 285.0 ms
+[UE 15] Infer latency: 231.0 ms
+[UE 15] Infer latency: 711.1 ms
+[UE 15] Infer latency: 76.8 ms
+[UE 15] Infer latency: 279.0 ms
+[UE 15] Infer latency: 217.3 ms
+[UE 15] Infer latency: 408.3 ms
+[UE 15] Infer latency: 378.8 ms
+[UE 15] Infer latency: 274.5 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 347.5 ms
+[UE 15] Infer latency: 320.8 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 739.0 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService1
+[UE 15] Infer latency: 207.6 ms
+[UE 15] Infer latency: 133.3 ms
+[UE 15] Infer latency: 293.3 ms
+[UE 15] Infer latency: 458.3 ms
+[UE 15] Infer latency: 227.5 ms
+[UE 15] Infer latency: 179.8 ms
+[UE 15] Infer latency: 194.0 ms
+[UE 15] Infer latency: 256.8 ms
+[UE 15] Infer latency: 217.4 ms
+[UE 15] Infer latency: 226.0 ms
+[UE 15] Infer latency: 137.6 ms
+[UE 15] Infer latency: 187.3 ms
+[UE 15] Infer latency: 165.7 ms
+[UE 15] Infer latency: 121.9 ms
+[UE 15] Infer latency: 224.6 ms
+[UE 15] Infer latency: 188.7 ms
+[UE 15] Infer latency: 230.2 ms
+[UE 15] Infer latency: 183.7 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 308.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService1/video
+[UE 15] Infer latency: 501.2 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService0
+[UE 15] Infer latency: 252.0 ms
+[UE 15] Infer latency: 58.2 ms
+[UE 15] Infer latency: 166.1 ms
+[UE 15] Infer latency: 169.0 ms
+[UE 15] Infer latency: 71.2 ms
+[UE 15] Infer latency: 290.6 ms
+[UE 15] Infer latency: 129.2 ms
+[UE 15] Infer latency: 80.9 ms
+[UE 15] Infer latency: 302.2 ms
+[UE 15] Infer latency: 300.4 ms
+[UE 15] Infer latency: 145.6 ms
+[UE 15] Infer latency: 123.2 ms
+[UE 15] Infer latency: 151.3 ms
+[UE 15] Infer latency: 119.2 ms
+[UE 15] Infer latency: 157.9 ms
+[UE 15] Infer latency: 328.1 ms
+[UE 15] Infer latency: 150.5 ms
+[UE 15] Infer latency: 147.9 ms
+[UE 15] Infer latency: 159.5 ms
+[UE 15] Infer latency: 245.4 ms
+[UE 15] Infer latency: 103.6 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService0
+[UE 15] Infer latency: 406.2 ms
 [UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 377.5 ms
+[UE 15] Infer latency: 416.9 ms
+[UE 15] Infer latency: 602.3 ms
+[UE 15] Infer latency: 285.8 ms
+[UE 15] Infer latency: 557.5 ms
+[UE 15] Infer latency: 370.2 ms
+[UE 15] Infer latency: 537.9 ms
+[UE 15] Infer latency: 296.1 ms
+[UE 15] Infer latency: 236.1 ms
+[UE 15] Infer latency: 456.9 ms
+[UE 15] Infer latency: 307.8 ms
+[UE 15] Infer latency: 1059.1 ms
+[UE 15] Infer latency: 199.8 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService0
+[UE 15] Infer latency: 407.9 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 493.7 ms
 [UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 355.9 ms
+[UE 15] Infer latency: 696.3 ms
+[UE 15] Infer latency: 353.1 ms
+[UE 15] Infer latency: 306.1 ms
+[UE 15] Infer latency: 451.2 ms
+[UE 15] Infer latency: 300.5 ms
+[UE 15] Infer latency: 510.2 ms
+[UE 15] Infer latency: 320.0 ms
+[UE 15] Infer latency: 435.5 ms
+[UE 15] Infer latency: 1241.3 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 728.4 ms
+[UE 15] Infer latency: 197.0 ms
+[UE 15] Infer latency: 159.1 ms
+[UE 15] Infer latency: 164.1 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 103.3 ms
+[UE 15] Infer latency: 184.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 108.3 ms
+[UE 15] Infer latency: 81.2 ms
+[UE 15] Infer latency: 127.4 ms
+[UE 15] Infer latency: 190.6 ms
+[UE 15] Infer latency: 81.7 ms
+[UE 15] Infer latency: 185.0 ms
+[UE 15] Infer latency: 148.6 ms
+[UE 15] Infer latency: 142.5 ms
+[UE 15] Infer latency: 90.3 ms
+[UE 15] Infer latency: 84.8 ms
+[UE 15] Infer latency: 165.0 ms
+[UE 15] Infer latency: 135.6 ms
+[UE 15] Infer latency: 196.1 ms
+[UE 15] Infer latency: 97.0 ms
+[UE 15] Infer latency: 117.2 ms
+[UE 15] Infer latency: 104.7 ms
+[UE 15] Infer latency: 58.5 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 172.3 ms
+[UE 15] Infer latency: 108.6 ms
+[UE 15] Infer latency: 191.1 ms
+[UE 15] Infer latency: 66.2 ms
+[UE 15] Infer latency: 60.7 ms
+[UE 15] Infer latency: 137.5 ms
+[UE 15] Infer latency: 151.9 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 179.2 ms
+[UE 15] Infer latency: 154.6 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 63.7 ms
+[UE 15] Infer latency: 106.2 ms
+[UE 15] Infer latency: 182.9 ms
+[UE 15] Infer latency: 105.4 ms
+[UE 15] Infer latency: 57.5 ms
+[UE 15] Infer latency: 200.1 ms
+[UE 15] Infer latency: 131.3 ms
+[UE 15] Infer latency: 77.7 ms
+[UE 15] Infer latency: 145.8 ms
+[UE 15] Infer latency: 154.2 ms
+[UE 15] Infer latency: 124.7 ms
+[UE 15] Infer latency: 182.3 ms
+[UE 15] Infer latency: 174.3 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 184.8 ms
+[UE 15] Infer latency: 56.2 ms
+[UE 15] Infer latency: 57.4 ms
+[UE 15] Infer latency: 57.2 ms
+[UE 15] Infer latency: 110.8 ms
+[UE 15] Infer latency: 74.2 ms
+[UE 15] Infer latency: 118.6 ms
+[UE 15] Infer latency: 187.9 ms
+[UE 15] Infer latency: 152.2 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 186.5 ms
+[UE 15] Infer latency: 143.2 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 91.3 ms
+[UE 15] Infer latency: 133.8 ms
+[UE 15] Infer latency: 99.4 ms
+[UE 15] Infer latency: 185.3 ms
+[UE 15] Infer latency: 160.6 ms
+[UE 15] Infer latency: 100.4 ms
+[UE 15] Infer latency: 61.0 ms
+[UE 15] Infer latency: 123.0 ms
+[UE 15] Infer latency: 82.0 ms
+[UE 15] Infer latency: 86.2 ms
+[UE 15] Infer latency: 75.8 ms
+[UE 15] Infer latency: 145.6 ms
+[UE 15] Infer latency: 81.0 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 94.8 ms
+[UE 15] Infer latency: 87.4 ms
+[UE 15] Infer latency: 135.5 ms
+[UE 15] Infer latency: 111.0 ms
+[UE 15] Infer latency: 139.7 ms
+[UE 15] Infer latency: 67.6 ms
+[UE 15] Infer latency: 130.4 ms
+[UE 15] Infer latency: 185.9 ms
+[UE 15] Infer latency: 126.5 ms
+[UE 15] Infer latency: 134.1 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 136.2 ms
+[UE 15] Infer latency: 87.8 ms
+[UE 15] Infer latency: 173.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 199.2 ms
+[UE 15] Infer latency: 77.4 ms
+[UE 15] Infer latency: 201.5 ms
+[UE 15] Infer latency: 125.6 ms
+[UE 15] Infer latency: 201.1 ms
+[UE 15] Infer latency: 99.5 ms
+[UE 15] Infer latency: 167.2 ms
+[UE 15] Infer latency: 189.3 ms
+[UE 15] Infer latency: 147.6 ms
+[UE 15] Infer latency: 193.2 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 125.9 ms
+[UE 15] Infer latency: 191.7 ms
+[UE 15] Infer latency: 152.2 ms
+[UE 15] Infer latency: 99.4 ms
+[UE 15] Infer latency: 176.5 ms
+[UE 15] Infer latency: 142.9 ms
+[UE 15] Infer latency: 190.6 ms
+[UE 15] Infer latency: 174.6 ms
+[UE 15] Infer latency: 170.0 ms
+[UE 15] Infer latency: 117.3 ms
+[UE 15] Infer latency: 188.8 ms
+[UE 15] Infer latency: 170.0 ms
+[UE 15] Infer latency: 84.9 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 164.2 ms
+[UE 15] Infer latency: 87.7 ms
+[UE 15] Infer latency: 198.3 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 73.6 ms
+[UE 15] Infer latency: 81.8 ms
+[UE 15] Infer latency: 166.8 ms
+[UE 15] Infer latency: 74.4 ms
+[UE 15] Infer latency: 168.9 ms
+[UE 15] Infer latency: 196.2 ms
+[UE 15] Infer latency: 92.6 ms
+[UE 15] Infer latency: 129.1 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 190.5 ms
+[UE 15] Infer latency: 100.9 ms
+[UE 15] Infer latency: 141.1 ms
+[UE 15] Infer latency: 199.8 ms
+[UE 15] Infer latency: 162.5 ms
+[UE 15] Infer latency: 103.1 ms
+[UE 15] Infer latency: 114.1 ms
+[UE 15] Infer latency: 131.8 ms
+[UE 15] Infer latency: 186.4 ms
+[UE 15] Infer latency: 74.4 ms
+[UE 15] Infer latency: 194.7 ms
+[UE 15] Infer latency: 176.5 ms
+[UE 15] Infer latency: 76.0 ms
+[UE 15] Infer latency: 174.6 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 110.7 ms
+[UE 15] Infer latency: 78.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 197.4 ms
+[UE 15] Infer latency: 138.4 ms
+[UE 15] Infer latency: 203.1 ms
+[UE 15] Infer latency: 71.9 ms
+[UE 15] Infer latency: 75.6 ms
+[UE 15] Infer latency: 155.1 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 140.3 ms
+[UE 15] Infer latency: 76.9 ms
+[UE 15] Infer latency: 124.5 ms
+[UE 15] Infer latency: 77.8 ms
+[UE 15] Infer latency: 63.3 ms
+[UE 15] Infer latency: 203.1 ms
+[UE 15] Infer latency: 133.6 ms
+[UE 15] Infer latency: 141.0 ms
+[UE 15] Infer latency: 81.5 ms
+[UE 15] Infer latency: 136.1 ms
+[UE 15] Infer latency: 131.3 ms
+[UE 15] Infer latency: 202.3 ms
+[UE 15] Infer latency: 72.8 ms
+[UE 15] Infer latency: 123.3 ms
+[UE 15] Infer latency: 162.6 ms
+[UE 15] Infer latency: 123.6 ms
+[UE 15] Infer latency: 80.4 ms
+[UE 15] Infer latency: 203.8 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 73.7 ms
+[UE 15] Infer latency: 155.0 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 138.0 ms
+[UE 15] Infer latency: 201.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 155.0 ms
+[UE 15] Infer latency: 174.8 ms
+[UE 15] Infer latency: 90.4 ms
+[UE 15] Infer latency: 265.8 ms
+[UE 15] Infer latency: 131.6 ms
+[UE 15] Infer latency: 73.2 ms
+[UE 15] Infer latency: 105.1 ms
+[UE 15] Infer latency: 86.6 ms
+[UE 15] Infer latency: 182.9 ms
+[UE 15] Infer latency: 238.5 ms
+[UE 15] Infer latency: 109.5 ms
+[UE 15] Infer latency: 228.8 ms
+[UE 15] Infer latency: 145.3 ms
+[UE 15] Infer latency: 369.7 ms
+[UE 15] Infer latency: 276.7 ms
+[UE 15] Infer latency: 118.3 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 178.0 ms
+[UE 15] Infer latency: 152.5 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService3/video
+[UE 15] Infer latency: 206.9 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService3
+[UE 15] Infer latency: 267.7 ms
+[UE 15] Infer latency: 280.5 ms
+[UE 15] Infer latency: 222.0 ms
+[UE 15] Infer latency: 95.4 ms
+[UE 15] Infer latency: 676.0 ms
+[UE 15] Infer latency: 814.3 ms
+[UE 15] Infer latency: 338.8 ms
+[UE 15] Infer latency: 137.5 ms
+[UE 15] Infer latency: 317.0 ms
+[UE 15] Infer latency: 347.5 ms
+[UE 15] Infer latency: 111.4 ms
+[UE 15] Infer latency: 254.3 ms
+[UE 15] Infer latency: 232.5 ms
+[UE 15] Infer latency: 393.4 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 474.8 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Infer latency: 310.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService4/video
+[UE 15] Infer latency: 77.8 ms
+[UE 15] Infer latency: 153.5 ms
+[UE 15] Infer latency: 86.9 ms
+[UE 15] Infer latency: 75.2 ms
+[UE 15] Infer latency: 150.0 ms
+[UE 15] Infer latency: 65.8 ms
+[UE 15] Infer latency: 176.4 ms
+[UE 15] Infer latency: 74.4 ms
+[UE 15] Infer latency: 201.4 ms
+[UE 15] Infer latency: 167.9 ms
+[UE 15] Infer latency: 131.6 ms
+[UE 15] Infer latency: 92.6 ms
+[UE 15] Infer latency: 181.5 ms
+[UE 15] Infer latency: 199.0 ms
+[UE 15] Infer latency: 97.0 ms
+[UE 15] Infer latency: 183.8 ms
+[UE 15] Infer latency: 156.3 ms
+[UE 15] Infer latency: 89.8 ms
+[UE 15] Infer latency: 84.7 ms
+[UE 15] Infer latency: 201.5 ms
+[UE 15] Infer latency: 172.3 ms
+[UE 15] Infer latency: 119.3 ms
+[UE 15] Infer latency: 97.3 ms
+[UE 15] Infer latency: 133.6 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Infer latency: 165.4 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 115.4 ms
+[UE 15] Infer latency: 106.3 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService4/video
+[UE 15] Infer latency: 114.3 ms
+[UE 15] Infer latency: 90.2 ms
+[UE 15] Infer latency: 82.2 ms
+[UE 15] Infer latency: 137.7 ms
+[UE 15] Infer latency: 199.0 ms
+[UE 15] Infer latency: 192.6 ms
+[UE 15] Infer latency: 176.1 ms
+[UE 15] Infer latency: 107.3 ms
+[UE 15] Infer latency: 98.7 ms
+[UE 15] Infer latency: 79.2 ms
+[UE 15] Infer latency: 64.6 ms
+[UE 15] Infer latency: 66.9 ms
+[UE 15] Infer latency: 132.6 ms
+[UE 15] Infer latency: 202.1 ms
+[UE 15] Infer latency: 192.8 ms
+[UE 15] Infer latency: 193.2 ms
+[UE 15] Infer latency: 167.5 ms
+[UE 15] Infer latency: 75.1 ms
+[UE 15] Infer latency: 201.2 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Infer latency: 85.3 ms
+[UE 15] Infer latency: 88.3 ms
+[UE 15] Infer latency: 55.0 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 85.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService4/video
+[UE 15] Infer latency: 159.8 ms
+[UE 15] Infer latency: 145.9 ms
+[UE 15] Infer latency: 229.6 ms
+[UE 15] Infer latency: 146.3 ms
+[UE 15] Infer latency: 136.5 ms
+[UE 15] Infer latency: 62.1 ms
+[UE 15] Infer latency: 264.0 ms
+[UE 15] Infer latency: 184.3 ms
+[UE 15] Infer latency: 192.8 ms
+[UE 15] Infer latency: 167.5 ms
+[UE 15] Infer latency: 114.4 ms
+[UE 15] Infer latency: 268.9 ms
+[UE 15] Infer latency: 89.6 ms
+[UE 15] Infer latency: 235.1 ms
+[UE 15] Infer latency: 273.0 ms
+[UE 15] Infer latency: 60.5 ms
+[UE 15] Infer latency: 103.5 ms
+[UE 15] Infer latency: 251.4 ms
+[UE 15] Infer latency: 257.3 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService5
+[UE 15] Infer latency: 215.9 ms
+[UE 15] Infer latency: 366.7 ms
+[UE 15] Infer latency: 419.9 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 358.2 ms
+[UE 15] Infer latency: 254.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService5/video
+[UE 15] Infer latency: 210.1 ms
+[UE 15] Infer latency: 392.0 ms
+[UE 15] Infer latency: 380.8 ms
+[UE 15] Infer latency: 335.0 ms
+[UE 15] Infer latency: 324.4 ms
+[UE 15] Infer latency: 140.2 ms
+[UE 15] Infer latency: 336.9 ms
+[UE 15] Infer latency: 628.4 ms
+[UE 15] Infer latency: 182.9 ms
+[UE 15] Infer latency: 252.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService5
+[UE 15] Infer latency: 429.2 ms
+[UE 15] Infer latency: 122.2 ms
+[UE 15] Infer latency: 382.2 ms
+[UE 15] Infer latency: 445.6 ms
+[UE 15] Infer latency: 355.2 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 687.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService5/video
+[UE 15] Infer latency: 634.6 ms
+[UE 15] Infer latency: 554.1 ms
+[UE 15] Infer latency: 686.2 ms
+[UE 15] Infer latency: 463.2 ms
+[UE 15] Infer latency: 653.5 ms
+[UE 15] Infer latency: 537.6 ms
+[UE 15] Infer latency: 349.8 ms
+[UE 15] Infer latency: 290.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService5
+[UE 15] Infer latency: 709.2 ms
+[UE 15] Infer latency: 228.5 ms
+[UE 15] Infer latency: 451.7 ms
+[UE 15] Infer latency: 852.0 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 762.3 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService5/video
+[UE 15] Infer latency: 285.7 ms
+[UE 15] Infer latency: 274.6 ms
+[UE 15] Infer latency: 69.4 ms
+[UE 15] Infer latency: 298.7 ms
+[UE 15] Infer latency: 539.8 ms
+[UE 15] Infer latency: 1051.7 ms
+[UE 15] Infer latency: 627.3 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService7
+[UE 15] Infer latency: 623.0 ms
+[UE 15] Infer latency: 151.8 ms
+[UE 15] Infer latency: 134.4 ms
+[UE 15] Infer latency: 139.2 ms
+[UE 15] Infer latency: 113.9 ms
+[UE 15] Infer latency: 136.7 ms
+[UE 15] Infer latency: 159.5 ms
+[UE 15] Infer latency: 188.7 ms
+[UE 15] Infer latency: 123.7 ms
+[UE 15] Infer latency: 129.8 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 156.5 ms
+[UE 15] Infer latency: 61.3 ms
+[UE 15] Infer latency: 146.6 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService7/video
+[UE 15] Infer latency: 163.6 ms
+[UE 15] Infer latency: 118.1 ms
+[UE 15] Infer latency: 169.4 ms
+[UE 15] Infer latency: 159.5 ms
+[UE 15] Infer latency: 154.9 ms
+[UE 15] Infer latency: 119.8 ms
+[UE 15] Infer latency: 146.2 ms
+[UE 15] Infer latency: 172.9 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService7
+[UE 15] Infer latency: 180.6 ms
+[UE 15] Infer latency: 196.3 ms
+[UE 15] Infer latency: 120.1 ms
+[UE 15] Infer latency: 67.8 ms
+[UE 15] Infer latency: 111.1 ms
+[UE 15] Infer latency: 67.1 ms
+[UE 15] Infer latency: 204.4 ms
+[UE 15] Infer latency: 126.2 ms
+[UE 15] Infer latency: 162.8 ms
+[UE 15] Infer latency: 192.4 ms
+[UE 15] Infer latency: 139.7 ms
+[UE 15] Infer latency: 82.3 ms
+[UE 15] Infer latency: 163.2 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 58.0 ms
+[UE 15] Infer latency: 92.8 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService7/video
+[UE 15] Infer latency: 112.1 ms
+[UE 15] Infer latency: 88.5 ms
+[UE 15] Infer latency: 191.1 ms
+[UE 15] Infer latency: 192.0 ms
+[UE 15] Infer latency: 124.6 ms
+[UE 15] Infer latency: 145.3 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService7
+[UE 15] Infer latency: 182.1 ms
+[UE 15] Infer latency: 114.2 ms
+[UE 15] Infer latency: 189.5 ms
+[UE 15] Infer latency: 121.7 ms
+[UE 15] Infer latency: 76.4 ms
+[UE 15] Infer latency: 192.6 ms
+[UE 15] Infer latency: 101.9 ms
+[UE 15] Infer latency: 140.6 ms
+[UE 15] Infer latency: 104.6 ms
+[UE 15] Infer latency: 115.7 ms
+[UE 15] Infer latency: 121.4 ms
+[UE 15] Infer latency: 180.3 ms
+[UE 15] Infer latency: 77.5 ms
+[UE 15] Infer latency: 175.1 ms
+[UE 15] Infer latency: 204.4 ms
+[UE 15] Infer latency: 143.6 ms
+[UE 15] Infer latency: 124.2 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 79.0 ms
+[UE 15] Infer latency: 114.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService7/video
+[UE 15] Infer latency: 187.8 ms
+[UE 15] Infer latency: 168.6 ms
+[UE 15] Infer latency: 206.5 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Infer latency: 175.8 ms
+[UE 15] Infer latency: 87.5 ms
+[UE 15] Infer latency: 127.0 ms
+[UE 15] Infer latency: 297.4 ms
+[UE 15] Infer latency: 508.3 ms
+[UE 15] Infer latency: 187.2 ms
+[UE 15] Infer latency: 199.7 ms
+[UE 15] Infer latency: 160.1 ms
+[UE 15] Infer latency: 205.5 ms
+[UE 15] Infer latency: 222.9 ms
+[UE 15] Infer latency: 180.4 ms
+[UE 15] Infer latency: 516.7 ms
+[UE 15] Infer latency: 283.3 ms
+[UE 15] Infer latency: 394.6 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 146.9 ms
+[UE 15] Infer latency: 356.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService4/video
+[UE 15] Infer latency: 449.1 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Infer latency: 273.1 ms
+[UE 15] Infer latency: 82.3 ms
+[UE 15] Infer latency: 418.8 ms
+[UE 15] Infer latency: 290.9 ms
+[UE 15] Infer latency: 252.0 ms
+[UE 15] Infer latency: 554.2 ms
+[UE 15] Infer latency: 302.9 ms
+[UE 15] Infer latency: 295.4 ms
+[UE 15] Infer latency: 179.3 ms
+[UE 15] Infer latency: 202.4 ms
+[UE 15] Infer latency: 207.3 ms
+[UE 15] Infer latency: 182.1 ms
+[UE 15] Infer latency: 228.2 ms
+[UE 15] Infer latency: 506.9 ms
+[UE 15] Infer latency: 283.4 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 517.7 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService4
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService4/video
+[UE 15] Infer latency: 203.4 ms
+[UE 15] Infer latency: 93.4 ms
+[UE 15] Infer latency: 115.3 ms
+[UE 15] Infer latency: 392.2 ms
+[UE 15] Infer latency: 158.2 ms
+[UE 15] Infer latency: 74.8 ms
+[UE 15] Infer latency: 133.6 ms
+[UE 15] Infer latency: 256.5 ms
+[UE 15] Infer latency: 342.8 ms
+[UE 15] Infer latency: 229.6 ms
+[UE 15] Infer latency: 114.5 ms
+[UE 15] Infer latency: 113.9 ms
+[UE 15] Infer latency: 116.0 ms
+[UE 15] Infer latency: 154.2 ms
+[UE 15] Infer latency: 292.2 ms
+[UE 15] Infer latency: 86.9 ms
+[UE 15] Infer latency: 178.7 ms
+[UE 15] Infer latency: 372.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService6
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 525.4 ms
+[UE 15] Infer latency: 113.2 ms
+[UE 15] Infer latency: 70.1 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService6/video
+[UE 15] Infer latency: 176.0 ms
+[UE 15] Infer latency: 201.0 ms
+[UE 15] Infer latency: 205.1 ms
+[UE 15] Infer latency: 140.4 ms
+[UE 15] Infer latency: 231.0 ms
+[UE 15] Infer latency: 192.2 ms
+[UE 15] Infer latency: 524.5 ms
+[UE 15] Infer latency: 221.7 ms
+[UE 15] Infer latency: 217.8 ms
+[UE 15] Infer latency: 99.3 ms
+[UE 15] Infer latency: 98.5 ms
+[UE 15] Infer latency: 244.7 ms
+[UE 15] Infer latency: 75.8 ms
+[UE 15] Infer latency: 130.7 ms
+[UE 15] Infer latency: 179.0 ms
+[UE 15] Infer latency: 116.8 ms
+[UE 15] Infer latency: 165.3 ms
+[UE 15] Infer latency: 62.8 ms
+[UE 15] Infer latency: 319.6 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService6
+[UE 15] Infer latency: 141.0 ms
+[UE 15] Infer latency: 98.8 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 131.9 ms
+[UE 15] Infer latency: 367.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService6/video
+[UE 15] Infer latency: 448.7 ms
+[UE 15] Infer latency: 175.1 ms
+[UE 15] Infer latency: 357.7 ms
+[UE 15] Infer latency: 362.3 ms
+[UE 15] Infer latency: 382.6 ms
+[UE 15] Infer latency: 218.2 ms
+[UE 15] Infer latency: 613.4 ms
+[UE 15] Infer latency: 248.4 ms
+[UE 15] Infer latency: 226.6 ms
+[UE 15] Infer latency: 292.0 ms
+[UE 15] Infer latency: 421.2 ms
+[UE 15] Infer latency: 90.8 ms
+[UE 15] Infer latency: 483.9 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService6
+[UE 15] Infer latency: 124.1 ms
+[UE 15] Infer latency: 237.1 ms
+[UE 15] Infer latency: 152.1 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 81.8 ms
+[UE 15] Infer latency: 286.2 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService6/video
+[UE 15] Infer latency: 363.2 ms
+[UE 15] Infer latency: 273.2 ms
+[UE 15] Infer latency: 219.4 ms
+[UE 15] Infer latency: 186.1 ms
+[UE 15] Infer latency: 171.4 ms
+[UE 15] Infer latency: 293.4 ms
+[UE 15] Infer latency: 498.4 ms
+[UE 15] Infer latency: 469.0 ms
+[UE 15] Infer latency: 173.3 ms
+[UE 15] Infer latency: 268.5 ms
+[UE 15] Infer latency: 221.6 ms
+[UE 15] Infer latency: 148.7 ms
+[UE 15] Infer latency: 304.0 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 91.6 ms
+[UE 15] Infer latency: 59.7 ms
+[UE 15] Infer latency: 175.9 ms
+[UE 15] Infer latency: 173.8 ms
+[UE 15] Infer latency: 163.3 ms
+[UE 15] Infer latency: 140.4 ms
+[UE 15] Infer latency: 109.2 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 136.2 ms
+[UE 15] Infer latency: 116.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 74.5 ms
+[UE 15] Infer latency: 100.7 ms
+[UE 15] Infer latency: 91.0 ms
+[UE 15] Infer latency: 57.7 ms
+[UE 15] Infer latency: 92.8 ms
+[UE 15] Infer latency: 156.3 ms
+[UE 15] Infer latency: 188.6 ms
+[UE 15] Infer latency: 101.9 ms
+[UE 15] Infer latency: 107.5 ms
+[UE 15] Infer latency: 183.5 ms
+[UE 15] Infer latency: 150.0 ms
+[UE 15] Infer latency: 62.8 ms
+[UE 15] Infer latency: 114.8 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 174.3 ms
+[UE 15] Infer latency: 180.4 ms
+[UE 15] Infer latency: 188.4 ms
+[UE 15] Infer latency: 81.9 ms
+[UE 15] Infer latency: 117.5 ms
+[UE 15] Infer latency: 128.4 ms
+[UE 15] Infer latency: 189.3 ms
+[UE 15] Infer latency: 63.6 ms
+[UE 15] Infer latency: 163.6 ms
+[UE 15] Infer latency: 169.5 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 204.4 ms
+[UE 15] Infer latency: 109.5 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 137.0 ms
+[UE 15] Infer latency: 129.2 ms
+[UE 15] Infer latency: 198.5 ms
+[UE 15] Infer latency: 132.8 ms
+[UE 15] Infer latency: 54.4 ms
+[UE 15] Infer latency: 93.9 ms
+[UE 15] Infer latency: 119.8 ms
+[UE 15] Infer latency: 121.4 ms
+[UE 15] Infer latency: 88.7 ms
+[UE 15] Infer latency: 96.1 ms
+[UE 15] Infer latency: 79.8 ms
+[UE 15] Infer latency: 62.5 ms
+[UE 15] Infer latency: 75.4 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 202.4 ms
+[UE 15] Infer latency: 200.0 ms
+[UE 15] Infer latency: 143.0 ms
+[UE 15] Infer latency: 192.0 ms
+[UE 15] Infer latency: 66.1 ms
+[UE 15] Infer latency: 109.8 ms
+[UE 15] Infer latency: 117.6 ms
+[UE 15] Infer latency: 79.6 ms
+[UE 15] Infer latency: 80.6 ms
+[UE 15] Infer latency: 99.1 ms
+[UE 15] Infer latency: 172.5 ms
+[UE 15] Infer latency: 187.9 ms
+[UE 15] Infer latency: 92.7 ms
+[UE 15] Infer latency: 160.1 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 73.1 ms
+[UE 15] Infer latency: 180.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 137.4 ms
+[UE 15] Infer latency: 97.0 ms
+[UE 15] Infer latency: 85.6 ms
+[UE 15] Infer latency: 170.3 ms
+[UE 15] Infer latency: 157.9 ms
+[UE 15] Infer latency: 186.5 ms
+[UE 15] Infer latency: 59.6 ms
+[UE 15] Infer latency: 204.2 ms
+[UE 15] Infer latency: 87.8 ms
+[UE 15] Infer latency: 65.6 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 79.9 ms
+[UE 15] Infer latency: 146.6 ms
+[UE 15] Infer latency: 69.9 ms
+[UE 15] Infer latency: 63.8 ms
+[UE 15] Infer latency: 135.1 ms
+[UE 15] Infer latency: 120.3 ms
+[UE 15] Infer latency: 63.5 ms
+[UE 15] Infer latency: 153.5 ms
+[UE 15] Infer latency: 99.9 ms
+[UE 15] Infer latency: 110.8 ms
+[UE 15] Infer latency: 201.2 ms
+[UE 15] Infer latency: 175.9 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 170.9 ms
+[UE 15] Infer latency: 143.8 ms
+[UE 15] Infer latency: 133.3 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 154.6 ms
+[UE 15] Infer latency: 143.3 ms
+[UE 15] Infer latency: 100.7 ms
+[UE 15] Infer latency: 149.8 ms
+[UE 15] Infer latency: 128.1 ms
+[UE 15] Infer latency: 80.4 ms
+[UE 15] Infer latency: 124.0 ms
+[UE 15] Infer latency: 200.6 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 166.7 ms
+[UE 15] Infer latency: 68.7 ms
+[UE 15] Infer latency: 189.1 ms
+[UE 15] Infer latency: 98.9 ms
+[UE 15] Infer latency: 201.1 ms
+[UE 15] Infer latency: 133.7 ms
+[UE 15] Infer latency: 90.0 ms
+[UE 15] Infer latency: 86.2 ms
+[UE 15] Infer latency: 95.4 ms
+[UE 15] Infer latency: 112.1 ms
+[UE 15] Infer latency: 201.1 ms
+[UE 15] Infer latency: 67.8 ms
+[UE 15] Infer latency: 140.5 ms
+[UE 15] Infer latency: 193.8 ms
+[UE 15] Infer latency: 159.8 ms
+[UE 15] Infer latency: 132.1 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 119.4 ms
+[UE 15] Infer latency: 180.3 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 191.4 ms
+[UE 15] Infer latency: 77.7 ms
+[UE 15] Infer latency: 63.9 ms
+[UE 15] Infer latency: 105.8 ms
+[UE 15] Infer latency: 183.1 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 77.0 ms
+[UE 15] Infer latency: 60.9 ms
+[UE 15] Infer latency: 64.5 ms
+[UE 15] Infer latency: 94.1 ms
+[UE 15] Infer latency: 214.7 ms
+[UE 15] Infer latency: 185.6 ms
+[UE 15] Infer latency: 143.7 ms
+[UE 15] Infer latency: 230.6 ms
+[UE 15] Infer latency: 152.5 ms
+[UE 15] Infer latency: 200.6 ms
+[UE 15] Infer latency: 64.7 ms
+[UE 15] Infer latency: 211.4 ms
+[UE 15] Infer latency: 120.6 ms
+[UE 15] Infer latency: 78.9 ms
+[UE 15] Infer latency: 83.3 ms
+[UE 15] Infer latency: 161.4 ms
+[UE 15] Infer latency: 112.7 ms
 [UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
-[UE 15] Streaming de http://172.22.0.162/VideoStreamingService0/video
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
-[UE 15] Erro infer: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=2)
+[UE 15] Infer latency: 127.8 ms
+[UE 15] Infer latency: 126.1 ms
+[UE 15] Infer latency: 147.6 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 88.5 ms
+[UE 15] Infer latency: 127.3 ms
+[UE 15] Infer latency: 177.0 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 87.2 ms
+[UE 15] Infer latency: 239.5 ms
+[UE 15] Infer latency: 246.0 ms
+[UE 15] Infer latency: 165.3 ms
+[UE 15] Infer latency: 247.8 ms
+[UE 15] Infer latency: 259.8 ms
+[UE 15] Infer latency: 238.3 ms
+[UE 15] Infer latency: 129.6 ms
+[UE 15] Infer latency: 383.6 ms
+[UE 15] Infer latency: 211.1 ms
+[UE 15] Infer latency: 161.4 ms
+[UE 15] Infer latency: 279.6 ms
+[UE 15] Infer latency: 167.2 ms
+[UE 15] Infer latency: 363.9 ms
+[UE 15] Infer latency: 148.0 ms
+[UE 15] Infer latency: 217.1 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 254.8 ms
+[UE 15] Infer latency: 292.4 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 524.6 ms
+[UE 15] Infer latency: 192.1 ms
+[UE 15] Infer latency: 265.2 ms
+[UE 15] Infer latency: 450.7 ms
+[UE 15] Infer latency: 110.0 ms
+[UE 15] Infer latency: 375.3 ms
+[UE 15] Infer latency: 398.7 ms
+[UE 15] Infer latency: 401.5 ms
+[UE 15] Infer latency: 295.9 ms
+[UE 15] Infer latency: 232.4 ms
+[UE 15] Infer latency: 340.7 ms
+[UE 15] Infer latency: 154.2 ms
+[UE 15] Infer latency: 344.9 ms
+[UE 15] Infer latency: 532.9 ms
+[UE 15] Infer latency: 766.0 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService8
+[UE 15] Infer latency: 199.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService8/video
+[UE 15] Infer latency: 334.5 ms
+[UE 15] Infer latency: 197.9 ms
+[UE 15] Infer latency: 181.7 ms
+[UE 15] Infer latency: 234.2 ms
+[UE 15] Infer latency: 181.3 ms
+[UE 15] Infer latency: 186.1 ms
+[UE 15] Infer latency: 256.2 ms
+[UE 15] Infer latency: 253.6 ms
+[UE 15] Infer latency: 90.7 ms
+[UE 15] Infer latency: 323.3 ms
+[UE 15] Infer latency: 536.2 ms
+[UE 15] Infer latency: 314.7 ms
+[UE 15] Infer latency: 169.9 ms
+[UE 15] Infer latency: 469.9 ms
+[UE 15] Infer latency: 388.7 ms
+[UE 15] Infer latency: 349.9 ms
+[UE 15] Infer latency: 382.1 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService9
+[UE 15] Infer latency: 153.9 ms
+[UE 15] Infer latency: 103.4 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 177.6 ms
+[UE 15] Infer latency: 101.4 ms
+[UE 15] Infer latency: 102.9 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService9/video
+[UE 15] Infer latency: 145.5 ms
+[UE 15] Infer latency: 137.3 ms
+[UE 15] Infer latency: 69.5 ms
+[UE 15] Infer latency: 196.1 ms
+[UE 15] Infer latency: 124.1 ms
+[UE 15] Infer latency: 74.0 ms
+[UE 15] Infer latency: 116.4 ms
+[UE 15] Infer latency: 62.0 ms
+[UE 15] Infer latency: 85.8 ms
+[UE 15] Infer latency: 187.2 ms
+[UE 15] Infer latency: 80.9 ms
+[UE 15] Infer latency: 90.5 ms
+[UE 15] Infer latency: 65.6 ms
+[UE 15] Infer latency: 72.3 ms
+[UE 15] Infer latency: 139.6 ms
+[UE 15] Infer latency: 198.1 ms
+[UE 15] Infer latency: 70.4 ms
+[UE 15] Infer latency: 154.6 ms
+[UE 15] Infer latency: 204.8 ms
+[UE 15] Infer latency: 143.9 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService9
+[UE 15] Infer latency: 204.2 ms
+[UE 15] Infer latency: 190.7 ms
+[UE 15] Infer latency: 155.1 ms
+[UE 15] Infer latency: 185.2 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 79.9 ms
+[UE 15] Infer latency: 103.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService9/video
+[UE 15] Infer latency: 67.8 ms
+[UE 15] Infer latency: 124.4 ms
+[UE 15] Infer latency: 64.2 ms
+[UE 15] Infer latency: 60.7 ms
+[UE 15] Infer latency: 72.6 ms
+[UE 15] Infer latency: 194.0 ms
+[UE 15] Infer latency: 118.1 ms
+[UE 15] Infer latency: 107.7 ms
+[UE 15] Infer latency: 107.5 ms
+[UE 15] Infer latency: 148.4 ms
+[UE 15] Infer latency: 197.5 ms
+[UE 15] Infer latency: 123.6 ms
+[UE 15] Infer latency: 102.0 ms
+[UE 15] Infer latency: 71.2 ms
+[UE 15] Infer latency: 104.3 ms
+[UE 15] Infer latency: 140.5 ms
+[UE 15] Infer latency: 101.0 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService9
+[UE 15] Infer latency: 185.3 ms
+[UE 15] Infer latency: 147.8 ms
+[UE 15] Infer latency: 98.7 ms
+[UE 15] Infer latency: 70.2 ms
+[UE 15] Infer latency: 136.0 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 180.9 ms
+[UE 15] Infer latency: 161.7 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService9/video
+[UE 15] Infer latency: 130.7 ms
+[UE 15] Infer latency: 57.5 ms
+[UE 15] Infer latency: 188.3 ms
+[UE 15] Infer latency: 91.1 ms
+[UE 15] Infer latency: 99.4 ms
+[UE 15] Infer latency: 76.9 ms
+[UE 15] Infer latency: 109.7 ms
+[UE 15] Infer latency: 145.3 ms
+[UE 15] Infer latency: 144.2 ms
+[UE 15] Infer latency: 89.8 ms
+[UE 15] Infer latency: 105.2 ms
+[UE 15] Infer latency: 119.8 ms
+[UE 15] Infer latency: 84.7 ms
+[UE 15] Infer latency: 66.7 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService9
+[UE 15] Infer latency: 193.3 ms
+[UE 15] Infer latency: 87.1 ms
+[UE 15] Infer latency: 272.6 ms
+[UE 15] Infer latency: 374.8 ms
+[UE 15] Infer latency: 260.0 ms
+[UE 15] Infer latency: 184.6 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 603.1 ms
+[UE 15] Infer latency: 139.1 ms
+[UE 15] Streaming de http://172.22.0.162/VideoStreamingService9/video
+[UE 15] Infer latency: 282.3 ms
+[UE 15] Infer latency: 302.7 ms
+[UE 15] Infer latency: 347.7 ms
+[UE 15] Infer latency: 219.5 ms
+[UE 15] Infer latency: 280.2 ms
+[UE 15] Infer latency: 269.6 ms
+[UE 15] Infer latency: 185.8 ms
+[UE 15] Infer latency: 116.9 ms
+[UE 15] Infer latency: 368.8 ms
+[UE 15] Novo endpoint: http://172.22.0.162/VideoStreamingService9
+[UE 15] Infer latency: 348.8 ms
+[UE 15] Infer latency: 409.0 ms
+[UE 15] Infer latency: 190.2 ms
+[UE 15] Infer latency: 221.2 ms
+[UE 15] Infer latency: 170.2 ms
+[UE 15] Infer latency: 175.0 ms
+[UE 15] Infer latency: 139.0 ms
+[UE 15] Infer latency: 219.3 ms
+[UE 15] Infer latency: 253.6 ms
+[UE 15] Infer latency: 309.0 ms
+[UE 15] Erro no stream: HTTPConnectionPool(host='172.22.0.162', port=80): Read timed out. (read timeout=10)
+[UE 15] Infer latency: 216.6 ms

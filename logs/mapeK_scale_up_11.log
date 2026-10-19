@@ -176,3 +176,5 @@ Comando Docker: docker run -d --name mec_app1_instance11 -v /home/iang/Documento
 Container 'mec_app1_instance11' iniciado com sucesso com limites de recursos.
 📜 Logs for container 'mec_app1_instance11':
 
+
+=== 2026-10-18 21:25:52 | python3 mec_instance_manager.py start mec_app1_instance11 8101 examples/mec_app1.py --mec_name VideoStreamingService11 --mec_host 150.161.121.210 ===

@@ -182,3 +182,22 @@ Comando Docker: docker run -d --name mec_app1_instance10 -v /home/iang/Documento
 Container 'mec_app1_instance10' iniciado com sucesso com limites de recursos.
 📜 Logs for container 'mec_app1_instance10':
 
+
+=== 2026-10-18 21:25:14 | python3 mec_instance_manager.py start mec_app1_instance10 8100 examples/mec_app1.py --mec_name VideoStreamingService10 --mec_host 150.161.121.210 ===
+Registro na API MEC bem-sucedido: {'description': 'Video Streaming Service with real-time metrics', 'endpoints': [{'description': 'Streams live video feed', 'method': 'GET', 'name': 'video_feed', 'parameters': [], 'path': '/video'}, {'description': 'Uploads a video frame', 'method': 'POST', 'name': 'upload_frame', 'parameters': [], 'path': '/upload'}, {'description': 'Uploads a file to the service', 'method': 'POST', 'name': 'upload_file', 'parameters': [], 'path': '/upload_file'}, {'description': 'Returns system and streaming metrics', 'method': 'GET', 'name': 'get_metrics', 'parameters': [], 'path': '/metric'}, {'description': 'Simple hello world endpoint', 'method': 'GET', 'name': 'get_hello', 'parameters': [], 'path': '/hello-api'}], 'host': '172.22.0.162', 'name': 'VideoStreamingService10', 'path': '/VideoStreamingService10/apiFlask/v1', 'port': '80', 'sid': '6ad5636d0ecc8769c4f4c51a', 'type': 'VidProc', 'uid': 'VideoStreamingService10-uid'}
+Starting Video Streaming Service
+Container ID: aea968802999
+Maximum frames buffer: 5
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8100
+ * Running on http://172.22.0.20:8100
+[33mPress CTRL+C to quit[0m
+172.22.0.1 - - [19/Oct/2026 00:25:22] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:25:28] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:25:35] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:25:42] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:25:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:25:55] "GET /metric HTTP/1.1" 200 -
