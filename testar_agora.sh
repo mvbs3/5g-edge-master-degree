@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # ============================================================================
-# UM COMANDO: sobe o stack, roda o cenário curto e analisa o resultado.
+# UM COMANDO: sobe o stack, roda o cenário e analisa o resultado.
 #
-#   ./testar_agora.sh mab
+#   ./testar_agora.sh mab              → cenário curto de validação (~13 min, 10→40 UEs)
 #   ./testar_agora.sh rr
+#   ./testar_agora.sh mab completo     → experimento do paper (~60 min, 10→100 UEs)
+#   ./testar_agora.sh rr completo
 #
 # Existe porque a opção 1 do automacao_script.py, além de subir o stack, dispara
 # 100 UEs fixas no fim — se elas ficarem vivas, somam com as 10→40 do cenário
@@ -19,8 +21,9 @@
 set -euo pipefail
 
 CENARIO="${1:-}"
-if [[ "$CENARIO" != "mab" && "$CENARIO" != "rr" ]]; then
-    echo "Uso: $0 {mab|rr}"
+MODO="${2:-curto}"
+if [[ "$CENARIO" != "mab" && "$CENARIO" != "rr" ]] || [[ "$MODO" != "curto" && "$MODO" != "completo" ]]; then
+    echo "Uso: $0 {mab|rr} [completo]"
     exit 1
 fi
 
@@ -254,19 +257,31 @@ if [[ "$resposta" != *"cpu_avg_percent"* ]]; then
 fi
 
 # ------------------------------------------------------------ 4. o teste
-passo "RODANDO O CENÁRIO CURTO (~13 min)"
-AUTO_CONFIRM=1 ./run_experiment_short.sh "$CENARIO"
+# O completo usa o run_experiment.sh sem overrides (fases default do run_workload.sh)
+# e grava graficos/rl_input_state_<cenario>.csv, que é o que o graficos_compare.py lê.
+if [[ "$MODO" == "completo" ]]; then
+    passo "RODANDO O EXPERIMENTO COMPLETO (~60 min, 10→100 UEs)"
+    AUTO_CONFIRM=1 ./run_experiment.sh "$CENARIO"
+    CSV="graficos/rl_input_state_${CENARIO}.csv"
+    RUNS_GLOB="runs/${CENARIO}_2*"
+    ANALISE_ARGS=(--peak-ues 100)
+else
+    passo "RODANDO O CENÁRIO CURTO (~13 min)"
+    AUTO_CONFIRM=1 ./run_experiment_short.sh "$CENARIO"
+    CSV="graficos/rl_input_state_${CENARIO}_short.csv"
+    RUNS_GLOB="runs/${CENARIO}_short_*"
+    ANALISE_ARGS=()
+fi
 
 # ---------------------------------------------------------- 5. veredito
 passo "ANALISANDO"
-CSV="graficos/rl_input_state_${CENARIO}_short.csv"
 if [[ -f "$CSV" ]]; then
-    python3 analisa_execucao.py "$CSV" || true
+    python3 analisa_execucao.py "$CSV" ${ANALISE_ARGS[@]+"${ANALISE_ARGS[@]}"} || true
 else
     echo "ERRO: $CSV não foi gerado — veja os avisos do run_experiment.sh acima."
 fi
 
 passo "ARQUIVOS PRA MANDAR PARA ANÁLISE"
 echo "  $CSV"
-ls -t runs/${CENARIO}_short_*/workload_*.log 2>/dev/null | head -1 | sed 's/^/  /' || true
+ls -td $RUNS_GLOB 2>/dev/null | head -1 | sed 's/^/  /' || true
 echo "  logs/mapek_${CENARIO}.log"
