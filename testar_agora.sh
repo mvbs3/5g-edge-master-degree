@@ -168,6 +168,34 @@ if [[ "$vivas" != "0" ]]; then
 fi
 echo "  UEs vivas agora: $(docker exec nr_ue pgrep -f ue_client.py 2>/dev/null | wc -l | tr -d ' ')"
 
+# ------------------------------------------- 2b. Redis visível de dentro do nr_ue
+# A inteligência publica a escolha do MAB/RR no Redis e cada UE escuta seu topic
+# (ue_client.py:33, host = MEC_HOST). Se o nr_ue não alcança o Redis, a thread de
+# escuta morre no boot e TODAS as UEs ficam no endpoint inicial (VideoStreamingService0):
+# o roteador decide, ninguém obedece, e a comparação MAB x RR não mede nada.
+passo "REDIS ($PROM_HOST:6379, visto de dentro do nr_ue)"
+redis_ok() {
+    docker exec nr_ue python3 -c "import redis; redis.Redis(host='$PROM_HOST', port=6379, socket_connect_timeout=3).ping()" >/dev/null 2>&1
+}
+if ! redis_ok; then
+    # Nenhum compose sobe o Redis. Publica só no loopback (a inteligência usa
+    # 127.0.0.1, mec_app_inteligence.py:634) e no IP que as UEs usam, nada além.
+    echo "  Redis fora do ar — subindo o container 'redis'"
+    docker rm -f redis >/dev/null 2>&1 || true
+    docker run -d --name redis --restart unless-stopped \
+        -p "127.0.0.1:6379:6379" -p "$PROM_HOST:6379:6379" \
+        redis:7 >/dev/null || true
+    sleep 3
+fi
+if redis_ok; then
+    echo "  nr_ue alcança o Redis"
+else
+    echo "  ERRO: o nr_ue não alcança o Redis em $PROM_HOST:6379."
+    echo "  Confira: docker logs redis   e   sudo ss -ltnp | grep 6379"
+    echo "  (um redis-server do sistema na 6379 ouvindo só em 127.0.0.1 impede o container de subir)"
+    exit 1
+fi
+
 # --------------------------------------- 3. inteligência com o controller certo
 # Precisa reiniciar de todo jeito: a opção 1 sobe sem CONTROLLER_TYPE, e a versão
 # em execução pode ser a anterior às correções (sem cpu_avg_percent, o que faz o
