@@ -152,3 +152,71 @@ Comando Docker: docker run -d --name mec_app1_instance17 -v /home/iang/Documento
 Container 'mec_app1_instance17' iniciado com sucesso com limites de recursos.
 📜 Logs for container 'mec_app1_instance17':
 
+
+=== 2026-10-18 21:29:41 | python3 mec_instance_manager.py start mec_app1_instance17 8107 examples/mec_app1.py --mec_name VideoStreamingService17 --mec_host 150.161.121.210 ===
+Registro na API MEC bem-sucedido: {'description': 'Video Streaming Service with real-time metrics', 'endpoints': [{'description': 'Streams live video feed', 'method': 'GET', 'name': 'video_feed', 'parameters': [], 'path': '/video'}, {'description': 'Uploads a video frame', 'method': 'POST', 'name': 'upload_frame', 'parameters': [], 'path': '/upload'}, {'description': 'Uploads a file to the service', 'method': 'POST', 'name': 'upload_file', 'parameters': [], 'path': '/upload_file'}, {'description': 'Returns system and streaming metrics', 'method': 'GET', 'name': 'get_metrics', 'parameters': [], 'path': '/metric'}, {'description': 'Simple hello world endpoint', 'method': 'GET', 'name': 'get_hello', 'parameters': [], 'path': '/hello-api'}], 'host': '172.22.0.162', 'name': 'VideoStreamingService17', 'path': '/VideoStreamingService17/apiFlask/v1', 'port': '80', 'sid': '6ad564780ecc8769c4f4c521', 'type': 'VidProc', 'uid': 'VideoStreamingService17-uid'}
+Starting Video Streaming Service
+Container ID: 4c84743ae540
+Maximum frames buffer: 5
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8107
+ * Running on http://172.22.0.18:8107
+[33mPress CTRL+C to quit[0m
+172.22.0.1 - - [19/Oct/2026 00:30:05] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:30:18] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:30:32] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:30:46] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:31:00] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:31:13] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:31:27] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:31:41] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:31:54] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:32:08] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:32:21] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:32:35] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:32:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:33:03] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:33:17] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:33:31] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:33:45] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:33:59] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:34:12] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:34:26] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:34:40] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:34:54] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:35:08] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:35:22] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:35:36] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:35:50] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:36:04] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:36:18] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:36:32] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:36:47] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:37:01] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:37:15] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:37:29] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:37:43] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:37:57] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:38:10] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:38:24] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:38:39] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:38:53] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:39:07] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:39:21] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:39:35] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:39:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:40:03] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:40:17] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:40:30] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:40:44] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:40:58] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [19/Oct/2026 00:41:12] "GET /metric HTTP/1.1" 200 -
+🚀 Starting container 'mec_app1_instance17' on port 8107 with app 'examples/mec_app1.py'
+   Recursos: Memória 512m (Reserva 256m), CPU 0.20 núcleos.
+Comando Docker: docker run -d --name mec_app1_instance17 -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/examples/mec_app1.py:/app/app.py -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/uploads:/app/uploads -e MEC_NAME=VideoStreamingService17 -e MEC_PORT=8107 -e MEC_HOST=150.161.121.210 -e MEC_APP=app.py -p 8107:8107 --network docker_open5gs_default --memory 512m --memory-reservation 256m --cpus 0.20 --add-host host.docker.internal:host-gateway mec_app:latest
+Container 'mec_app1_instance17' iniciado com sucesso com limites de recursos.
+📜 Logs for container 'mec_app1_instance17':
+
