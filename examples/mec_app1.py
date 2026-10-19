@@ -19,6 +19,8 @@ MEC_HOST = os.getenv("MEC_HOST", "1150.161.121.210")
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 
 MAX_FRAMES_BUFFER = int(os.getenv("MAX_FRAMES_BUFFER", 5))
+# Menor que o read timeout do ue_client.py (10 s), pra o servidor fechar primeiro
+VIDEO_IDLE_TIMEOUT_SEC = float(os.getenv("VIDEO_IDLE_TIMEOUT_SEC", 5))
 
 def get_container_id():
     try:
@@ -136,8 +138,17 @@ def video_feed():
         client_id = f"client-{int(time.time() * 1000)}"
         print(f"New client connected: {client_id}")
         last_frame_id = None
-        
+        # O Flask só percebe que o cliente caiu quando tenta escrever. Sem frames
+        # novos (nenhuma UE chama /upload) o gerador nunca escrevia e cada conexão
+        # virava uma thread eterna: a UE reconecta a cada read timeout (10 s) e as
+        # threads órfãs se acumulavam até saturar a CPU da instância. Encerrando o
+        # stream ocioso antes do timeout da UE, a thread morre junto.
+        last_sent = time.time()
+
         while True:
+            if time.time() - last_sent > VIDEO_IDLE_TIMEOUT_SEC:
+                return
+
             frame_data = None
             
             # Get the latest frame with minimal locking time
@@ -169,6 +180,7 @@ def video_feed():
                     metrics["frames_sent"] += 1
                 
                 timestamp_now = time.time()
+                last_sent = timestamp_now
 
                 yield (
                     b"--frame\r\n"
