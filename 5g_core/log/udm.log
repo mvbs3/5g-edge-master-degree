@@ -2222,3 +2222,73 @@ Open5GS daemon v2.7.7
 [MAC_S] 0000: e6f1d20b 7b1ae7f8                     ....{...
 0000: 60299820 2be2c22d                     `). +..-
 0000: 34b5bc52 f568                         4..R.h
+Open5GS daemon v2.7.7
+
+10/19 18:26:37.902: [app] INFO: Configuration: '/open5gs/install/etc/open5gs/udm.yaml' (../lib/app/ogs-init.c:144)
+10/19 18:26:37.902: [app] INFO: File Logging: '/open5gs/install/var/log/open5gs/udm.log' (../lib/app/ogs-init.c:147)
+10/19 18:26:37.903: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/context.c:451)
+10/19 18:26:37.903: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.35:7777] (../lib/sbi/context.c:499)
+10/19 18:26:37.903: [sbi] INFO: NF Service [nudm-ueau] (../lib/sbi/context.c:1985)
+10/19 18:26:37.903: [sbi] INFO: NF Service [nudm-uecm] (../lib/sbi/context.c:1985)
+10/19 18:26:37.903: [sbi] INFO: NF Service [nudm-sdm] (../lib/sbi/context.c:1985)
+10/19 18:26:37.904: [sbi] INFO: nghttp2_server() [http://172.22.0.13]:7777 (../lib/sbi/nghttp2-server.c:439)
+10/19 18:26:37.904: [app] INFO: UDM initialize...done (../src/udm/app.c:31)
+10/19 18:26:37.905: [sbi] INFO: [c4824236-cc03-41f1-841f-7310460b7b74] NF registered [Heartbeat:10s] (../lib/sbi/nf-sm.c:341)
+10/19 18:26:37.906: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/nnrf-handler.c:969)
+10/19 18:26:37.906: [sbi] INFO: [c482af82-cc03-41f1-97ca-0de17e144fce] Subscription created until 2026-10-20T18:26:37.906435-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+10/19 18:26:37.907: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/nnrf-handler.c:969)
+10/19 18:26:37.907: [sbi] INFO: [c482b7a2-cc03-41f1-97ca-0de17e144fce] Subscription created until 2026-10-20T18:26:37.906536-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+10/19 18:26:47.891: [sbi] INFO: [ca75852c-cc03-41f1-b291-4bfc51236c25] (NRF-notify) NF registered (../lib/sbi/nnrf-handler.c:1154)
+10/19 18:26:47.892: [sbi] INFO: [ca75852c-cc03-41f1-b291-4bfc51236c25] (NRF-notify) NF Profile updated [type:UDR] (../lib/sbi/nnrf-handler.c:1168)
+10/19 18:26:47.892: [sbi] INFO: [UDR] NFInstance associated [ca75852c-cc03-41f1-b291-4bfc51236c25] (../lib/sbi/context.c:2441)
+10/19 18:26:47.892: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.14:80] (../lib/sbi/context.c:2446)
+10/19 18:26:47.892: [sbi] INFO: [nudr-dr] NFService associated [ca75bfce-cc03-41f1-b291-4bfc51236c25] (../lib/sbi/context.c:2109)
+10/19 18:26:47.892: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.14:7777] (../lib/sbi/context.c:2111)
+10/19 18:27:26.559: [sbi] INFO: [ca75852c-cc03-41f1-b291-4bfc51236c25] Setup NF Instance [type:UDR] (../lib/sbi/path.c:307)
+10/19 18:27:26.564: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: 44e096fa c0725d10                     D....r].
+0000: e152356e 1be74c15                     .R5n..L.
+0000: b4bf0ecb 7c0e                         ....|.
+10/19 18:39:27.287: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: 4ce2b1ad a361db17                     L....a..
+0000: 35726419 6f2fc75f                     5rd.o/._
+0000: ceb427d3 59fb                         ..'.Y.
+10/19 18:51:28.009: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: 8a756f75 fb84f26d                     .uou...m
+0000: 95ac5b0e db8f543a                     ..[...T:
+0000: b78c33be cb4f                         ..3..O
+Open5GS daemon v2.7.7
+
+10/19 20:45:18.859: [app] INFO: Configuration: '/open5gs/install/etc/open5gs/udm.yaml' (../lib/app/ogs-init.c:144)
+10/19 20:45:18.859: [app] INFO: File Logging: '/open5gs/install/var/log/open5gs/udm.log' (../lib/app/ogs-init.c:147)
+10/19 20:45:18.861: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/context.c:451)
+10/19 20:45:18.861: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.35:7777] (../lib/sbi/context.c:499)
+10/19 20:45:18.861: [sbi] INFO: NF Service [nudm-ueau] (../lib/sbi/context.c:1985)
+10/19 20:45:18.861: [sbi] INFO: NF Service [nudm-uecm] (../lib/sbi/context.c:1985)
+10/19 20:45:18.861: [sbi] INFO: NF Service [nudm-sdm] (../lib/sbi/context.c:1985)
+10/19 20:45:18.861: [sbi] INFO: nghttp2_server() [http://172.22.0.13]:7777 (../lib/sbi/nghttp2-server.c:439)
+10/19 20:45:18.861: [app] INFO: UDM initialize...done (../src/udm/app.c:31)
+10/19 20:45:18.863: [sbi] INFO: [242fa4f4-cc17-41f1-b8ee-37b9e4895107] NF registered [Heartbeat:10s] (../lib/sbi/nf-sm.c:341)
+10/19 20:45:18.864: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/nnrf-handler.c:969)
+10/19 20:45:18.865: [sbi] INFO: [243018e4-cc17-41f1-9e1e-376fb1931525] Subscription created until 2026-10-20T20:45:18.864513-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+10/19 20:45:18.865: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/nnrf-handler.c:969)
+10/19 20:45:18.865: [sbi] INFO: [24302aaa-cc17-41f1-9e1e-376fb1931525] Subscription created until 2026-10-20T20:45:18.864675-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+10/19 20:45:28.869: [sbi] INFO: [2a25dd56-cc17-41f1-a607-e78f5630e250] (NRF-notify) NF registered (../lib/sbi/nnrf-handler.c:1154)
+10/19 20:45:28.869: [sbi] INFO: [2a25dd56-cc17-41f1-a607-e78f5630e250] (NRF-notify) NF Profile updated [type:UDR] (../lib/sbi/nnrf-handler.c:1168)
+10/19 20:45:28.869: [sbi] INFO: [UDR] NFInstance associated [2a25dd56-cc17-41f1-a607-e78f5630e250] (../lib/sbi/context.c:2441)
+10/19 20:45:28.869: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.14:80] (../lib/sbi/context.c:2446)
+10/19 20:45:28.869: [sbi] INFO: [nudr-dr] NFService associated [2a261366-cc17-41f1-a607-e78f5630e250] (../lib/sbi/context.c:2109)
+10/19 20:45:28.869: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.14:7777] (../lib/sbi/context.c:2111)
+10/19 20:46:07.535: [sbi] INFO: [2a25dd56-cc17-41f1-a607-e78f5630e250] Setup NF Instance [type:UDR] (../lib/sbi/path.c:307)
+10/19 20:46:07.540: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: 60c22737 b1b65b89                     `.'7..[.
+0000: e581d0f1 60fe4b3e                     ....`.K>
+0000: d81c92e8 7e1f                         ....~.
+10/19 20:58:08.257: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: c0ffdd2a 87946f8e                     ...*..o.
+0000: 15d29d1e 8cf078dc                     ......x.
+0000: d7fdd924 ed97                         ...$..
+10/19 21:10:08.978: [udm] ERROR: [suci-0-001-01-0000-0-0-0000109030] Re-synch MAC failed (../src/udm/nudm-handler.c:129)
+[MAC_S] 0000: f28a33f1 93ea8174                     ..3....t
+0000: 654c4feb 4cfcccac                     eLO.L...
+0000: 379e6005 c317                         7.`...
