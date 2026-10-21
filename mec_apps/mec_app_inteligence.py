@@ -114,7 +114,11 @@ CORE_METRICS_FOR_CSV = [
 ue_connected = {}
 service_latency_stats = {}
 topic_latency_stats = {}
-
+# Resumo de latência VidProc pro MAPE-K (SCALING_METRIC=latency). É montado inteiro
+# no metric_catcher e trocado numa atribuição só: os dicts acima são limpos e
+# repreenchidos a cada ciclo, e ler deles no meio disso devolveria um pool vazio.
+latency_summary = {"services": 0, "max_service_avg_ms": "N/A", "avg_ms": "N/A",
+                   "p95_ms": "N/A", "samples": 0}
 # --- Função auxiliar para carregar ativos de inferência (NOVA) ---
 def load_assets(model_path, scaler_path, params_path):
     """Carrega o modelo, o scaler e os parâmetros de inferência."""
@@ -158,6 +162,13 @@ def register_mec():
                 "name": "cpu_prediction",
                 "parameters": [],
                 "path": "/cpu_percent"
+            },
+            {
+                "description": "Return VidProc latency summary for latency-driven scaling",
+                "method": "GET",
+                "name": "latency_stats",
+                "parameters": [],
+                "path": "/latency_stats"
             }
         ],
         "host": MEC_HOST,
@@ -351,7 +362,7 @@ def metric_catcher():
     """Thread function to periodically fetch metrics from traffic catcher"""
     global mec_metrics, topics, cpu_percentage, metrics_history_buffer, loaded_model, inference_params
     global cpu_percentage_avg, cpu_active_instances
-    global service_latency_stats, topic_latency_stats
+    global service_latency_stats, topic_latency_stats, latency_summary
 
     service_latency_stats = {}
     topic_latency_stats = {}
@@ -402,6 +413,24 @@ def metric_catcher():
                             "max": max(latencies),
                             "min": min(latencies)
                         }
+
+            vidproc = mec_metrics.get("data", {}).get("VidProc", {})
+            service_avgs = [
+                stats["avg"] for name, stats in service_latency_stats.items()
+                if name in vidproc and name not in draining_instances
+            ]
+            topic_lats = [
+                info["latency"] for info in topic_latency_stats.values()
+                if info["service"] in vidproc and info["service"] not in draining_instances
+            ]
+            latency_summary = {
+                "services": len(service_avgs),
+                "max_service_avg_ms": max(service_avgs) if service_avgs else "N/A",
+                "avg_ms": (sum(topic_lats) / len(topic_lats)) if topic_lats else "N/A",
+                "p95_ms": float(np.percentile(topic_lats, 95)) if topic_lats else "N/A",
+                "samples": len(topic_lats),
+            }
+
             for app_type, services in mec_metrics.get("data", {}).items():
                 for service_name, metrics in services.items():
 
@@ -823,6 +852,15 @@ def get_avg_percent():
         #"predicted_next_avg_cpu_percent": "N/A"
         "predicted_next_avg_cpu_percent": predicted_cpu_percent
     })
+
+@app.route("/latency_stats", methods=["GET"])
+def get_latency_stats():
+    """Latência que as UEs medem no /infer, agregada nas instâncias VidProc ativas.
+
+    max_service_avg_ms é a média da instância mais lenta (gatilho de subida, como o
+    max de CPU); avg_ms é a média de todas as UEs (gatilho de descida).
+    """
+    return jsonify(latency_summary)
 
 def reassign_topics_from_instance(app_type, instance_name):
     reassigned = []

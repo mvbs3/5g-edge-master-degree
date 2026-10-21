@@ -3,7 +3,7 @@
 
 Uso:
     python3 analisa_execucao.py graficos/rl_input_state_mab_short.csv
-    python3 analisa_execucao.py graficos/rl_input_state_mab.csv --peak-ues 100
+    python3 analisa_execucao.py graficos/rl_input_state_mab.csv
 
 Existe porque as três perguntas que importam depois de uma execução — as instâncias
 desceram? as UEs voltaram? o workload completou as fases? — não se respondem olhando

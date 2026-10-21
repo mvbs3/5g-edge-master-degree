@@ -33,10 +33,10 @@
 set -euo pipefail
 
 SCENARIO="${1:-}"
-if [[ "$SCENARIO" != "mab" && "$SCENARIO" != "rr" ]]; then
-    echo "Uso: $0 {mab|rr}"
-    exit 1
-fi
+case "$SCENARIO" in
+    mab|rr|mab_lat|rr_lat) ;;
+    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat}"; exit 1 ;;
+esac
 
 # DURATION_MIN é a duração ESPERADA do workload (as 5 fases do run_workload.sh somam
 # 60 min). Ela não corta mais o experimento: serve de referência e de base para o
@@ -139,8 +139,13 @@ docker exec nr_ue chmod +x /mnt/ueransim/run_workload.sh
 # ser repassada explicitamente com -e. Sem isso o workload sempre usava os defaults
 # (60 min no total) e não havia como rodar um cenário curto de validação.
 WORKLOAD_ENV=()
+# Cenários *_lat: UEs com perfis de carga diferentes (ue_client.py). Os originais
+# mab/rr não passam nada e o cliente fica no perfil uniforme de sempre.
+if [[ "$SCENARIO" == *_lat ]]; then
+    export LOAD_PROFILE="${LOAD_PROFILE:-heterogeneo}"
+fi
 for var in WARMUP_UES PEAK_UES PHASE_WARMUP_SEC PHASE_RAMP_SEC PHASE_PEAK_SEC \
-           PHASE_DRAIN_SEC PHASE_SETTLE_SEC; do
+           PHASE_DRAIN_SEC PHASE_SETTLE_SEC LOAD_PROFILE; do
     if [[ -n "${!var:-}" ]]; then
         WORKLOAD_ENV+=(-e "$var=${!var}")
         echo "  override: $var=${!var}"

@@ -281,6 +281,16 @@ import random
 @app.route("/infer", methods=["POST"])
 def infer():
     payload = request.data
+    # Cenários *_lat: a UE diz quanto CPU a requisição custa (perfil leve/médio/pesado).
+    # O trabalho é medido em tempo de CPU da thread, não de parede: com --cpus 0.20 e o
+    # GIL disputado, a mesma requisição demora mais quando a instância está cheia, e é
+    # isso que faz a latência refletir a carga. Sem o cabeçalho, comportamento original.
+    work_ms = request.headers.get("X-Work-Ms")
+    if work_ms:
+        deadline = time.thread_time() + float(work_ms) / 1000
+        while time.thread_time() < deadline:
+            hashlib.sha256(payload).digest()
+        return {"status": "ok"}
     # simula processamento pesado
     time.sleep(random.uniform(0.05, 0.2))
     return {"status": "ok"}

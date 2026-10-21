@@ -20,6 +20,19 @@ import numpy as np
 #   DOWN=5  → o pool inteiro abaixo de 25% do teto
 CPU_THRESHOLD_UP = float(os.getenv("CPU_THRESHOLD_UP", "10"))
 CPU_THRESHOLD_DOWN = float(os.getenv("CPU_THRESHOLD_DOWN", "5"))
+
+# Métrica que dirige o scale. "cpu" é o cenário original (mab/rr); "latency" é o dos
+# cenários *_lat, com a MESMA forma de decisão: UP pela instância mais lenta (média
+# de latência dela), DOWN pela média de todas as UEs. Limites em ms, abaixo do SLA
+# de 200 ms pra que a subida aconteça antes da violação.
+SCALING_METRIC = os.getenv("SCALING_METRIC", "cpu").lower()
+LATENCY_THRESHOLD_UP_MS = float(os.getenv("LATENCY_THRESHOLD_UP_MS", "100"))
+LATENCY_THRESHOLD_DOWN_MS = float(os.getenv("LATENCY_THRESHOLD_DOWN_MS", "40"))
+if SCALING_METRIC == "latency":
+    THRESHOLD_UP, THRESHOLD_DOWN, METRIC_UNIT = LATENCY_THRESHOLD_UP_MS, LATENCY_THRESHOLD_DOWN_MS, "ms"
+else:
+    SCALING_METRIC = "cpu"
+    THRESHOLD_UP, THRESHOLD_DOWN, METRIC_UNIT = CPU_THRESHOLD_UP, CPU_THRESHOLD_DOWN, "%"
 MIN_INSTANCES = 2
 MAX_INSTANCES = 10
 METRICS_POLLING_INTERVAL = 5
@@ -35,6 +48,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MONITOR_URL = f"http://{MEP_ADDRESS}/traffic_inteligence/cpu_percent"
+LATENCY_URL = f"http://{MEP_ADDRESS}/traffic_inteligence/latency_stats"
 DISCOVER_URL = f"http://{MEP_ADDRESS}/service_registry/v1/discover"
 TARGET_APP_TYPE = os.getenv("TARGET_APP_TYPE", "VidProc")
 SERVICE_NAME_PATTERN = re.compile(r"^VideoStreamingService(\d+)$")
@@ -202,6 +216,31 @@ def collect_metrics():
         log(f"Erro ao coletar métricas: {e}")
         return None
 
+
+def collect_latency_metrics():
+    """Mesmo contrato do collect_metrics(), mas em ms: max = média da instância mais
+    lenta, avg = média de todas as UEs. Sem amostras devolve None (NO_ACTION)."""
+    try:
+        response = requests.get(LATENCY_URL, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        log(f"[DEBUG RESPONSE] {data}")
+
+        try:
+            lat_max = float(data.get("max_service_avg_ms"))
+            lat_avg = float(data.get("avg_ms"))
+        except (TypeError, ValueError):
+            log(f"⚠️ Latência indisponível: {data}")
+            return None
+
+        log(f"Latência atual: max={lat_max:.1f}ms avg={lat_avg:.1f}ms "
+            f"p95={data.get('p95_ms')} (instâncias={data.get('services')}, amostras={data.get('samples')})")
+        return {"max": lat_max, "avg": lat_avg}
+
+    except Exception as e:
+        log(f"Erro ao coletar latência: {e}")
+        return None
+
 # ================= ANALYZE =================
 def analyze(cpu, instances):
     """Decide a ação. Não muta `last_action_time` aqui — só execute() faz isso
@@ -220,15 +259,16 @@ def analyze(cpu, instances):
 
     log(f"""
 [MAPE-K DEBUG]
-cpu_max={cpu['max']:.2f}
-cpu_avg={cpu['avg']:.2f}
+metric={SCALING_METRIC}
+{SCALING_METRIC}_max={cpu['max']:.2f}
+{SCALING_METRIC}_avg={cpu['avg']:.2f}
 instances={instances}
-threshold_up={CPU_THRESHOLD_UP} (sobre o max)
-threshold_down={CPU_THRESHOLD_DOWN} (sobre a media)
+threshold_up={THRESHOLD_UP} (sobre o max)
+threshold_down={THRESHOLD_DOWN} (sobre a media)
 """)
 
-    if cpu["max"] > CPU_THRESHOLD_UP and instances < MAX_INSTANCES:
-        log(f"AÇÃO: SCALE_UP (max {cpu['max']:.2f} > {CPU_THRESHOLD_UP})")
+    if cpu["max"] > THRESHOLD_UP and instances < MAX_INSTANCES:
+        log(f"AÇÃO: SCALE_UP ({SCALING_METRIC} max {cpu['max']:.2f}{METRIC_UNIT} > {THRESHOLD_UP})")
         return "SCALE_UP"
 
     # Banda morta: só desescala se o pool estiver ocioso NA MÉDIA **e** nenhuma
@@ -237,12 +277,12 @@ threshold_down={CPU_THRESHOLD_DOWN} (sobre a media)
     # pool fica oscilando entre N e N-1 indefinidamente, inflando justamente a
     # métrica de estabilidade (scaling changes) que o experimento compara.
     if (
-        cpu["avg"] < CPU_THRESHOLD_DOWN
-        and cpu["max"] <= CPU_THRESHOLD_UP
+        cpu["avg"] < THRESHOLD_DOWN
+        and cpu["max"] <= THRESHOLD_UP
         and instances > MIN_INSTANCES
     ):
-        log(f"AÇÃO: SCALE_DOWN (avg {cpu['avg']:.2f} < {CPU_THRESHOLD_DOWN}, "
-            f"max {cpu['max']:.2f} <= {CPU_THRESHOLD_UP})")
+        log(f"AÇÃO: SCALE_DOWN ({SCALING_METRIC} avg {cpu['avg']:.2f}{METRIC_UNIT} < {THRESHOLD_DOWN}, "
+            f"max {cpu['max']:.2f} <= {THRESHOLD_UP})")
         return "SCALE_DOWN"
 
     return "NO_ACTION"
@@ -334,7 +374,7 @@ def run():
     while True:
         log("==== CICLO MAPE-K ====")
 
-        cpu = collect_metrics()
+        cpu = collect_latency_metrics() if SCALING_METRIC == "latency" else collect_metrics()
 
         # A contagem vem do registry a cada ciclo: é o único jeito de perceber
         # instâncias que morreram sozinhas e de não travar o pool no teto.
@@ -365,5 +405,5 @@ def signal_handler(sig, frame):
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
-    log("MAPE-K iniciado")
+    log(f"MAPE-K iniciado (métrica={SCALING_METRIC}, up>{THRESHOLD_UP}{METRIC_UNIT}, down<{THRESHOLD_DOWN}{METRIC_UNIT})")
     run()

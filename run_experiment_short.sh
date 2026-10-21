@@ -22,10 +22,10 @@
 set -euo pipefail
 
 SCENARIO="${1:-}"
-if [[ "$SCENARIO" != "mab" && "$SCENARIO" != "rr" ]]; then
-    echo "Uso: $0 {mab|rr}"
-    exit 1
-fi
+case "$SCENARIO" in
+    mab|rr|mab_lat|rr_lat) ;;
+    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat}"; exit 1 ;;
+esac
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 
@@ -44,7 +44,7 @@ PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 #                 experimento acabava ANTES de as últimas UEs serem removidas e o CSV
 #                 nunca mostrava a volta ao valor de warmup.
 export WARMUP_UES=10
-export PEAK_UES=40
+export PEAK_UES="${PEAK_UES:-40}"  # PEAK_UES=100 valida a carga do experimento completo
 export PHASE_WARMUP_SEC=60
 export PHASE_RAMP_SEC=180
 export PHASE_PEAK_SEC=90

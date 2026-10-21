@@ -3,6 +3,9 @@
   - rl_input_state_rr.csv
 (produzidos pelo run_experiment.sh em ../run_experiment.sh, copiados pra cá.)
 
+Com --cenario lat compara os cenários de latência (rl_input_state_mab_lat.csv e
+rl_input_state_rr_lat.csv) e grava em relatorio_compare_lat/.
+
 Gera em relatorio_compare/:
   - cpu.png                 CPU média ao longo do tempo (MAB vs RR)
   - memoria.png             Memória (%)
@@ -202,11 +205,24 @@ def main():
         description='Gera gráficos comparativos MAB vs Round Robin'
     )
     parser.add_argument(
+        '--cenario',
+        choices=['cpu', 'lat'],
+        default='cpu',
+        help="cpu = mab/rr originais; lat = mab_lat/rr_lat (MAPE-K por latência)",
+    )
+    parser.add_argument(
         '--out',
-        default=os.path.join(_SCRIPT_DIR, 'relatorio_compare'),
-        help='Diretório de saída (absoluto recomendado)',
+        default=None,
+        help='Diretório de saída (default: relatorio_compare ou relatorio_compare_lat)',
     )
     args = parser.parse_args()
+
+    if args.cenario == 'lat':
+        for label in SCENARIO_FILES:
+            SCENARIO_FILES[label] = SCENARIO_FILES[label].replace('.csv', '_lat.csv')
+    if args.out is None:
+        nome = 'relatorio_compare' if args.cenario == 'cpu' else 'relatorio_compare_lat'
+        args.out = os.path.join(_SCRIPT_DIR, nome)
 
     os.makedirs(args.out, exist_ok=True)
     plt.style.use('seaborn-v0_8-darkgrid')

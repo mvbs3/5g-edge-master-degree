@@ -6,6 +6,8 @@
 #   ./testar_agora.sh rr
 #   ./testar_agora.sh mab completo     → experimento do paper (~60 min, 10→100 UEs)
 #   ./testar_agora.sh rr completo
+#   ./testar_agora.sh mab_lat [completo] → MAPE-K por latência + UEs leve/médio/pesado
+#   ./testar_agora.sh rr_lat  [completo]
 #
 # Existe porque a opção 1 do automacao_script.py, além de subir o stack, dispara
 # 100 UEs fixas no fim — se elas ficarem vivas, somam com as 10→40 do cenário
@@ -22,10 +24,17 @@ set -euo pipefail
 
 CENARIO="${1:-}"
 MODO="${2:-curto}"
-if [[ "$CENARIO" != "mab" && "$CENARIO" != "rr" ]] || [[ "$MODO" != "curto" && "$MODO" != "completo" ]]; then
-    echo "Uso: $0 {mab|rr} [completo]"
+case "$CENARIO" in mab|rr|mab_lat|rr_lat) ;; *) CENARIO="" ;; esac
+if [[ -z "$CENARIO" ]] || [[ "$MODO" != "curto" && "$MODO" != "completo" ]]; then
+    echo "Uso: $0 {mab|rr|mab_lat|rr_lat} [completo]"
     exit 1
 fi
+
+# mab/rr: MAPE-K por CPU, UEs uniformes (experimento original, intocado).
+# mab_lat/rr_lat: MAPE-K por latência, UEs com perfis leve/médio/pesado
+# (LOAD_PROFILE é aplicado pelo run_experiment.sh). O roteador é o mesmo nos dois.
+CONTROLLER="${CENARIO%_lat}"
+if [[ "$CENARIO" == *_lat ]]; then SCALING_METRIC=latency; else SCALING_METRIC=cpu; fi
 
 RAIZ="$(cd "$(dirname "$0")" && pwd)"
 cd "$RAIZ"
@@ -203,7 +212,7 @@ fi
 # Precisa reiniciar de todo jeito: a opção 1 sobe sem CONTROLLER_TYPE, e a versão
 # em execução pode ser a anterior às correções (sem cpu_avg_percent, o que faz o
 # mapeK cair no fallback e o scale-down nunca acontecer).
-passo "REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=$CENARIO) E MAPE-K"
+passo "REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=$CONTROLLER) E MAPE-K (SCALING_METRIC=$SCALING_METRIC)"
 pkill -f mec_app_inteligence.py 2>/dev/null || true
 pkill -f mapeK.py 2>/dev/null || true
 pkill -f mec_app_metric_catcher.py 2>/dev/null || true
@@ -221,13 +230,13 @@ nohup python3 mec_app_metric_catcher.py > "$RAIZ/logs/catcher_${CENARIO}.log" 2>
 echo "  catcher iniciado (log: logs/catcher_${CENARIO}.log)"
 sleep 10
 
-CONTROLLER_TYPE="$CENARIO" nohup python3 mec_app_inteligence.py \
+CONTROLLER_TYPE="$CONTROLLER" nohup python3 mec_app_inteligence.py \
     > "$RAIZ/logs/inteligencia_${CENARIO}.log" 2>&1 &
 echo "  inteligência iniciada (log: logs/inteligencia_${CENARIO}.log)"
 sleep 15
 
 # O mapeK só sobe depois: ele lê o endpoint da inteligência no primeiro ciclo.
-nohup python3 mapeK.py > "$RAIZ/logs/mapek_${CENARIO}.log" 2>&1 &
+SCALING_METRIC="$SCALING_METRIC" nohup python3 mapeK.py > "$RAIZ/logs/mapek_${CENARIO}.log" 2>&1 &
 echo "  mapeK iniciado (log: logs/mapek_${CENARIO}.log)"
 cd "$RAIZ"
 sleep 5
@@ -256,6 +265,18 @@ if [[ "$resposta" != *"cpu_avg_percent"* ]]; then
     read -r -p "  Enter para continuar mesmo assim, Ctrl+C para abortar..." _
 fi
 
+# Sem /latency_stats o mapeK dos cenários *_lat lê N/A pra sempre e nunca escala.
+if [[ "$SCALING_METRIC" == "latency" ]]; then
+    passo "CONFERINDO O ENDPOINT DE LATÊNCIA"
+    lat=$(curl -s --max-time 5 "http://${MEP}/traffic_inteligence/latency_stats" || true)
+    echo "  [$MEP] $lat"
+    if [[ "$lat" != *"max_service_avg_ms"* ]]; then
+        echo "  ERRO: /latency_stats não respondeu — a inteligência em execução é anterior"
+        echo "  aos cenários *_lat. Confira se o pull chegou neste server."
+        exit 1
+    fi
+fi
+
 # ------------------------------------------------------------ 4. o teste
 # O completo usa o run_experiment.sh sem overrides (fases default do run_workload.sh)
 # e grava graficos/rl_input_state_<cenario>.csv, que é o que o graficos_compare.py lê.
@@ -264,7 +285,7 @@ if [[ "$MODO" == "completo" ]]; then
     AUTO_CONFIRM=1 ./run_experiment.sh "$CENARIO"
     CSV="graficos/rl_input_state_${CENARIO}.csv"
     RUNS_GLOB="runs/${CENARIO}_2*"
-    ANALISE_ARGS=(--peak-ues 100)
+    ANALISE_ARGS=()
 else
     passo "RODANDO O CENÁRIO CURTO (~13 min)"
     AUTO_CONFIRM=1 ./run_experiment_short.sh "$CENARIO"
