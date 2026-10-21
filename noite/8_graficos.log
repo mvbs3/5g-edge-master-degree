@@ -1,0 +1,58 @@
+/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/graficos_compare.py:171: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  instance_hours = float(np.trapz(n_svc, sub['elapsed_min']) / 60.0)
+/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/graficos_compare.py:171: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  instance_hours = float(np.trapz(n_svc, sub['elapsed_min']) / 60.0)
+Diretório do script: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos
+Buscando CSVs:
+  ✓ MAB: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/rl_input_state_mab.csv
+  ✓ Round Robin: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/rl_input_state_rr.csv
+
+Carregando cenários...
+  'MAB': 363 amostras, duração 60.5 min
+  'Round Robin': 363 amostras, duração 60.5 min
+
+Gerando gráficos em '/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/relatorio_compare/':
+  [ok] cpu.png
+  [ok] memoria.png
+  [ok] throughput.png
+  [ok] latency.png
+  [ok] queue.png
+  [ok] num_instancias.png
+  [ok] cpu_vs_instancias.png
+  [ok] resumo_kpi.csv
+
+=== KPI COMPARATIVO ===
+    cenario  amostras  duracao_min  lat_media_ms  lat_p50_ms  lat_p95_ms  lat_p99_ms  sla_violacao_pct_>200ms  cpu_media_pct  thrput_medio_kbps  instancias_media  instancias_max  instance_minutes  scaling_changes
+        MAB       363         60.6        131.26      130.69      157.37      170.26                      0.0           4.84              73.87              6.29              10             382.0               32
+Round Robin       363         60.6        129.35      129.29      143.91      152.90                      0.0           6.41             100.16              4.64               7             281.3               10
+
+Finalizado. Gráficos em '/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/relatorio_compare/'
+/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/graficos_compare.py:171: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  instance_hours = float(np.trapz(n_svc, sub['elapsed_min']) / 60.0)
+/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/graficos_compare.py:171: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  instance_hours = float(np.trapz(n_svc, sub['elapsed_min']) / 60.0)
+Diretório do script: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos
+Buscando CSVs:
+  ✓ MAB: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/rl_input_state_mab_lat.csv
+  ✓ Round Robin: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/rl_input_state_rr_lat.csv
+
+Carregando cenários...
+  'MAB': 363 amostras, duração 60.5 min
+  'Round Robin': 363 amostras, duração 60.6 min
+
+Gerando gráficos em '/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/relatorio_compare_lat/':
+  [ok] cpu.png
+  [ok] memoria.png
+  [ok] throughput.png
+  [ok] latency.png
+  [ok] queue.png
+  [ok] num_instancias.png
+  [ok] cpu_vs_instancias.png
+  [ok] resumo_kpi.csv
+
+=== KPI COMPARATIVO ===
+    cenario  amostras  duracao_min  lat_media_ms  lat_p50_ms  lat_p95_ms  lat_p99_ms  sla_violacao_pct_>200ms  cpu_media_pct  thrput_medio_kbps  instancias_media  instancias_max  instance_minutes  scaling_changes
+        MAB       363         60.5        155.59       25.27      628.16      830.34                    32.87           4.73              20.55              5.18              10             314.3               50
+Round Robin       363         60.6         40.88       38.25       83.44      163.65                     0.28          13.59              57.87              6.03              10             366.1               48
+
+Finalizado. Gráficos em '/home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/relatorio_compare_lat/'

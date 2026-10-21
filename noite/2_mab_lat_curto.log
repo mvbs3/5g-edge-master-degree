@@ -1,0 +1,98 @@
+
+=============== STACK JÁ ESTÁ DE PÉ — pulando setup ===============
+
+=============== PROMETHEUS (http://150.161.121.210:9090) ===============
+  já está no ar
+  aguardando CPU de mec_app1_instance0 no Prometheus
+  CPU das instâncias chegando
+
+=============== LIMPANDO UEs AVULSAS ===============
+  UEs vivas agora: 0
+
+=============== REDIS (150.161.121.210:6379, visto de dentro do nr_ue) ===============
+  nr_ue alcança o Redis
+
+=============== REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=mab) E MAPE-K (SCALING_METRIC=latency) ===============
+  catcher iniciado (log: logs/catcher_mab_lat.log)
+  inteligência iniciada (log: logs/inteligencia_mab_lat.log)
+  mapeK iniciado (log: logs/mapek_mab_lat.log)
+
+=============== CONFERINDO O ENDPOINT DE CPU ===============
+  [192.168.70.2] sem resposta
+  [172.22.0.162] {"active_instances":2,"cpu_avg_percent":0.07500000000000001,"cpu_max_percent":0.08,"current_avg_cpu_percent":0.08,"predicted_next_avg_cpu_percent":"N/A"}
+
+=============== CONFERINDO O ENDPOINT DE LATÊNCIA ===============
+  [172.22.0.162] {"avg_ms":"N/A","max_service_avg_ms":"N/A","p95_ms":"N/A","samples":0,"services":0}
+
+=============== RODANDO O CENÁRIO CURTO (~13 min) ===============
+============================================================
+  CENÁRIO CURTO DE VALIDAÇÃO — mab_lat
+  UEs:   10 → 40 → 10
+  Fases: warmup 60s | ramp 180s | peak 90s |
+         drain 300s | settle 120s  (~13 min no total)
+
+  O que conferir no resultado:
+    1. num_services sobe E desce        (hoje: 8 subidas, 0 descidas)
+    2. UEs voltam a 10 no settle      (hoje: ficam no pico pra sempre)
+    3. 'workload concluiu as fases'     (hoje: cortado por timeout no drain)
+
+  Depois rode:  python3 analisa_execucao.py graficos/rl_input_state_mab_lat_short.csv
+============================================================
+
+============================================================
+  EXPERIMENTO: mab_lat (~15 min, definido pelas fases do workload)
+  Saída: /home/iang/Documentos/mvbs3/5g-edge-master-degree/runs/mab_lat_short_20261021_011010
+============================================================
+[1/6] Limpando CSVs anteriores...
+  Devolvendo o pool VidProc ao baseline de 2 instância(s) (antes do cenário)...
+    pool já estava no baseline
+[2/6] Disparando workload no nr_ue...
+  override: WARMUP_UES=10
+  override: PEAK_UES=40
+  override: PHASE_WARMUP_SEC=60
+  override: PHASE_RAMP_SEC=180
+  override: PHASE_PEAK_SEC=90
+  override: PHASE_DRAIN_SEC=300
+  override: PHASE_SETTLE_SEC=120
+  override: LOAD_PROFILE=heterogeneo
+[3/6] Aguardando o workload concluir as 5 fases (timeout de segurança: 30 min)...
+  [0 s decorridos] aguardando fim do workload...  [30 s decorridos] aguardando fim do workload...  [60 s decorridos] aguardando fim do workload...  [90 s decorridos] aguardando fim do workload...  [120 s decorridos] aguardando fim do workload...  [150 s decorridos] aguardando fim do workload...  [180 s decorridos] aguardando fim do workload...  [210 s decorridos] aguardando fim do workload...  [241 s decorridos] aguardando fim do workload...  [271 s decorridos] aguardando fim do workload...  [301 s decorridos] aguardando fim do workload...  [331 s decorridos] aguardando fim do workload...  [361 s decorridos] aguardando fim do workload...  [391 s decorridos] aguardando fim do workload...  [421 s decorridos] aguardando fim do workload...  [451 s decorridos] aguardando fim do workload...  [481 s decorridos] aguardando fim do workload...  [511 s decorridos] aguardando fim do workload...  [541 s decorridos] aguardando fim do workload...  [571 s decorridos] aguardando fim do workload...  [601 s decorridos] aguardando fim do workload...  [631 s decorridos] aguardando fim do workload...  [661 s decorridos] aguardando fim do workload...  [691 s decorridos] aguardando fim do workload...  [721 s decorridos] aguardando fim do workload...  [751 s decorridos] aguardando fim do workload...  workload concluiu as fases em 782 s (13 min)
+[4/6] Garantindo que nenhuma UE ficou viva...
+[5/6] Arquivando resultados...
+[6/6] Devolvendo o pool VidProc ao baseline...
+  Devolvendo o pool VidProc ao baseline de 2 instância(s) (depois do cenário)...
+    parando mec_app1_instance2 (VideoStreamingService2)
+    1 instância(s) removida(s)
+============================================================
+  Experimento mab_lat finalizado.
+  Resultado:        /home/iang/Documentos/mvbs3/5g-edge-master-degree/runs/mab_lat_short_20261021_011010
+  CSV pra gráficos: /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos/rl_input_state_mab_lat_short.csv
+
+  Próximos passos:
+    - Rode o outro cenário (mab ou rr)
+    - Quando tiver os 2 CSVs, gere os gráficos:
+        cd /home/iang/Documentos/mvbs3/5g-edge-master-degree/graficos && python3 graficos_compare.py
+============================================================
+
+=============== ANALISANDO ===============
+Arquivo:  graficos/rl_input_state_mab_lat_short.csv
+Janela:   2026-10-21 01:10:15 -> 2026-10-21 01:23:17  (13.0 min, 79 amostras)
+
+[PASSOU] 1. O pool VidProc desceu
+          8 subida(s), 7 descida(s)
+          pico=10, 20.3% das amostras no pico
+
+[PASSOU] 2. As UEs voltaram ao nível de warmup
+          pico=40, final=10 (esperado <= 15)
+
+[PASSOU] 3. A carga tem forma de corcova
+          pico das UEs em 32% da execução
+
+============================================================
+RESULTADO: ciclo de vida completo — as correções funcionaram
+============================================================
+
+=============== ARQUIVOS PRA MANDAR PARA ANÁLISE ===============
+  graficos/rl_input_state_mab_lat_short.csv
+  runs/mab_lat_short_20261021_011010
+  logs/mapek_mab_lat.log

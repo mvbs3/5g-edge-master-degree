@@ -1,0 +1,251 @@
+
+=== 2026-10-21 04:34:34 | python3 mec_instance_manager.py start mec_app1_instance25 8115 examples/mec_app1.py --mec_name VideoStreamingService25 --mec_host 150.161.121.210 ===
+Registro na API MEC bem-sucedido: {'description': 'Video Streaming Service with real-time metrics', 'endpoints': [{'description': 'Streams live video feed', 'method': 'GET', 'name': 'video_feed', 'parameters': [], 'path': '/video'}, {'description': 'Uploads a video frame', 'method': 'POST', 'name': 'upload_frame', 'parameters': [], 'path': '/upload'}, {'description': 'Uploads a file to the service', 'method': 'POST', 'name': 'upload_file', 'parameters': [], 'path': '/upload_file'}, {'description': 'Returns system and streaming metrics', 'method': 'GET', 'name': 'get_metrics', 'parameters': [], 'path': '/metric'}, {'description': 'Simple hello world endpoint', 'method': 'GET', 'name': 'get_hello', 'parameters': [], 'path': '/hello-api'}], 'host': '172.22.0.162', 'name': 'VideoStreamingService25', 'path': '/VideoStreamingService25/apiFlask/v1', 'port': '80', 'sid': '6ad86b0e4779cd368e7ceb5b', 'type': 'VidProc', 'uid': 'VideoStreamingService25-uid'}
+Starting Video Streaming Service
+Container ID: e25100f780b0
+Maximum frames buffer: 5
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8115
+ * Running on http://172.22.0.15:8115
+[33mPress CTRL+C to quit[0m
+172.22.0.1 - - [21/Oct/2026 07:34:51] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:00] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:10] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:19] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:28] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:30] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:30] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:31] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:31] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:32] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:32] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:33] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:33] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:34] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:34] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:34] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:35] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:35] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:36] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:36] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:36] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:37] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:37] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:37] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:38] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:38] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:39] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:39] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:39] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:39] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:40] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:40] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:41] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:41] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:42] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:42] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:43] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:43] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:43] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:44] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:44] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:45] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:45] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:46] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:46] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:46] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:46] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:47] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:47] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:48] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:48] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:49] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:49] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:49] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:50] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:50] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:51] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:51] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:51] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:52] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:52] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:52] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:53] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:53] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:54] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:54] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:55] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:55] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:56] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:56] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:56] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:59] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:35:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:36:01] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:36:09] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 07:36:18] "GET /metric HTTP/1.1" 200 -
+🚀 Starting container 'mec_app1_instance25' on port 8115 with app 'examples/mec_app1.py'
+   Recursos: Memória 512m (Reserva 256m), CPU 0.20 núcleos.
+Comando Docker: docker run -d --name mec_app1_instance25 -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/examples/mec_app1.py:/app/app.py -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/uploads:/app/uploads -e MEC_NAME=VideoStreamingService25 -e MEC_PORT=8115 -e MEC_HOST=150.161.121.210 -e MEC_APP=app.py -p 8115:8115 --network docker_open5gs_default --memory 512m --memory-reservation 256m --cpus 0.20 --add-host host.docker.internal:host-gateway mec_app:latest
+Container 'mec_app1_instance25' iniciado com sucesso com limites de recursos.
+📜 Logs for container 'mec_app1_instance25':
+
+
+=== 2026-10-21 05:33:40 | python3 mec_instance_manager.py start mec_app1_instance25 8115 examples/mec_app1.py --mec_name VideoStreamingService25 --mec_host 150.161.121.210 ===
+Registro na API MEC bem-sucedido: {'description': 'Video Streaming Service with real-time metrics', 'endpoints': [{'description': 'Streams live video feed', 'method': 'GET', 'name': 'video_feed', 'parameters': [], 'path': '/video'}, {'description': 'Uploads a video frame', 'method': 'POST', 'name': 'upload_frame', 'parameters': [], 'path': '/upload'}, {'description': 'Uploads a file to the service', 'method': 'POST', 'name': 'upload_file', 'parameters': [], 'path': '/upload_file'}, {'description': 'Returns system and streaming metrics', 'method': 'GET', 'name': 'get_metrics', 'parameters': [], 'path': '/metric'}, {'description': 'Simple hello world endpoint', 'method': 'GET', 'name': 'get_hello', 'parameters': [], 'path': '/hello-api'}], 'host': '172.22.0.162', 'name': 'VideoStreamingService25', 'path': '/VideoStreamingService25/apiFlask/v1', 'port': '80', 'sid': '6ad878e74779cd368e7ceb74', 'type': 'VidProc', 'uid': 'VideoStreamingService25-uid'}
+Starting Video Streaming Service
+Container ID: 002de08b9a7f
+Maximum frames buffer: 5
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8115
+ * Running on http://172.22.0.9:8115
+[33mPress CTRL+C to quit[0m
+172.22.0.1 - - [21/Oct/2026 08:33:51] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:57] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:58] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:33:59] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:00] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:00] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:00] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:00] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:00] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:01] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:02] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:02] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:02] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:02] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:03] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:03] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:03] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:04] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:05] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:06] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:06] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:06] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:06] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:07] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:08] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:09] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:10] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:11] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:12] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:13] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:14] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:15] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "GET /metric HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:16] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:17] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:18] "POST /infer HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:19] "GET /video HTTP/1.1" 200 -
+172.22.0.1 - - [21/Oct/2026 08:34:20] "GET /video HTTP/1.1" 200 -
+🚀 Starting container 'mec_app1_instance25' on port 8115 with app 'examples/mec_app1.py'
+   Recursos: Memória 512m (Reserva 256m), CPU 0.20 núcleos.
+Comando Docker: docker run -d --name mec_app1_instance25 -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/examples/mec_app1.py:/app/app.py -v /home/iang/Documentos/mvbs3/5g-edge-master-degree/uploads:/app/uploads -e MEC_NAME=VideoStreamingService25 -e MEC_PORT=8115 -e MEC_HOST=150.161.121.210 -e MEC_APP=app.py -p 8115:8115 --network docker_open5gs_default --memory 512m --memory-reservation 256m --cpus 0.20 --add-host host.docker.internal:host-gateway mec_app:latest
+Container 'mec_app1_instance25' iniciado com sucesso com limites de recursos.
+📜 Logs for container 'mec_app1_instance25':
+
