@@ -42,6 +42,33 @@ cd "$RAIZ"
 passo() { echo; echo "=============== $* ==============="; }
 no_ar() { docker ps --format '{{.Names}}' | grep -qx "$1"; }
 
+# Aviso sonoro: N bipes curtos. O principal é o bell do terminal (\a), que atravessa o
+# SSH e o tmux e toca no PC de quem está conectado. Se o server tiver áudio, toca
+# também por lá. Vai direto pro /dev/tty porque o stdout costuma estar num `| tee`.
+#   2 bipes = experimento começou   3 bipes = acabou (com sucesso ou erro)
+bipe() {
+    local n="$1" som=/usr/share/sounds/freedesktop/stereo/complete.oga
+    for _ in $(seq 1 "$n"); do
+        { printf '\a' > /dev/tty; } 2>/dev/null || printf '\a'
+        if command -v paplay >/dev/null 2>&1 && [[ -f "$som" ]]; then
+            paplay "$som" >/dev/null 2>&1 &
+        fi
+        sleep 0.4
+    done
+}
+# Dispara em qualquer saída — fim normal, erro do set -e ou Ctrl+C —, então o som de
+# fim toca mesmo se o cenário quebrar no setup.
+fim_do_cenario() {
+    local status=$?
+    if [[ "$status" == "0" ]]; then
+        echo; echo ">>> [$(date +%H:%M:%S)] CENÁRIO $CENARIO TERMINOU — pode rodar o próximo"
+    else
+        echo; echo ">>> [$(date +%H:%M:%S)] CENÁRIO $CENARIO PAROU COM ERRO (código $status) — veja acima"
+    fi
+    bipe 3
+}
+trap fim_do_cenario EXIT
+
 # ---------------------------------------------------------------- 1. stack
 # O automacao_script.py NÃO serve aqui: ele roda `docker-compose up` anexado
 # (sem -d, automacao_script.py:208), então sair do menu com Ctrl+C derruba os
@@ -83,41 +110,56 @@ else
         exit 1
     fi
     echo "  stack no ar"
-
-    passo "SUBINDO AS 2 INSTÂNCIAS MEC BASE"
-    # Não dá pra usar `mec_instance_manager.py start`: ele termina chamando
-    # show_logs(), que é um `docker logs -f` e nunca retorna (mec_instance_manager.py:115).
-    # O automacao_script.py não trava nisso porque abre cada instância num terminal
-    # próprio; aqui seria o fim do script. Então replicamos o docker run dele.
-    IP_LOCAL="$(hostname -I | awk '{print $1}')"
-    for i in 0 1; do
-        if docker ps --format '{{.Names}}' | grep -qx "mec_app1_instance$i"; then
-            echo "  mec_app1_instance$i já está no ar"
-            continue
-        fi
-        docker rm -f "mec_app1_instance$i" >/dev/null 2>&1 || true
-        if docker run -d --name "mec_app1_instance$i" \
-            -v "$RAIZ/examples/mec_app1.py:/app/app.py" \
-            -v "$RAIZ/uploads:/app/uploads" \
-            -e "MEC_NAME=VideoStreamingService$i" \
-            -e "MEC_PORT=$((8090 + i))" \
-            -e "MEC_HOST=$IP_LOCAL" \
-            -e MEC_APP=app.py \
-            -p "$((8090 + i)):$((8090 + i))" \
-            --network docker_open5gs_default \
-            --memory 512m --memory-reservation 256m --cpus 0.20 \
-            --add-host host.docker.internal:host-gateway \
-            mec_app:latest >/dev/null; then
-            echo "  mec_app1_instance$i no ar (porta $((8090 + i)))"
-        else
-            echo "  ERRO ao subir mec_app1_instance$i"
-        fi
-        sleep 3
-    done
-
-    echo "  aguardando as instâncias se registrarem no service_registry..."
-    sleep 10
 fi
+
+# ------------------------------------------- 1a. pool MEC recriado do zero
+# Roda em TODO cenário, mesmo com o stack de pé. O reset_vidproc_pool do
+# run_experiment.sh só mata as instâncias >= 2; a 0 e a 1 sobreviviam de um cenário
+# pro outro com metrics/latency_samples/frame_buffer em memória, e se um cenário
+# quebrasse no meio as extras dele também sobravam. Aqui todas são desregistradas e
+# removidas, e a 0 e a 1 sobem limpas — os cenários partem exatamente do mesmo estado.
+passo "RECRIANDO O POOL MEC (todas as instâncias removidas, 0 e 1 sobem limpas)"
+# O mec_instance_manager.py precisa de requests/dotenv, que vivem no venv dos mec_apps.
+# shellcheck disable=SC1091
+[[ -f "$RAIZ/mec_apps/mec_app1/bin/activate" ]] && source "$RAIZ/mec_apps/mec_app1/bin/activate"
+for container in $(docker ps -a --format '{{.Names}}' | grep -E '^mec_app1_instance[0-9]+$' || true); do
+    index="${container#mec_app1_instance}"
+    echo "  removendo $container (VideoStreamingService${index})"
+    python3 "$RAIZ/mec_instance_manager.py" stop "$container" \
+        --mec_name "VideoStreamingService${index}" >/dev/null 2>&1 || \
+        echo "    AVISO: falha ao desregistrar $container"
+    docker rm -f "$container" >/dev/null 2>&1 || true
+done
+sleep 3
+
+# Não dá pra usar `mec_instance_manager.py start`: ele termina chamando
+# show_logs(), que é um `docker logs -f` e nunca retorna (mec_instance_manager.py:115).
+# O automacao_script.py não trava nisso porque abre cada instância num terminal
+# próprio; aqui seria o fim do script. Então replicamos o docker run dele.
+IP_LOCAL="$(hostname -I | awk '{print $1}')"
+for i in 0 1; do
+    if docker run -d --name "mec_app1_instance$i" \
+        -v "$RAIZ/examples/mec_app1.py:/app/app.py" \
+        -v "$RAIZ/uploads:/app/uploads" \
+        -e "MEC_NAME=VideoStreamingService$i" \
+        -e "MEC_PORT=$((8090 + i))" \
+        -e "MEC_HOST=$IP_LOCAL" \
+        -e MEC_APP=app.py \
+        -p "$((8090 + i)):$((8090 + i))" \
+        --network docker_open5gs_default \
+        --memory 512m --memory-reservation 256m --cpus 0.20 \
+        --add-host host.docker.internal:host-gateway \
+        mec_app:latest >/dev/null; then
+        echo "  mec_app1_instance$i no ar (porta $((8090 + i)))"
+    else
+        echo "  ERRO ao subir mec_app1_instance$i"
+        exit 1
+    fi
+    sleep 3
+done
+
+echo "  aguardando as instâncias se registrarem no service_registry..."
+sleep 10
 
 # ------------------------------------------- 1b. Prometheus + cAdvisor
 # O catcher tira a CPU das instâncias do Prometheus (mec_app_metric_catcher.py:16),
@@ -262,6 +304,7 @@ if [[ "$resposta" != *"cpu_avg_percent"* ]]; then
     echo "  A inteligência em execução é a versão ANTIGA — o mapeK vai usar o max"
     echo "  nos dois lados e o scale-down não vai acontecer. Confira se o pull das"
     echo "  correções chegou neste server antes de confiar no resultado."
+    bipe 1  # parado esperando Enter
     read -r -p "  Enter para continuar mesmo assim, Ctrl+C para abortar..." _
 fi
 
@@ -280,6 +323,8 @@ fi
 # ------------------------------------------------------------ 4. o teste
 # O completo usa o run_experiment.sh sem overrides (fases default do run_workload.sh)
 # e grava graficos/rl_input_state_<cenario>.csv, que é o que o graficos_compare.py lê.
+echo; echo ">>> [$(date +%H:%M:%S)] CENÁRIO $CENARIO COMEÇOU ($MODO)"
+bipe 2
 if [[ "$MODO" == "completo" ]]; then
     passo "RODANDO O EXPERIMENTO COMPLETO (~60 min, 10→100 UEs)"
     AUTO_CONFIRM=1 ./run_experiment.sh "$CENARIO"

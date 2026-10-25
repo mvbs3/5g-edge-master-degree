@@ -14,6 +14,8 @@ Gera em relatorio_compare/:
   - latency.png             Latência média (avg_avg_latency_ms)
   - queue.png               Tamanho da fila
   - cpu_vs_instancias.png   CPU sobreposta a nº instâncias, separado por cenário
+  - latencia_vs_instancias.png  Latência + SLA (e limites do MAPE-K no --cenario lat)
+                            sobreposta a nº instâncias, separado por cenário
   - resumo_kpi.csv          KPIs comparativos: latência média/p95, SLA violation,
                             instance-hours, oscilações de scaling.
 """
@@ -29,6 +31,9 @@ import seaborn as sns
 
 
 SLA_LATENCY_MS = 200.0  # limite de violação pra KPI
+
+# np.trapz saiu no NumPy 2.0 (virou np.trapezoid); aceita os dois.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 
 # Diretório onde mora este script — pra resolver os CSVs por aqui em vez de
 # depender da cwd de quem invocou.
@@ -154,6 +159,56 @@ def cpu_vs_instances_plot(df_combined, out_dir):
     print("  [ok] cpu_vs_instancias.png")
 
 
+def latency_vs_instances_plot(df_combined, out_dir, thresholds=None):
+    """Latência sobreposta a nº instâncias, um painel por cenário.
+
+    thresholds = (up, down) em ms desenha os limites do MAPE-K por latência
+    (mapeK.py, LATENCY_THRESHOLD_UP_MS/DOWN_MS); None = cenário por CPU.
+    """
+    scenarios = df_combined['scenario'].unique()
+    if len(scenarios) == 0 or df_combined['avg_avg_latency_ms'].dropna().empty:
+        return
+    lat_top = max(SLA_LATENCY_MS * 1.3, df_combined['avg_avg_latency_ms'].max() * 1.1)
+    fig, axes = plt.subplots(len(scenarios), 1, figsize=(13, 5 * len(scenarios)),
+                             sharex=True)
+    if len(scenarios) == 1:
+        axes = [axes]
+
+    for ax_left, label in zip(axes, scenarios):
+        sub = df_combined[df_combined['scenario'] == label]
+        color = PALETTE.get(label, '#444')
+        ax_left.plot(sub['elapsed_min'], sub['avg_avg_latency_ms'],
+                     color=color, linewidth=1.8, label='Latência média (ms)')
+        ax_left.axhline(SLA_LATENCY_MS, color='#d62728', linestyle=':', linewidth=1.5,
+                        label=f'SLA ({int(SLA_LATENCY_MS)} ms)')
+        if thresholds:
+            up, down = thresholds
+            ax_left.axhline(up, color='#555', linestyle='-.', linewidth=1,
+                            label=f'MAPE-K scale up ({int(up)} ms)')
+            ax_left.axhline(down, color='#999', linestyle='-.', linewidth=1,
+                            label=f'MAPE-K scale down ({int(down)} ms)')
+        ax_left.set_ylabel('Latência (ms)', color=color)
+        ax_left.tick_params(axis='y', labelcolor=color)
+        ax_left.set_ylim(0, lat_top)
+        ax_left.set_title(f'{label} — latência vs nº instâncias')
+        ax_left.grid(alpha=0.3)
+        ax_left.legend(loc='upper left', fontsize=9)
+
+        ax_right = ax_left.twinx()
+        ax_right.step(sub['elapsed_min'], sub['num_services'], where='post',
+                      color='#666', linestyle='--', linewidth=1.5, label='Instâncias')
+        ax_right.set_ylabel('Instâncias', color='#666')
+        ax_right.tick_params(axis='y', labelcolor='#666')
+        ax_right.set_ylim(0, df_combined['num_services'].max() + 1)
+        ax_right.grid(False)
+
+    axes[-1].set_xlabel('Tempo (min)')
+    fig.tight_layout()
+    fig.savefig(os.path.join(out_dir, 'latencia_vs_instancias.png'), dpi=200)
+    plt.close(fig)
+    print("  [ok] latencia_vs_instancias.png")
+
+
 def kpi_table(df_combined, out_dir):
     """Computa KPIs comparativos."""
     rows = []
@@ -168,7 +223,7 @@ def kpi_table(df_combined, out_dir):
             sla_pct = float('nan')
 
         if not n_svc.empty and elapsed_min > 0:
-            instance_hours = float(np.trapz(n_svc, sub['elapsed_min']) / 60.0)
+            instance_hours = float(_trapz(n_svc, sub['elapsed_min']) / 60.0)
         else:
             instance_hours = float('nan')
 
@@ -276,6 +331,9 @@ def main():
 
     num_instances_plot(df_combined, args.out)
     cpu_vs_instances_plot(df_combined, args.out)
+    # Limites default do mapeK.py para SCALING_METRIC=latency.
+    latency_vs_instances_plot(df_combined, args.out,
+                              thresholds=(100, 40) if args.cenario == 'lat' else None)
     kpi_table(df_combined, args.out)
 
     print(f"\nFinalizado. Gráficos em '{args.out}/'")

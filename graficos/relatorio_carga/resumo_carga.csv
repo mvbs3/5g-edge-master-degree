@@ -1,0 +1,6 @@
+fase,duracao_min,ues_media,ues_max,leve_max,medio_max,pesado_max,req_s_fixa,req_s_variavel,cpu_ms_s_variavel,instancias_equivalentes
+Warmup,10.2,9.9,10,6,3,1,32.9,17.7,123.4,0.62
+Ramp,15.0,55.5,100,59,27,14,185.0,105.1,786.3,3.93
+Peak,15.0,100.0,100,59,27,14,333.3,185.3,1354.7,6.77
+Drain,15.0,54.0,99,58,27,14,180.0,102.3,765.5,3.83
+Settle,5.0,10.0,10,6,3,1,32.2,18.0,125.3,0.63
