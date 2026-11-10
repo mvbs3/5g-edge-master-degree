@@ -1,3 +1,3 @@
-cenario,amostras,duracao_min,lat_media_ms,lat_p50_ms,lat_p95_ms,lat_p99_ms,sla_violacao_pct_>200ms,cpu_media_pct,thrput_medio_kbps,instancias_media,instancias_max,instance_minutes,scaling_changes
-MAB,363,60.6,156.26,127.32,427.61,610.6,33.7,6.21,27.29,7.33,10,444.9,20
-Round Robin,363,60.6,44.07,36.51,105.68,253.55,2.21,13.56,57.68,6.02,10,365.8,52
+cenario,amostras,duracao_min,lat_media_ms,lat_p50_ms,lat_p95_ms,lat_p99_ms,sla_violacao_pct_>200ms,cpu_media_pct,thrput_medio_kbps,instancias_media,instancias_max,instance_minutes,scaling_changes,lat_media_pond_ms,lat_p95_pond_ms,sla_violacao_pond_pct
+MAB,363,60.6,156.26,127.32,427.61,610.6,33.7,6.21,27.29,7.33,10,444.9,20,215.06,551.47,51.38
+Round Robin,363,60.6,44.07,36.51,105.68,253.55,2.21,13.56,57.68,6.02,10,365.8,52,44.87,109.96,2.49

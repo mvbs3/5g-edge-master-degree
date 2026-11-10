@@ -31,12 +31,17 @@ endpoint = os.getenv("INITIAL_ENDPOINT", f"http://{MEP_ADDRESS}/VideoStreamingSe
 #   medio     30%     0.3–0.6 s                      8 ms   (~18 ms/s)
 #   pesado    20%     0.2–0.4 s                      12 ms  (~40 ms/s)
 # Média ~16 ms/s por UE: 100 UEs ≈ 1.6 s de CPU/s ≈ 8 instâncias de --cpus 0.20 cheias.
+# Somando o custo do Flask (~200 req/s no pico), passava da capacidade do pool inteiro
+# (10 × 0.20 = 2.0) e alguma instância sempre quebrava. WORK_SCALE multiplica o
+# work_ms de todos os perfis; o run_experiment.sh usa 0.5 nos cenários de carga
+# variável (~0.8 s de CPU/s de trabalho no pico, folga para o MAPE-K e o roteador agirem).
 # O sorteio usa o UE_ID como semente, então a UE 37 tem o mesmo perfil no MAB e no RR.
 LOAD_PROFILE = os.getenv("LOAD_PROFILE", "uniforme").lower()
+WORK_SCALE = float(os.getenv("WORK_SCALE", "1.0"))
 PROFILES = {
-    "leve":   {"interval": (0.5, 1.0), "work_ms": 4},
-    "medio":  {"interval": (0.3, 0.6), "work_ms": 8},
-    "pesado": {"interval": (0.2, 0.4), "work_ms": 12},
+    "leve":   {"interval": (0.5, 1.0), "work_ms": 4 * WORK_SCALE},
+    "medio":  {"interval": (0.3, 0.6), "work_ms": 8 * WORK_SCALE},
+    "pesado": {"interval": (0.2, 0.4), "work_ms": 12 * WORK_SCALE},
 }
 if LOAD_PROFILE == "heterogeneo":
     _sorteio = random.Random(int(UE_ID) if UE_ID.isdigit() else UE_ID).random()
@@ -48,6 +53,14 @@ else:
 
 lock = threading.Lock()
 topic_id = None
+
+INFER_TIMEOUT_SEC = 2
+# Latência reportada para uma requisição que falhou (timeout, conexão recusada, 503 da
+# instância sobrecarregada). Antes a falha não era reportada: só as requisições que deram
+# certo entravam nas métricas, e a instância saturada parecia rápida. Contar a falha como
+# o próprio timeout a coloca acima do SLA (200 ms) para os dois roteadores, e o MAB
+# recebe reward 0 por ela.
+FAILED_LATENCY_MS = INFER_TIMEOUT_SEC * 1000.0
 
 # Mensagem que o reaper da inteligência publica quando dá a UE como inativa
 # (mec_app_inteligence.py:337). Não é nome de serviço.
@@ -171,10 +184,14 @@ def inference_loop():
 
             start = time.time()
             headers = {"X-Work-Ms": str(PROFILE["work_ms"])} if PROFILE else None
-            session.post(url, data=payload, headers=headers, timeout=2)
-            latency = (time.time() - start) * 1000
-
-            print(f"[UE {UE_ID}] Infer latency: {latency:.1f} ms")
+            try:
+                resp = session.post(url, data=payload, headers=headers, timeout=INFER_TIMEOUT_SEC)
+                resp.raise_for_status()
+                latency = (time.time() - start) * 1000
+                print(f"[UE {UE_ID}] Infer latency: {latency:.1f} ms")
+            except Exception as e:
+                latency = FAILED_LATENCY_MS
+                print(f"[UE {UE_ID}] Erro infer: {e} — reportando {latency:.0f} ms")
 
             # 🔥 NOVO: envia latência para o Metric Catcher
             if topic_id:

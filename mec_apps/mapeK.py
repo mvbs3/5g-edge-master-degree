@@ -209,12 +209,22 @@ def collect_metrics():
             cpu_avg = cpu_max
 
         reported = data.get("active_instances")
-        log(f"CPU atual: max={cpu_max:.2f}% avg={cpu_avg:.2f}% (instâncias reportando={reported})")
-        return {"max": cpu_max, "avg": cpu_avg}
+        unresponsive = _as_int(data.get("unresponsive_instances"))
+        log(f"CPU atual: max={cpu_max:.2f}% avg={cpu_avg:.2f}% (instâncias reportando={reported}, "
+            f"sem resposta={unresponsive})")
+        return {"max": cpu_max, "avg": cpu_avg, "unresponsive": unresponsive}
 
     except Exception as e:
         log(f"Erro ao coletar métricas: {e}")
         return None
+
+
+def _as_int(value):
+    """Contagem vinda da inteligência; versões antigas não mandam o campo (= 0)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
 
 
 def collect_latency_metrics():
@@ -233,9 +243,11 @@ def collect_latency_metrics():
             log(f"⚠️ Latência indisponível: {data}")
             return None
 
+        unresponsive = _as_int(data.get("unresponsive_instances"))
         log(f"Latência atual: max={lat_max:.1f}ms avg={lat_avg:.1f}ms "
-            f"p95={data.get('p95_ms')} (instâncias={data.get('services')}, amostras={data.get('samples')})")
-        return {"max": lat_max, "avg": lat_avg}
+            f"p95={data.get('p95_ms')} (instâncias={data.get('services')}, amostras={data.get('samples')}, "
+            f"sem resposta={unresponsive})")
+        return {"max": lat_max, "avg": lat_avg, "unresponsive": unresponsive}
 
     except Exception as e:
         log(f"Erro ao coletar latência: {e}")
@@ -276,6 +288,12 @@ threshold_down={THRESHOLD_DOWN} (sobre a media)
     # "uma instância quente + pool ocioso" satisfaz UP e DOWN ao mesmo tempo e o
     # pool fica oscilando entre N e N-1 indefinidamente, inflando justamente a
     # métrica de estabilidade (scaling changes) que o experimento compara.
+    # Instância sem resposta não entra no max/avg (a métrica dela é N/A): se é
+    # justamente a saturada, o pool pareceria ocioso. Não desescala enquanto houver uma.
+    if cpu.get("unresponsive", 0) > 0:
+        log(f"Sem SCALE_DOWN: {cpu['unresponsive']} instância(s) sem resposta")
+        return "NO_ACTION"
+
     if (
         cpu["avg"] < THRESHOLD_DOWN
         and cpu["max"] <= THRESHOLD_UP

@@ -8,6 +8,8 @@
 #   ./testar_agora.sh rr completo
 #   ./testar_agora.sh mab_lat [completo] → MAPE-K por latência + UEs leve/médio/pesado
 #   ./testar_agora.sh rr_lat  [completo]
+#   ./testar_agora.sh mab_var [completo] → MAPE-K por CPU + UEs leve/médio/pesado
+#   ./testar_agora.sh rr_var  [completo]
 #
 # Existe porque a opção 1 do automacao_script.py, além de subir o stack, dispara
 # 100 UEs fixas no fim — se elas ficarem vivas, somam com as 10→40 do cenário
@@ -24,16 +26,18 @@ set -euo pipefail
 
 CENARIO="${1:-}"
 MODO="${2:-curto}"
-case "$CENARIO" in mab|rr|mab_lat|rr_lat) ;; *) CENARIO="" ;; esac
+case "$CENARIO" in mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;; *) CENARIO="" ;; esac
 if [[ -z "$CENARIO" ]] || [[ "$MODO" != "curto" && "$MODO" != "completo" ]]; then
-    echo "Uso: $0 {mab|rr|mab_lat|rr_lat} [completo]"
+    echo "Uso: $0 {mab|rr|mab_lat|rr_lat|mab_var|rr_var} [completo]"
     exit 1
 fi
 
 # mab/rr: MAPE-K por CPU, UEs uniformes (experimento original, intocado).
 # mab_lat/rr_lat: MAPE-K por latência, UEs com perfis leve/médio/pesado
 # (LOAD_PROFILE é aplicado pelo run_experiment.sh). O roteador é o mesmo nos dois.
-CONTROLLER="${CENARIO%_lat}"
+# mab_var/rr_var (cenário 3): os perfis leve/médio/pesado do *_lat, mas com o MAPE-K
+# ainda por CPU — separa o efeito da carga variável do efeito de trocar a métrica.
+CONTROLLER="${CENARIO%%_*}"
 if [[ "$CENARIO" == *_lat ]]; then SCALING_METRIC=latency; else SCALING_METRIC=cpu; fi
 
 RAIZ="$(cd "$(dirname "$0")" && pwd)"
@@ -56,10 +60,31 @@ bipe() {
         sleep 0.4
     done
 }
+# Copia os logs de catcher, inteligência e MAPE-K para o diretório da run desta
+# execução. Eles ficavam só em logs/ e eram sobrescritos pelo próximo cenário de mesmo
+# nome — numa repetição, só sobrava o da última. Só considera runs criadas depois do
+# início deste script (marcador), para não poluir a run de outra execução.
+MARCADOR_INICIO="$(mktemp)"
+arquivar_logs() {
+    local run_dir
+    run_dir=$(find "$RAIZ/runs" -maxdepth 1 -type d -name "${CENARIO}_*" -newer "$MARCADOR_INICIO" 2>/dev/null \
+        | sort | tail -1)
+    if [[ -z "$run_dir" ]]; then
+        return 0
+    fi
+    mkdir -p "$run_dir/logs"
+    for nome in catcher inteligencia mapek; do
+        [[ -f "$RAIZ/logs/${nome}_${CENARIO}.log" ]] && cp "$RAIZ/logs/${nome}_${CENARIO}.log" "$run_dir/logs/"
+    done
+    echo "  logs de catcher/inteligência/MAPE-K copiados para $run_dir/logs/"
+}
+
 # Dispara em qualquer saída — fim normal, erro do set -e ou Ctrl+C —, então o som de
 # fim toca mesmo se o cenário quebrar no setup.
 fim_do_cenario() {
     local status=$?
+    arquivar_logs || true
+    rm -f "$MARCADOR_INICIO"
     if [[ "$status" == "0" ]]; then
         echo; echo ">>> [$(date +%H:%M:%S)] CENÁRIO $CENARIO TERMINOU — pode rodar o próximo"
     else

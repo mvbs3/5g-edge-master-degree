@@ -1,6 +1,8 @@
 import csv
+import math
 import os
 import time
+from collections import Counter
 import numpy as np
 
 RED = '\033[31m'
@@ -184,9 +186,15 @@ class ThompsonSamplingBandit:
                     'beta': warm_beta,
                 }
 
-    def select_action(self):
-        """Retorna o NOME do braço amostrado (None se não houver braços)."""
-        if not self.arms:
+    def select_action(self, exclude=None):
+        """Retorna o NOME do braço amostrado (None se não houver braços).
+
+        `exclude` tira da disputa braços que existem mas não estão respondendo: eles
+        mantêm alpha/beta (voltam a concorrer quando a instância se recupera), só não
+        recebem UEs novas enquanto estiverem fora do ar.
+        """
+        candidates = [name for name in self.arms if not exclude or name not in exclude]
+        if not candidates:
             return None
 
         sampled_values = {
@@ -194,7 +202,7 @@ class ThompsonSamplingBandit:
                 self.arms[name]['alpha'],
                 self.arms[name]['beta']
             ))
-            for name in self.arms
+            for name in candidates
         }
 
         self._save_arm_snapshot(
@@ -244,9 +252,15 @@ class controller:
         latency_ref,
         csv_file=os.path.join(_RESULTS_DIR, 'model_info.csv'),
         decay=1.0,
+        load_slack=0.0,
     ):
         self.latency_ref = latency_ref
         self.csv_file = csv_file
+        # Teto de UEs por braço = ceil(load_slack * UEs / braços); 0 desliga. O posterior
+        # é um só para todas as UEs: sem teto, cada reavaliação manda quase todas para o
+        # braço de maior média (54 UEs numa instância no mab_lat de 25/10/2026), e ele só
+        # é penalizado depois de já estar sobrecarregado.
+        self.load_slack = load_slack
 
         self.episode = 0
         self.action_history = []
@@ -260,8 +274,22 @@ class controller:
     def set_arms(self, arm_names):
         self.model.set_arms(arm_names)
 
-    def get_arm_ts(self, userId, current_time=None):
-        action_name = self.model.select_action()
+    def full_arms(self, userId, exclude=None):
+        """Braços que já atingiram o teto de UEs (sem contar a própria UE)."""
+        candidates = [n for n in self.model.arms if not exclude or n not in exclude]
+        if self.load_slack <= 0 or not candidates:
+            return set()
+
+        load = Counter(arm for user, arm in self.user_action.items() if user != userId)
+        n_users = sum(load[n] for n in candidates) + 1
+        cap = math.ceil(self.load_slack * n_users / len(candidates))
+        full = {n for n in candidates if load[n] >= cap}
+        # Com todos cheios (não deveria acontecer com slack >= 1), volta ao TS puro.
+        return full if len(full) < len(candidates) else set()
+
+    def get_arm_ts(self, userId, current_time=None, exclude=None):
+        blocked = set(exclude or ()) | self.full_arms(userId, exclude)
+        action_name = self.model.select_action(exclude=blocked)
 
         if action_name is None:
             return None

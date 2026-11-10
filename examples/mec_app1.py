@@ -21,6 +21,16 @@ MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MAX_FRAMES_BUFFER = int(os.getenv("MAX_FRAMES_BUFFER", 5))
 # Menor que o read timeout do ue_client.py (10 s), pra o servidor fechar primeiro
 VIDEO_IDLE_TIMEOUT_SEC = float(os.getenv("VIDEO_IDLE_TIMEOUT_SEC", 5))
+# Controle de admissão do /infer com X-Work-Ms (cenários de carga variável). Sem limite,
+# no pico cada requisição virava uma thread disputando os 0.20 de CPU e o GIL; o /metric
+# deixava de responder e a instância seguia processando requisições que a UE já tinha
+# abandonado por timeout (instância "quebrada" por 22 min no mab_lat de 25/10/2026).
+# Só INFER_MAX_INFLIGHT requisições queimam CPU ao mesmo tempo; as demais esperam a vez
+# por até INFER_QUEUE_WAIT_SEC e, se não conseguirem, recebem 503 na hora — a UE conta
+# isso como falha (ue_client.py), então a sobrecarga continua aparecendo nas métricas.
+INFER_MAX_INFLIGHT = int(os.getenv("INFER_MAX_INFLIGHT", 2))
+INFER_QUEUE_WAIT_SEC = float(os.getenv("INFER_QUEUE_WAIT_SEC", 1.0))
+infer_slots = threading.BoundedSemaphore(INFER_MAX_INFLIGHT)
 
 def get_container_id():
     try:
@@ -287,9 +297,14 @@ def infer():
     # isso que faz a latência refletir a carga. Sem o cabeçalho, comportamento original.
     work_ms = request.headers.get("X-Work-Ms")
     if work_ms:
-        deadline = time.thread_time() + float(work_ms) / 1000
-        while time.thread_time() < deadline:
-            hashlib.sha256(payload).digest()
+        if not infer_slots.acquire(timeout=INFER_QUEUE_WAIT_SEC):
+            return {"status": "overloaded"}, 503
+        try:
+            deadline = time.thread_time() + float(work_ms) / 1000
+            while time.thread_time() < deadline:
+                hashlib.sha256(payload).digest()
+        finally:
+            infer_slots.release()
         return {"status": "ok"}
     # simula processamento pesado
     time.sleep(random.uniform(0.05, 0.2))

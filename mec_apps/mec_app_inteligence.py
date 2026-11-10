@@ -58,6 +58,8 @@ metrics_history_buffer = deque(maxlen=100) # Valor inicial seguro, ajustado depo
 cpu_percentage = 0
 cpu_percentage_avg = 0
 cpu_active_instances = 0
+# Instâncias VidProc vivas no registry mas sem resposta ao /metric (stale no catcher).
+unresponsive_instances = 0
 PORT = 8078
 MEC_HOST = os.getenv("MEC_HOST", "10.0.0.186")
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "192.168.70.2")
@@ -78,7 +80,12 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- CONFIGURAÇÃO DO MAB ---
 MAB_LATENCY_REF_MS = float(os.getenv("MAB_LATENCY_REF_MS", "100"))
-MAB_DECAY = float(os.getenv("MAB_DECAY", "1.0"))
+# Esquecimento por update (1.0 = nenhum). Sem ele, depois de milhares de rewards o
+# posterior fica tão estreito que o braço não perde a preferência mesmo sobrecarregado.
+# 0.99 ≈ memória das últimas ~100 recompensas de cada braço.
+MAB_DECAY = float(os.getenv("MAB_DECAY", "0.99"))
+# Teto de UEs por instância: até 1.5× a fatia média (ver controller.full_arms). 0 desliga.
+MAB_LOAD_SLACK = float(os.getenv("MAB_LOAD_SLACK", "1.5"))
 # Tempo mínimo (s) que um UE permanece em uma instância antes de o MAB
 # poder re-rotear. Evita trocar antes de coletar amostras suficientes.
 MAB_MIN_DWELL_SEC = float(os.getenv("MAB_MIN_DWELL_SEC", "30"))
@@ -86,6 +93,7 @@ MAB_MIN_DWELL_SEC = float(os.getenv("MAB_MIN_DWELL_SEC", "30"))
 m_controller = controller(
     latency_ref=MAB_LATENCY_REF_MS,
     decay=MAB_DECAY,
+    load_slack=MAB_LOAD_SLACK,
 )
 # --- CONFIGURAÇÃO DE INATIVIDADE ---
 INACTIVITY_TIMEOUT = 30
@@ -118,7 +126,7 @@ topic_latency_stats = {}
 # no metric_catcher e trocado numa atribuição só: os dicts acima são limpos e
 # repreenchidos a cada ciclo, e ler deles no meio disso devolveria um pool vazio.
 latency_summary = {"services": 0, "max_service_avg_ms": "N/A", "avg_ms": "N/A",
-                   "p95_ms": "N/A", "samples": 0}
+                   "p95_ms": "N/A", "samples": 0, "unresponsive_instances": 0}
 # --- Função auxiliar para carregar ativos de inferência (NOVA) ---
 def load_assets(model_path, scaler_path, params_path):
     """Carrega o modelo, o scaler e os parâmetros de inferência."""
@@ -244,9 +252,10 @@ def save_metrics_to_csv(metrics_data):
                 for metric in CORE_METRICS_FOR_CSV: # USA CORE_METRICS_FOR_CSV
                     value = metrics.get(metric, "N/A")
                     services_dict[service_name][metric] = value
-                    
+
                     if isinstance(value, (int, float)) and value != "N/A":
                         metric_values[metric].append(value)
+                services_dict[service_name]["stale"] = metrics.get("stale") is True
                 
                 ue_array = []
                 for topic in topics.values():
@@ -325,7 +334,11 @@ def format_metrics_json(raw_metrics):
                         formatted_service[metric] = metrics[metric]
                 else:
                     formatted_service[metric] = "N/A"
-            
+
+            # Instância sem resposta ao /metric há mais de METRIC_STALE_SEC (catcher):
+            # os roteadores param de mandar UEs para ela e o MAPE-K não desescala.
+            formatted_service["stale"] = metrics.get("stale") is True
+
             formatted_data["data"][app_type][service_name] = formatted_service
     
     return formatted_data
@@ -361,7 +374,7 @@ def cleanup_inactive_users():
 def metric_catcher():
     """Thread function to periodically fetch metrics from traffic catcher"""
     global mec_metrics, topics, cpu_percentage, metrics_history_buffer, loaded_model, inference_params
-    global cpu_percentage_avg, cpu_active_instances
+    global cpu_percentage_avg, cpu_active_instances, unresponsive_instances
     global service_latency_stats, topic_latency_stats, latency_summary
 
     service_latency_stats = {}
@@ -415,6 +428,10 @@ def metric_catcher():
                         }
 
             vidproc = mec_metrics.get("data", {}).get("VidProc", {})
+            unresponsive_instances = sum(
+                1 for name, m in vidproc.items()
+                if m.get("stale") and name not in draining_instances
+            )
             service_avgs = [
                 stats["avg"] for name, stats in service_latency_stats.items()
                 if name in vidproc and name not in draining_instances
@@ -429,6 +446,7 @@ def metric_catcher():
                 "avg_ms": (sum(topic_lats) / len(topic_lats)) if topic_lats else "N/A",
                 "p95_ms": float(np.percentile(topic_lats, 95)) if topic_lats else "N/A",
                 "samples": len(topic_lats),
+                "unresponsive_instances": unresponsive_instances,
             }
 
             for app_type, services in mec_metrics.get("data", {}).items():
@@ -559,8 +577,16 @@ def metric_catcher():
                         for app in mec_metrics["data"][topic["app_type"]]
                         if app not in draining_instances
                     ]
+                    # Vivas no registry, mas sem resposta ao /metric: continuam como
+                    # braço (o histórico volta a valer quando a instância se recupera),
+                    # só não recebem UEs. A mesma regra vale para MAB e RR.
+                    stale_apps = {
+                        app for app in app_list
+                        if mec_metrics["data"][topic["app_type"]][app].get("stale")
+                    }
+                    healthy_apps = [app for app in app_list if app not in stale_apps]
 
-                    if not app_list:
+                    if not app_list or not healthy_apps:
                         logger.warning(f"Nenhum app disponível para app_type {topic['app_type']} para {topic_id}.")
                         continue
 
@@ -572,12 +598,20 @@ def metric_catcher():
                             current_app = topic.get("app")
                             latency_info = topic_latency_stats.get(topic_id)
 
+                            # 0) Instância sem resposta conta como falha para quem está
+                            #    nela: sem isso a UE não manda latência (o /infer estoura
+                            #    timeout), o braço nunca é penalizado e continua atraindo
+                            #    UEs. NaN dá reward 0 e fica fora das médias de latência.
+                            if current_app in stale_apps and current_app in m_controller.model.arms:
+                                m_controller.update_model(userId=topic_id, state=[float("nan")])
+                                logger.info(f"[MAB STALE] topic={topic_id} arm={current_app} sem resposta -> reward 0")
+
                             # 1) Update do bandit usando latência medida CONTRA
                             #    a instância atualmente atribuída (current_app).
                             #    user_action[topic_id] aponta para o NOME do braço,
                             #    então o reward vai para o braço certo mesmo após
                             #    scaling/reassignment.
-                            if (
+                            elif (
                                 latency_info
                                 and latency_info["service"] == current_app
                                 and current_app in m_controller.model.arms
@@ -598,7 +632,7 @@ def metric_catcher():
 
                             needs_reassign = (
                                 current_app is None
-                                or current_app not in app_list
+                                or current_app not in healthy_apps
                                 or dwell >= MAB_MIN_DWELL_SEC
                             )
 
@@ -606,6 +640,7 @@ def metric_catcher():
                                 new_action = m_controller.get_arm_ts(
                                     topic_id,
                                     current_time=poll_time,
+                                    exclude=stale_apps,
                                 )
                                 if new_action is None:
                                     continue
@@ -628,7 +663,7 @@ def metric_catcher():
                                 )
                     else:
                         # Round-robin determinístico (baseline)
-                        mec_app_choice = app_list[i % len(app_list)]
+                        mec_app_choice = healthy_apps[i % len(healthy_apps)]
                         i += 1
 
                     with topics_lock:
@@ -799,7 +834,7 @@ def publish_message():
 def get_avg_percent():
     """Return the current metrics data"""
     global cpu_percentage, loaded_model, loaded_scaler, inference_params, metrics_history_buffer
-    global cpu_percentage_avg, cpu_active_instances
+    global cpu_percentage_avg, cpu_active_instances, unresponsive_instances
 
     predicted_cpu_percent = "N/A" # Valor padrão se a predição não for possível
 
@@ -849,6 +884,7 @@ def get_avg_percent():
         "cpu_max_percent": cpu_percentage,
         "cpu_avg_percent": cpu_percentage_avg,
         "active_instances": cpu_active_instances,
+        "unresponsive_instances": unresponsive_instances,
         #"predicted_next_avg_cpu_percent": "N/A"
         "predicted_next_avg_cpu_percent": predicted_cpu_percent
     })

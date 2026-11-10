@@ -34,8 +34,8 @@ set -euo pipefail
 
 SCENARIO="${1:-}"
 case "$SCENARIO" in
-    mab|rr|mab_lat|rr_lat) ;;
-    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat}"; exit 1 ;;
+    mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;;
+    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat|mab_var|rr_var}"; exit 1 ;;
 esac
 
 # DURATION_MIN é a duração ESPERADA do workload (as 5 fases do run_workload.sh somam
@@ -139,13 +139,16 @@ docker exec nr_ue chmod +x /mnt/ueransim/run_workload.sh
 # ser repassada explicitamente com -e. Sem isso o workload sempre usava os defaults
 # (60 min no total) e não havia como rodar um cenário curto de validação.
 WORKLOAD_ENV=()
-# Cenários *_lat: UEs com perfis de carga diferentes (ue_client.py). Os originais
-# mab/rr não passam nada e o cliente fica no perfil uniforme de sempre.
-if [[ "$SCENARIO" == *_lat ]]; then
+# Cenários *_lat e *_var: UEs com perfis de carga diferentes (ue_client.py). Os
+# originais mab/rr não passam nada e o cliente fica no perfil uniforme de sempre.
+if [[ "$SCENARIO" == *_lat || "$SCENARIO" == *_var ]]; then
     export LOAD_PROFILE="${LOAD_PROFILE:-heterogeneo}"
+    # Metade do CPU por requisição: com 1.0 o pico passava da capacidade do pool (ver
+    # ue_client.py). Override: WORK_SCALE=0.7 ./run_experiment.sh mab_var
+    export WORK_SCALE="${WORK_SCALE:-0.5}"
 fi
 for var in WARMUP_UES PEAK_UES PHASE_WARMUP_SEC PHASE_RAMP_SEC PHASE_PEAK_SEC \
-           PHASE_DRAIN_SEC PHASE_SETTLE_SEC LOAD_PROFILE; do
+           PHASE_DRAIN_SEC PHASE_SETTLE_SEC LOAD_PROFILE WORK_SCALE; do
     if [[ -n "${!var:-}" ]]; then
         WORKLOAD_ENV+=(-e "$var=${!var}")
         echo "  override: $var=${!var}"
@@ -206,6 +209,21 @@ else
 fi
 cp -r "$PROJECT_ROOT/mec_apps/Results" "$RUN_DIR/Results" 2>/dev/null || true
 docker cp "nr_ue:/mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log" "$RUN_DIR/" 2>/dev/null || true
+
+# Logs das UEs: latência de cada requisição medida na própria UE, inclusive as que
+# falharam ("Erro infer") — é a medida que não depende de a instância responder.
+# Cada run sobrescrevia a anterior; aqui vão só os ue_*.log escritos nesta run (mais
+# novos que o log do workload, criado no disparo) e compactados, porque são ~100
+# arquivos grandes por run.
+UE_LOGS_TAR="$RUN_DIR/logs_workload.tar.gz"
+if docker exec nr_ue sh -c "cd /mnt/ueransim/logs_workload && \
+        find . -name 'ue_*.log' -newer ../workload_${SCENARIO}_${RUN_TS}.log | tar -czf - -T -" \
+        > "$UE_LOGS_TAR" 2>/dev/null && [[ -s "$UE_LOGS_TAR" ]]; then
+    echo "  logs das UEs: $UE_LOGS_TAR ($(du -h "$UE_LOGS_TAR" | cut -f1))"
+else
+    rm -f "$UE_LOGS_TAR"
+    echo "  AVISO: não consegui arquivar os logs das UEs (/mnt/ueransim/logs_workload no nr_ue)"
+fi
 
 # 6. Volta o pool ao baseline depois de arquivar, pra não deixar instâncias órfãs
 echo "[6/6] Devolvendo o pool VidProc ao baseline..."

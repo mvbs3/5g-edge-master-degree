@@ -11,6 +11,22 @@ import os
 load_dotenv()
 TIME_TO_COLLECT=3
 LATENCY_TTL_SEC = 30  # amostras de latência mais velhas que isso são descartadas
+# Instância que não responde ao /metric há mais que isso é marcada "stale": todas as
+# métricas dela viram N/A em vez de repetir a última coleta boa. Sem isso uma instância
+# saturada/travada ficava 22 min com CPU, memória e latência congeladas e o MAB seguia
+# mandando UEs para ela (mab_lat de 25/10/2026).
+METRIC_STALE_SEC = float(os.getenv("METRIC_STALE_SEC", "15"))
+# Campos que vêm da instância ou do Prometheus e deixam de valer quando ela some.
+STALE_FIELDS = [
+    "queue_size", "frames_received", "frames_dropped", "frames_sent", "current_fps",
+    "avg_latency_ms", "drop_rate_percent",
+    "cpu_percent(prometheus)", "cpu_percent(metric)",
+    "memory_percent(prometheus)", "memory_percent(metric)",
+    "memory_used_mb(prometheus)", "memory_used_mb(metric)",
+    "memory_total_mb(prometheus)", "memory_total_mb(metric)",
+    "network_rx_kbps", "network_tx_kbps",
+    "throughput_kbps(prometheus)", "throughput_kbps(metric)",
+]
 MEC_HOST = os.getenv("MEC_HOST", "150.161.121.210")
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 PROMETHEUS_URL = f"http://{MEC_HOST}:9090"
@@ -266,7 +282,9 @@ def metric_catcher():
                                 "throughput_kbps(metric)": metric_data.get("throughput_kbps", "N/A"),
                                 "latency_ms": latency_snapshot if latency_snapshot else "N/A",
                                 # Last updated timestamp
-                                "last_updated": datetime.datetime.now().isoformat()
+                                "last_updated": datetime.datetime.now().isoformat(),
+                                "last_ok_ts": time.time(),
+                                "stale": False,
                             }
 
                         print(f"[OK] Metrics collected for {service_name}")
@@ -276,12 +294,32 @@ def metric_catcher():
                             mec_apps_found[service_type][service_name]["queue_size"] = "N/A"
                 except Exception as e:
                     print(f"[METRIC ERROR] {service_name}: {e}")
+                    # A latência vem das UEs (POST /latency neste catcher), não da
+                    # instância: continua valendo mesmo com o /metric fora do ar. O TTL
+                    # descarta as amostras se as UEs também pararem de ser atendidas.
+                    with latency_lock:
+                        _purge_stale_latencies()
+                        latency_snapshot = {
+                            topic: dict(info)
+                            for topic, info in latency_samples.items()
+                            if isinstance(info, dict) and info.get("app") == service_name
+                        }
                     # Mark the service as having no metrics available
                     with metrics_lock:
-                        mec_apps_found[service_type][service_name]["queue_size"] = "No Metric"
-                        mec_apps_found[service_type][service_name]["error"] = str(e)
+                        entry = mec_apps_found[service_type][service_name]
+                        entry["queue_size"] = "No Metric"
+                        entry["error"] = str(e)
+                        entry["latency_ms"] = latency_snapshot if latency_snapshot else "N/A"
                         # Não deixa a CPU da última coleta boa valer como atual
-                        mec_apps_found[service_type][service_name]["cpu_percent(prometheus)"] = "N/A"
+                        entry["cpu_percent(prometheus)"] = "N/A"
+                        # Instância nunca coletada conta como sem resposta desde já.
+                        silent_for = time.time() - entry.get("last_ok_ts", 0)
+                        if silent_for > METRIC_STALE_SEC:
+                            for field in STALE_FIELDS:
+                                entry[field] = "N/A"
+                            if not entry.get("stale"):
+                                print(f"[STALE] {service_name} sem resposta há {silent_for:.0f}s")
+                            entry["stale"] = True
 
             # Print current metrics summary
             print("\n===== CURRENT MEC APPLICATION METRICS =====")

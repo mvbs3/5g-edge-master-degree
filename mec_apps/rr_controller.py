@@ -78,12 +78,16 @@ class RoundRobin:
         self.arms = {name: {'alpha': 1.0, 'beta': 1.0} for name in sorted(new_set)}
         self._cycle = itertools.cycle(self.arms.keys()) if self.arms else None
 
-    def select_action(self):
+    def select_action(self, exclude=None):
+        # `exclude` pula instâncias sem resposta, a mesma regra de saúde do MAB.
         if not self.arms or self._cycle is None:
             return None
-        action = next(self._cycle)
-        self._save_snapshot('select')
-        return action
+        for _ in range(len(self.arms)):
+            action = next(self._cycle)
+            if not exclude or action not in exclude:
+                self._save_snapshot('select')
+                return action
+        return None
 
     def update(self, arm_name, reward):
         # RR não aprende — registra evento pra manter o pipeline analítico
@@ -118,7 +122,9 @@ class RoundRobin:
 class controller:
     """Drop-in equivalente ao mab_controller.controller, mas com Round Robin."""
 
-    def __init__(self, latency_ref, csv_file=os.path.join(_RESULTS_DIR, 'model_info.csv'), decay=1.0):
+    # decay e load_slack existem só para ter a mesma assinatura do MAB; o RR ignora os dois.
+    def __init__(self, latency_ref, csv_file=os.path.join(_RESULTS_DIR, 'model_info.csv'), decay=1.0,
+                 load_slack=0.0):
         self.latency_ref = latency_ref
         self.csv_file = csv_file
         self.episode = 0
@@ -130,8 +136,8 @@ class controller:
     def set_arms(self, arm_names):
         self.model.set_arms(arm_names)
 
-    def get_arm_ts(self, userId, current_time=None):
-        action_name = self.model.select_action()
+    def get_arm_ts(self, userId, current_time=None, exclude=None):
+        action_name = self.model.select_action(exclude=exclude)
         if action_name is None:
             return None
         print(f'[MEC] round_robin_action = {action_name}')

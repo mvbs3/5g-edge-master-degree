@@ -4,7 +4,8 @@
 (produzidos pelo run_experiment.sh em ../run_experiment.sh, copiados pra cá.)
 
 Com --cenario lat compara os cenários de latência (rl_input_state_mab_lat.csv e
-rl_input_state_rr_lat.csv) e grava em relatorio_compare_lat/.
+rl_input_state_rr_lat.csv) e grava em relatorio_compare_lat/. Com --cenario var, o
+cenário 3 (carga variável, MAPE-K por CPU: *_var.csv → relatorio_compare_var/).
 
 Gera em relatorio_compare/:
   - cpu.png                 CPU média ao longo do tempo (MAB vs RR)
@@ -21,13 +22,20 @@ Gera em relatorio_compare/:
 """
 
 import argparse
+import json
 import os
 import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
+
+# seaborn só ajusta a paleta default (as cores das séries são fixas em PALETTE);
+# opcional para o agregar_repeticoes.py poder importar este módulo sem ele.
+try:
+    import seaborn as sns
+except ImportError:
+    sns = None
 
 
 SLA_LATENCY_MS = 200.0  # limite de violação pra KPI
@@ -209,42 +217,79 @@ def latency_vs_instances_plot(df_combined, out_dir, thresholds=None):
     print("  [ok] latencia_vs_instancias.png")
 
 
+def weighted_latency(sub):
+    """Latência média por amostra ponderada pelo nº de UEs de cada instância.
+
+    `avg_avg_latency_ms` é a média simples entre instâncias: uma instância com 67 UEs
+    pesa o mesmo que uma com 4, e isso esconde a concentração de UEs do MAB. Aqui cada
+    instância pesa quantas UEs o ues_json atribui a ela naquela amostra; instâncias sem
+    latência numérica (N/A) ficam de fora. Amostra sem UE com latência vira NaN.
+    """
+    values = []
+    for services_raw, ues_raw in zip(sub.get('services_json', []), sub.get('ues_json', [])):
+        try:
+            services = json.loads(services_raw) if isinstance(services_raw, str) else {}
+            ues = json.loads(ues_raw) if isinstance(ues_raw, str) else {}
+        except ValueError:
+            values.append(np.nan)
+            continue
+        total, weighted = 0, 0.0
+        for name, metrics in services.items():
+            lat = metrics.get('avg_latency_ms') if isinstance(metrics, dict) else None
+            n_ues = len(ues.get(name, []))
+            if isinstance(lat, (int, float)) and not isinstance(lat, bool) and n_ues:
+                total += n_ues
+                weighted += n_ues * lat
+        values.append(weighted / total if total else np.nan)
+    return pd.Series(values, index=sub.index, dtype=float)
+
+
+def compute_kpis(sub, label):
+    """KPIs de uma execução (um cenário). Usado pelo kpi_table e pelo agregar_repeticoes.py."""
+    lat = sub['avg_avg_latency_ms'].dropna()
+    lat_pond = weighted_latency(sub).dropna()
+    n_svc = sub['num_services'].dropna()
+    elapsed_min = sub['elapsed_min'].max()
+
+    if not lat.empty:
+        sla_pct = float((lat > SLA_LATENCY_MS).mean() * 100)
+    else:
+        sla_pct = float('nan')
+
+    if not n_svc.empty and elapsed_min > 0:
+        instance_hours = float(_trapz(n_svc, sub['elapsed_min']) / 60.0)
+    else:
+        instance_hours = float('nan')
+
+    scaling_changes = int((n_svc.diff().fillna(0) != 0).sum()) if not n_svc.empty else 0
+
+    return {
+        'cenario': label,
+        'amostras': len(sub),
+        'duracao_min': round(elapsed_min, 1),
+        'lat_media_ms': round(lat.mean(), 2) if not lat.empty else float('nan'),
+        'lat_p50_ms': round(lat.quantile(0.50), 2) if not lat.empty else float('nan'),
+        'lat_p95_ms': round(lat.quantile(0.95), 2) if not lat.empty else float('nan'),
+        'lat_p99_ms': round(lat.quantile(0.99), 2) if not lat.empty else float('nan'),
+        f'sla_violacao_pct_>{int(SLA_LATENCY_MS)}ms': round(sla_pct, 2),
+        'cpu_media_pct': round(sub['avg_cpu_percent'].mean(), 2),
+        'thrput_medio_kbps': round(sub['avg_throughput_kbps'].mean(), 2),
+        'instancias_media': round(n_svc.mean(), 2) if not n_svc.empty else float('nan'),
+        'instancias_max': int(n_svc.max()) if not n_svc.empty else 0,
+        'instance_minutes': round(instance_hours * 60, 1),
+        'scaling_changes': scaling_changes,
+        # Ponderadas pelo nº de UEs por instância — ver weighted_latency()
+        'lat_media_pond_ms': round(lat_pond.mean(), 2) if not lat_pond.empty else float('nan'),
+        'lat_p95_pond_ms': round(lat_pond.quantile(0.95), 2) if not lat_pond.empty else float('nan'),
+        'sla_violacao_pond_pct': (
+            round(float((lat_pond > SLA_LATENCY_MS).mean() * 100), 2) if not lat_pond.empty else float('nan')
+        ),
+    }
+
+
 def kpi_table(df_combined, out_dir):
     """Computa KPIs comparativos."""
-    rows = []
-    for label, sub in df_combined.groupby('scenario', sort=False):
-        lat = sub['avg_avg_latency_ms'].dropna()
-        n_svc = sub['num_services'].dropna()
-        elapsed_min = sub['elapsed_min'].max()
-
-        if not lat.empty:
-            sla_pct = float((lat > SLA_LATENCY_MS).mean() * 100)
-        else:
-            sla_pct = float('nan')
-
-        if not n_svc.empty and elapsed_min > 0:
-            instance_hours = float(_trapz(n_svc, sub['elapsed_min']) / 60.0)
-        else:
-            instance_hours = float('nan')
-
-        scaling_changes = int((n_svc.diff().fillna(0) != 0).sum()) if not n_svc.empty else 0
-
-        rows.append({
-            'cenario': label,
-            'amostras': len(sub),
-            'duracao_min': round(elapsed_min, 1),
-            'lat_media_ms': round(lat.mean(), 2) if not lat.empty else float('nan'),
-            'lat_p50_ms': round(lat.quantile(0.50), 2) if not lat.empty else float('nan'),
-            'lat_p95_ms': round(lat.quantile(0.95), 2) if not lat.empty else float('nan'),
-            'lat_p99_ms': round(lat.quantile(0.99), 2) if not lat.empty else float('nan'),
-            f'sla_violacao_pct_>{int(SLA_LATENCY_MS)}ms': round(sla_pct, 2),
-            'cpu_media_pct': round(sub['avg_cpu_percent'].mean(), 2),
-            'thrput_medio_kbps': round(sub['avg_throughput_kbps'].mean(), 2),
-            'instancias_media': round(n_svc.mean(), 2) if not n_svc.empty else float('nan'),
-            'instancias_max': int(n_svc.max()) if not n_svc.empty else 0,
-            'instance_minutes': round(instance_hours * 60, 1),
-            'scaling_changes': scaling_changes,
-        })
+    rows = [compute_kpis(sub, label) for label, sub in df_combined.groupby('scenario', sort=False)]
 
     out = pd.DataFrame(rows)
     path = os.path.join(out_dir, 'resumo_kpi.csv')
@@ -261,27 +306,29 @@ def main():
     )
     parser.add_argument(
         '--cenario',
-        choices=['cpu', 'lat'],
+        choices=['cpu', 'lat', 'var'],
         default='cpu',
-        help="cpu = mab/rr originais; lat = mab_lat/rr_lat (MAPE-K por latência)",
+        help="cpu = mab/rr originais; lat = mab_lat/rr_lat (MAPE-K por latência); "
+             "var = mab_var/rr_var (carga variável, MAPE-K por CPU)",
     )
     parser.add_argument(
         '--out',
         default=None,
-        help='Diretório de saída (default: relatorio_compare ou relatorio_compare_lat)',
+        help='Diretório de saída (default: relatorio_compare, relatorio_compare_lat ou relatorio_compare_var)',
     )
     args = parser.parse_args()
 
-    if args.cenario == 'lat':
+    if args.cenario != 'cpu':
         for label in SCENARIO_FILES:
-            SCENARIO_FILES[label] = SCENARIO_FILES[label].replace('.csv', '_lat.csv')
+            SCENARIO_FILES[label] = SCENARIO_FILES[label].replace('.csv', f'_{args.cenario}.csv')
     if args.out is None:
-        nome = 'relatorio_compare' if args.cenario == 'cpu' else 'relatorio_compare_lat'
+        nome = 'relatorio_compare' if args.cenario == 'cpu' else f'relatorio_compare_{args.cenario}'
         args.out = os.path.join(_SCRIPT_DIR, nome)
 
     os.makedirs(args.out, exist_ok=True)
     plt.style.use('seaborn-v0_8-darkgrid')
-    sns.set_palette('tab10')
+    if sns is not None:
+        sns.set_palette('tab10')
 
     print(f"Diretório do script: {_SCRIPT_DIR}")
     print(f"Buscando CSVs:")
