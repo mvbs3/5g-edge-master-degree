@@ -2,7 +2,7 @@
 # ============================================================================
 # Repetições do experimento completo, para média e IC 95% por cenário.
 #
-#   ./repetir.sh                          → 3 repetições de mab rr mab_lat rr_lat mab_var rr_var
+#   ./repetir.sh                          → 3 repetições dos 12 cenários (mab, rr, mabsem × 4)
 #   REPETICOES=5 ./repetir.sh             → 5 repetições
 #   REPETICOES=3 ./repetir.sh mab_lat rr_lat   → só o cenário 2
 #
@@ -21,10 +21,10 @@ REPETICOES="${REPETICOES:-3}"
 if [[ $# -gt 0 ]]; then
     CENARIOS=("$@")
 else
-    CENARIOS=(mab rr mab_lat rr_lat mab_var rr_var)
+    CENARIOS=(mab rr mabsem mab_lat rr_lat mabsem_lat mab_het rr_het mabsem_het mab_var rr_var mabsem_var)
 fi
 for c in "${CENARIOS[@]}"; do
-    case "$c" in mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;; *) echo "Cenário inválido: $c (use mab, rr, mab_lat, rr_lat, mab_var, rr_var)"; exit 1 ;; esac
+    case "$c" in mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var) ;; *) echo "Cenário inválido: $c (use mab, rr ou mabsem, com ou sem _lat/_het/_var)"; exit 1 ;; esac
 done
 
 RAIZ="$(cd "$(dirname "$0")" && pwd)"

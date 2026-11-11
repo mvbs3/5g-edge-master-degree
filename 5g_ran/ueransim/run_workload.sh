@@ -32,7 +32,8 @@ log() { echo "[$(date +%H:%M:%S)] $*"; }
 
 start_ue() {
     local i=$1
-    python3 /mnt/ueransim/ue_client.py "$i" > "$LOG_DIR/ue_$i.log" 2>&1 &
+    # -u: sem buffer. A UE é morta com kill no drain e o que estava no buffer se perdia.
+    python3 -u /mnt/ueransim/ue_client.py "$i" > "$LOG_DIR/ue_$i.log" 2>&1 &
     echo $! > "$PID_DIR/ue_$i.pid"
 }
 

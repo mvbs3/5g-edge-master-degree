@@ -21,6 +21,9 @@ MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 MAX_FRAMES_BUFFER = int(os.getenv("MAX_FRAMES_BUFFER", 5))
 # Menor que o read timeout do ue_client.py (10 s), pra o servidor fechar primeiro
 VIDEO_IDLE_TIMEOUT_SEC = float(os.getenv("VIDEO_IDLE_TIMEOUT_SEC", 5))
+# Núcleos de CPU do container (--cpus), passado pelo mec_instance_manager. Vai no /metric
+# para o MAPE-K medir a CPU de cada instância relativa à própria capacidade.
+CPU_LIMIT = float(os.getenv("CPU_LIMIT", "0.20"))
 # Controle de admissão do /infer com X-Work-Ms (cenários de carga variável). Sem limite,
 # no pico cada requisição virava uma thread disputando os 0.20 de CPU e o GIL; o /metric
 # deixava de responder e a instância seguia processando requisições que a UE já tinha
@@ -321,6 +324,7 @@ def get_metric():
     system_metrics = {
         "running_in": "host",
         "cpu_percent": round(cpu_percent, 2),
+        "cpu_limit": CPU_LIMIT,
         "memory_percent": round(mem.percent, 2),
         "memory_used_mb": round(memory_used_mb, 2),
         "memory_total_mb": round(memory_total_mb, 2)    }

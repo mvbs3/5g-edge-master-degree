@@ -98,13 +98,16 @@ Saídas: CSVs arquivados em `runs/<scenario>_<timestamp>/`, cópia em
 | Latência simulada do `/infer` | `sleep(0.05–0.2)` | `mec_app1.py` |
 | Carga por UE | 2 threads: POST `/infer` a cada 0.1–0.5 s + GET `/video` contínuo | `ue_client.py` |
 | `MAB_DECAY` / `MAB_LOAD_SLACK` | 0.99 / 1.5 (teto de UEs = ceil(1.5·N/K)) | `mec_app_inteligence.py` |
-| `WORK_SCALE` (carga variável) | 0.5 (1.0 estourava a capacidade do pool) | `run_experiment.sh` → `ue_client.py` |
+| `WORK_SCALE` (carga variável) | 0.5 em `*_lat`, 0.8 em `*_het`/`*_var` (1.0 estourava o pool) | `run_experiment.sh` → `ue_client.py` |
+| `INSTANCE_CPUS` | `0.10,0.30,0.20` em ciclo no `*_het`, `0.20` nos outros | `testar_agora.sh` → `mec_instance_manager.py` |
 | `INFER_MAX_INFLIGHT` / `INFER_QUEUE_WAIT_SEC` | 2 / 1.0 s (depois disso, 503) | `examples/mec_app1.py` |
 | Latência de requisição que falhou | 2000 ms (= timeout da UE) | `ue_client.py` |
 
 Cenários: `mab`/`rr` = 1 (carga fixa, MAPE-K por CPU), `mab_lat`/`rr_lat` = 2 (carga
-variável, MAPE-K por latência), `mab_var`/`rr_var` = 3 (carga variável, MAPE-K por CPU).
-Gráficos: `graficos_compare.py --cenario {cpu,lat,var}`.
+variável, MAPE-K por latência), `mab_het`/`rr_het` = 3 (instâncias heterogêneas, carga
+variável, MAPE-K por CPU), `mab_var`/`rr_var` = 4 (igual ao 3 com instâncias iguais).
+O MAPE-K lê a CPU relativa ao limite de cada instância (escala de 0.20 núcleo).
+Gráficos: `graficos_compare.py --cenario {cpu,lat,het,var}`. Runs fora da análise: `runs/descartadas/`.
 
 ## Estado (14/09/2026)
 

@@ -23,8 +23,8 @@ set -euo pipefail
 
 SCENARIO="${1:-}"
 case "$SCENARIO" in
-    mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;;
-    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat|mab_var|rr_var}"; exit 1 ;;
+    mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var) ;;
+    *) echo "Uso: $0 {mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var}"; exit 1 ;;
 esac
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"

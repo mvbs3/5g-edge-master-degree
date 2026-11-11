@@ -12,6 +12,27 @@ except ImportError:  # python3 do sistema, fora do venv: vale o default abaixo
 # responde no srv3, e sem timeout cada stop ficava preso até o TCP desistir.
 MEP_ADDRESS = os.getenv("MEP_ADDRESS", "172.22.0.162")
 
+# Limite de CPU por instância. INSTANCE_CPUS é uma lista separada por vírgulas aplicada
+# em ciclo pelo índice da instância (mec_app1_instance<N>): o cenário 3 (*_het) usa
+# "0.10,0.30,0.20" — capacidades diferentes com média de 0.20, a mesma capacidade total
+# dos outros cenários. Sem a variável, todas ficam com 0.20 como sempre.
+DEFAULT_CPU_LIMIT = "0.20"
+
+
+def instance_cpu_limit(index):
+    limits = [c.strip() for c in os.getenv("INSTANCE_CPUS", DEFAULT_CPU_LIMIT).split(",") if c.strip()]
+    return limits[int(index) % len(limits)] if limits else DEFAULT_CPU_LIMIT
+
+
+def _index_from_name(name):
+    # só os dígitos do fim do nome: mec_app1_instance12 -> 12
+    tail = ""
+    for ch in reversed(name):
+        if not ch.isdigit():
+            break
+        tail = ch + tail
+    return int(tail) if tail else 0
+
 def build_image():
     print("🔨 Building Docker image 'mec_app:latest'...")
     subprocess.run([
@@ -38,7 +59,7 @@ def start_instance(name, port, py_file, mec_name="VideoStreamingService", mec_ho
     # --- Limites de Recursos Fixos ---
     FIXED_MEM_LIMIT = "512m"
     FIXED_MEM_RESERVATION = "256m"
-    FIXED_CPU_LIMIT = "0.20" # <<< NOVO: Limite para meio núcleo de CPU (50%)
+    FIXED_CPU_LIMIT = instance_cpu_limit(_index_from_name(name))
 
     print(f"🚀 Starting container '{name}' on port {port} with app '{py_file}'")
     print(f"   Recursos: Memória {FIXED_MEM_LIMIT} (Reserva {FIXED_MEM_RESERVATION}), CPU {FIXED_CPU_LIMIT} núcleos.")
@@ -55,6 +76,7 @@ def start_instance(name, port, py_file, mec_name="VideoStreamingService", mec_ho
     "-e", f"MEC_PORT={port}",
     "-e", f"MEC_HOST={mec_host}",
     "-e", "MEC_APP=app.py",
+    "-e", f"CPU_LIMIT={FIXED_CPU_LIMIT}",
     "-p", f"{port}:{port}",
     "--network", "docker_open5gs_default",
     "--memory", FIXED_MEM_LIMIT,
@@ -99,6 +121,9 @@ if __name__ == "__main__":
 
     subparsers.add_parser("build", help="Build the Docker image")
 
+    cpus_parser = subparsers.add_parser("cpus", help="Print the CPU limit of instance N (INSTANCE_CPUS)")
+    cpus_parser.add_argument("index", type=int)
+
     start_parser = subparsers.add_parser("start", help="Start a new MEC instance")
     start_parser.add_argument("name", help="Container name")
     start_parser.add_argument("port", type=int, help="Port to expose")
@@ -114,6 +139,8 @@ if __name__ == "__main__":
 
     if args.command == "build":
         build_image()
+    elif args.command == "cpus":
+        print(instance_cpu_limit(args.index))
     elif args.command == "start":
         start_instance(
             args.name, 

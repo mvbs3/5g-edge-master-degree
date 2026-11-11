@@ -8,8 +8,11 @@
 #   ./testar_agora.sh rr completo
 #   ./testar_agora.sh mab_lat [completo] → MAPE-K por latência + UEs leve/médio/pesado
 #   ./testar_agora.sh rr_lat  [completo]
+#   ./testar_agora.sh mab_het [completo] → instâncias com CPU diferente + UEs variáveis, MAPE-K por CPU
+#   ./testar_agora.sh rr_het  [completo]
 #   ./testar_agora.sh mab_var [completo] → MAPE-K por CPU + UEs leve/médio/pesado
 #   ./testar_agora.sh rr_var  [completo]
+#   ./testar_agora.sh mabsem[_lat|_het|_var] → o mesmo MAB, sem o teto de UEs por instância
 #
 # Existe porque a opção 1 do automacao_script.py, além de subir o stack, dispara
 # 100 UEs fixas no fim — se elas ficarem vivas, somam com as 10→40 do cenário
@@ -26,19 +29,35 @@ set -euo pipefail
 
 CENARIO="${1:-}"
 MODO="${2:-curto}"
-case "$CENARIO" in mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;; *) CENARIO="" ;; esac
+case "$CENARIO" in mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var) ;; *) CENARIO="" ;; esac
 if [[ -z "$CENARIO" ]] || [[ "$MODO" != "curto" && "$MODO" != "completo" ]]; then
-    echo "Uso: $0 {mab|rr|mab_lat|rr_lat|mab_var|rr_var} [completo]"
+    echo "Uso: $0 {mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var} [completo]"
     exit 1
 fi
 
 # mab/rr: MAPE-K por CPU, UEs uniformes (experimento original, intocado).
 # mab_lat/rr_lat: MAPE-K por latência, UEs com perfis leve/médio/pesado
 # (LOAD_PROFILE é aplicado pelo run_experiment.sh). O roteador é o mesmo nos dois.
-# mab_var/rr_var (cenário 3): os perfis leve/médio/pesado do *_lat, mas com o MAPE-K
-# ainda por CPU — separa o efeito da carga variável do efeito de trocar a métrica.
+# mab_het/rr_het (cenário 3): UEs variáveis, MAPE-K por CPU e instâncias com capacidades
+# diferentes (0.10/0.30/0.20 núcleo, média 0.20) — onde há uma instância a evitar.
+# mab_var/rr_var (cenário 4): igual ao 3 com todas as instâncias em 0.20, para isolar o
+# efeito da heterogeneidade.
 CONTROLLER="${CENARIO%%_*}"
+# mabsem*: MAB sem o teto de UEs por instância (MAB_LOAD_SLACK=0), para medir o efeito
+# do teto. Esquecimento, recompensa e dwell iguais aos do mab*.
+if [[ "$CONTROLLER" == "mabsem" ]]; then
+    CONTROLLER=mab
+    export MAB_LOAD_SLACK=0
+else
+    unset MAB_LOAD_SLACK
+fi
 if [[ "$CENARIO" == *_lat ]]; then SCALING_METRIC=latency; else SCALING_METRIC=cpu; fi
+# Lido pelo mec_instance_manager.py, inclusive quando o mapeK sobe instâncias novas.
+if [[ "$CENARIO" == *_het ]]; then
+    export INSTANCE_CPUS="${INSTANCE_CPUS:-0.10,0.30,0.20}"
+else
+    export INSTANCE_CPUS=0.20
+fi
 
 RAIZ="$(cd "$(dirname "$0")" && pwd)"
 cd "$RAIZ"
@@ -163,6 +182,7 @@ sleep 3
 # próprio; aqui seria o fim do script. Então replicamos o docker run dele.
 IP_LOCAL="$(hostname -I | awk '{print $1}')"
 for i in 0 1; do
+    cpus="$(python3 "$RAIZ/mec_instance_manager.py" cpus "$i")"
     if docker run -d --name "mec_app1_instance$i" \
         -v "$RAIZ/examples/mec_app1.py:/app/app.py" \
         -v "$RAIZ/uploads:/app/uploads" \
@@ -170,12 +190,13 @@ for i in 0 1; do
         -e "MEC_PORT=$((8090 + i))" \
         -e "MEC_HOST=$IP_LOCAL" \
         -e MEC_APP=app.py \
+        -e "CPU_LIMIT=$cpus" \
         -p "$((8090 + i)):$((8090 + i))" \
         --network docker_open5gs_default \
-        --memory 512m --memory-reservation 256m --cpus 0.20 \
+        --memory 512m --memory-reservation 256m --cpus "$cpus" \
         --add-host host.docker.internal:host-gateway \
         mec_app:latest >/dev/null; then
-        echo "  mec_app1_instance$i no ar (porta $((8090 + i)))"
+        echo "  mec_app1_instance$i no ar (porta $((8090 + i)), $cpus núcleo de CPU)"
     else
         echo "  ERRO ao subir mec_app1_instance$i"
         exit 1
@@ -279,7 +300,7 @@ fi
 # Precisa reiniciar de todo jeito: a opção 1 sobe sem CONTROLLER_TYPE, e a versão
 # em execução pode ser a anterior às correções (sem cpu_avg_percent, o que faz o
 # mapeK cair no fallback e o scale-down nunca acontecer).
-passo "REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=$CONTROLLER) E MAPE-K (SCALING_METRIC=$SCALING_METRIC)"
+passo "REINICIANDO INTELIGÊNCIA (CONTROLLER_TYPE=$CONTROLLER, MAB_LOAD_SLACK=${MAB_LOAD_SLACK:-1.5}) E MAPE-K (SCALING_METRIC=$SCALING_METRIC, INSTANCE_CPUS=$INSTANCE_CPUS)"
 pkill -f mec_app_inteligence.py 2>/dev/null || true
 pkill -f mapeK.py 2>/dev/null || true
 pkill -f mec_app_metric_catcher.py 2>/dev/null || true

@@ -33,12 +33,18 @@ _RUNS_DIR = os.path.join(_SCRIPT_DIR, '..', 'runs')
 SCENARIOS = {
     'mab': 'MAB · cenário 1 (carga fixa, CPU)',
     'rr': 'Round Robin · cenário 1 (carga fixa, CPU)',
+    'mabsem': 'MAB sem teto · cenário 1 (carga fixa, CPU)',
     'mab_lat': 'MAB · cenário 2 (carga variável, latência)',
     'rr_lat': 'Round Robin · cenário 2 (carga variável, latência)',
-    'mab_var': 'MAB · cenário 3 (carga variável, CPU)',
-    'rr_var': 'Round Robin · cenário 3 (carga variável, CPU)',
+    'mabsem_lat': 'MAB sem teto · cenário 2 (carga variável, latência)',
+    'mab_het': 'MAB · cenário 3 (instâncias heterogêneas, CPU)',
+    'rr_het': 'Round Robin · cenário 3 (instâncias heterogêneas, CPU)',
+    'mabsem_het': 'MAB sem teto · cenário 3 (instâncias heterogêneas, CPU)',
+    'mab_var': 'MAB · cenário 4 (carga variável, CPU)',
+    'rr_var': 'Round Robin · cenário 4 (carga variável, CPU)',
+    'mabsem_var': 'MAB sem teto · cenário 4 (carga variável, CPU)',
 }
-RUN_NAME = re.compile(r'^(mab|rr|mab_lat|rr_lat|mab_var|rr_var)_(\d{8})_(\d{6})$')
+RUN_NAME = re.compile(r'^((?:mab|rr|mabsem)(?:_lat|_het|_var)?)_(\d{8})_(\d{6})$')
 
 # KPIs que entram no resumo (os de identificação da run ficam de fora).
 KPI_COLS = [

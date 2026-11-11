@@ -1,0 +1,4 @@
+Runs fora da análise (o agregar_repeticoes.py só lê runs/<cenario>_AAAAMMDD_HHMMSS/):
+- mab_var/rr_var de 10-11/11/2026: WORK_SCALE=0.5, carga leve demais (latência ~10 ms);
+  o cenário 4 passou a usar WORK_SCALE=0.8.
+- rr_lat_20261111_064538: interrompida aos 54 min, sem rl_input_state.csv.

@@ -518,6 +518,14 @@ def metric_catcher():
                 for app in mec_metrics["data"]["VidProc"].values():
                     v = app.get("cpu_percent(prometheus)", np.nan)
                     if isinstance(v, (int, float)):
+                        # CPU relativa à capacidade da instância, na escala de uma
+                        # instância de 0.20 núcleo: com limites iguais (0.20) é o valor
+                        # de sempre; no cenário 3 (*_het) uma instância de 0.10 cheia
+                        # vale 20% e não 10%, e os limiares 10/5 continuam significando
+                        # 50%/25% da capacidade de cada uma.
+                        limit = app.get("cpu_limit", 0.20)
+                        if isinstance(limit, (int, float)) and limit > 0:
+                            v = v * 0.20 / limit
                         cpu_values.append(v)
 
                 # MAX e MÉDIA são expostos separadamente: o MAPE-K precisa dos dois, porque

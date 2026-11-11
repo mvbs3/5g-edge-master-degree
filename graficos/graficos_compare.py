@@ -4,8 +4,9 @@
 (produzidos pelo run_experiment.sh em ../run_experiment.sh, copiados pra cá.)
 
 Com --cenario lat compara os cenários de latência (rl_input_state_mab_lat.csv e
-rl_input_state_rr_lat.csv) e grava em relatorio_compare_lat/. Com --cenario var, o
-cenário 3 (carga variável, MAPE-K por CPU: *_var.csv → relatorio_compare_var/).
+rl_input_state_rr_lat.csv) e grava em relatorio_compare_lat/. --cenario het é o cenário 3
+(instâncias heterogêneas: *_het.csv → relatorio_compare_het/) e --cenario var o cenário 4
+(carga variável, MAPE-K por CPU, instâncias iguais: *_var.csv → relatorio_compare_var/).
 
 Gera em relatorio_compare/:
   - cpu.png                 CPU média ao longo do tempo (MAB vs RR)
@@ -62,11 +63,14 @@ NUMERIC_COLS = [
 SCENARIO_FILES = {
     'MAB':         os.path.join(_SCRIPT_DIR, 'rl_input_state_mab.csv'),
     'Round Robin': os.path.join(_SCRIPT_DIR, 'rl_input_state_rr.csv'),
+    # MAB sem o teto de UEs por instância (cenários mabsem*); pulado se o CSV não existir.
+    'MAB sem teto': os.path.join(_SCRIPT_DIR, 'rl_input_state_mabsem.csv'),
 }
 
 PALETTE = {
     'MAB': '#1f77b4',
     'Round Robin': '#ff7f0e',
+    'MAB sem teto': '#2ca02c',
 }
 
 
@@ -306,15 +310,16 @@ def main():
     )
     parser.add_argument(
         '--cenario',
-        choices=['cpu', 'lat', 'var'],
+        choices=['cpu', 'lat', 'het', 'var'],
         default='cpu',
         help="cpu = mab/rr originais; lat = mab_lat/rr_lat (MAPE-K por latência); "
+             "het = mab_het/rr_het (instâncias heterogêneas); "
              "var = mab_var/rr_var (carga variável, MAPE-K por CPU)",
     )
     parser.add_argument(
         '--out',
         default=None,
-        help='Diretório de saída (default: relatorio_compare, relatorio_compare_lat ou relatorio_compare_var)',
+        help='Diretório de saída (default: relatorio_compare ou relatorio_compare_<cenario>)',
     )
     args = parser.parse_args()
 

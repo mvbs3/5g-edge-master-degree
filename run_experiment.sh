@@ -34,8 +34,8 @@ set -euo pipefail
 
 SCENARIO="${1:-}"
 case "$SCENARIO" in
-    mab|rr|mab_lat|rr_lat|mab_var|rr_var) ;;
-    *) echo "Uso: $0 {mab|rr|mab_lat|rr_lat|mab_var|rr_var}"; exit 1 ;;
+    mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var) ;;
+    *) echo "Uso: $0 {mab|rr|mabsem|mab_lat|rr_lat|mabsem_lat|mab_het|rr_het|mabsem_het|mab_var|rr_var|mabsem_var}"; exit 1 ;;
 esac
 
 # DURATION_MIN é a duração ESPERADA do workload (as 5 fases do run_workload.sh somam
@@ -139,13 +139,19 @@ docker exec nr_ue chmod +x /mnt/ueransim/run_workload.sh
 # ser repassada explicitamente com -e. Sem isso o workload sempre usava os defaults
 # (60 min no total) e não havia como rodar um cenário curto de validação.
 WORKLOAD_ENV=()
-# Cenários *_lat e *_var: UEs com perfis de carga diferentes (ue_client.py). Os
+# Cenários *_lat, *_het e *_var: UEs com perfis de carga diferentes (ue_client.py). Os
 # originais mab/rr não passam nada e o cliente fica no perfil uniforme de sempre.
-if [[ "$SCENARIO" == *_lat || "$SCENARIO" == *_var ]]; then
+if [[ "$SCENARIO" == *_lat || "$SCENARIO" == *_het || "$SCENARIO" == *_var ]]; then
     export LOAD_PROFILE="${LOAD_PROFILE:-heterogeneo}"
-    # Metade do CPU por requisição: com 1.0 o pico passava da capacidade do pool (ver
-    # ue_client.py). Override: WORK_SCALE=0.7 ./run_experiment.sh mab_var
-    export WORK_SCALE="${WORK_SCALE:-0.5}"
+    # Fração do CPU por requisição: com 1.0 o pico passava da capacidade do pool (ver
+    # ue_client.py). *_lat fica em 0.5; em *_het/*_var, com 0.5 a latência ficava em
+    # ~10 ms e nada separava as estratégias (runs de 11/11/2026), então sobe para 0.8.
+    # Override: WORK_SCALE=0.7 ./run_experiment.sh mab_het
+    if [[ "$SCENARIO" == *_lat ]]; then
+        export WORK_SCALE="${WORK_SCALE:-0.5}"
+    else
+        export WORK_SCALE="${WORK_SCALE:-0.8}"
+    fi
 fi
 for var in WARMUP_UES PEAK_UES PHASE_WARMUP_SEC PHASE_RAMP_SEC PHASE_PEAK_SEC \
            PHASE_DRAIN_SEC PHASE_SETTLE_SEC LOAD_PROFILE WORK_SCALE; do
@@ -157,6 +163,11 @@ done
 
 # A expansão usa a forma ${A[@]+...} porque com `set -u` um array vazio quebra em
 # bash 3.2 (o do macOS): sem override nenhum, "${WORKLOAD_ENV[@]}" seria unbound.
+# Marca o disparo: os ue_*.log mais novos que isso são desta run. O log do workload não
+# serve de referência — ele é escrito até o fim, então nenhum ue_*.log era mais novo que
+# ele e o logs_workload.tar.gz saía vazio (45 bytes, runs de 11/11/2026).
+UE_LOGS_MARK="/mnt/ueransim/.inicio_${SCENARIO}_${RUN_TS}"
+docker exec nr_ue touch "$UE_LOGS_MARK"
 docker exec -d ${WORKLOAD_ENV[@]+"${WORKLOAD_ENV[@]}"} nr_ue bash -c \
     "/mnt/ueransim/run_workload.sh > /mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log 2>&1"
 START_TS=$(date +%s)
@@ -217,7 +228,7 @@ docker cp "nr_ue:/mnt/ueransim/workload_${SCENARIO}_${RUN_TS}.log" "$RUN_DIR/" 2
 # arquivos grandes por run.
 UE_LOGS_TAR="$RUN_DIR/logs_workload.tar.gz"
 if docker exec nr_ue sh -c "cd /mnt/ueransim/logs_workload && \
-        find . -name 'ue_*.log' -newer ../workload_${SCENARIO}_${RUN_TS}.log | tar -czf - -T -" \
+        find . -name 'ue_*.log' -newer $UE_LOGS_MARK | tar -czf - -T -" \
         > "$UE_LOGS_TAR" 2>/dev/null && [[ -s "$UE_LOGS_TAR" ]]; then
     echo "  logs das UEs: $UE_LOGS_TAR ($(du -h "$UE_LOGS_TAR" | cut -f1))"
 else

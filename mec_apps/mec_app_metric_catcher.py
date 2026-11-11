@@ -268,6 +268,8 @@ def metric_catcher():
                                 # System metrics from both sources
                                 "cpu_percent(prometheus)": prometheus_metrics.get("cpu_percent", "N/A"),
                                 "cpu_percent(metric)": metric_data.get("cpu_percent", "N/A"),
+                                # Núcleos do container; instância antiga não manda = 0.20.
+                                "cpu_limit": metric_data.get("cpu_limit", 0.20),
                                 "memory_percent(prometheus)": prometheus_metrics.get("memory_percent", "N/A"),
                                 "memory_percent(metric)": metric_data.get("memory_percent", "N/A"),
                                 "memory_used_mb(prometheus)": prometheus_metrics.get("memory_used_mb", "N/A"),
