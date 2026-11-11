@@ -14,7 +14,7 @@
 # Um cenário que falha não interrompe os outros: o resumo no fim lista as falhas.
 # Depois:  cd graficos && python3 agregar_repeticoes.py --desde AAAAMMDD
 # ============================================================================
-
+#teste
 set -uo pipefail
 
 REPETICOES="${REPETICOES:-3}"
