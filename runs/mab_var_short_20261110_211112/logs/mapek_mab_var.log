@@ -1,0 +1,1420 @@
+[21:11:02] MAPE-K iniciado (métrica=cpu, up>10.0%, down<5.0%)
+[21:11:02] 🔁 Estado recuperado: 2 instância(s) VidProc ativa(s) (maior índice=1). instance_numer=2
+[21:11:02] ==== CICLO MAPE-K ====
+[21:11:02] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.02, 'cpu_max_percent': 0.02, 'current_avg_cpu_percent': 0.02, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:02] CPU atual: max=0.02% avg=0.02% (instâncias reportando=2, sem resposta=0)
+[21:11:02] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.02
+cpu_avg=0.02
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:02] DECISÃO FINAL: NO_ACTION
+[21:11:02] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:07] ==== CICLO MAPE-K ====
+[21:11:07] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.02, 'cpu_max_percent': 0.02, 'current_avg_cpu_percent': 0.02, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:07] CPU atual: max=0.02% avg=0.02% (instâncias reportando=2, sem resposta=0)
+[21:11:07] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.02
+cpu_avg=0.02
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:07] DECISÃO FINAL: NO_ACTION
+[21:11:07] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:12] ==== CICLO MAPE-K ====
+[21:11:12] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.04, 'cpu_max_percent': 0.04, 'current_avg_cpu_percent': 0.04, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:12] CPU atual: max=0.04% avg=0.04% (instâncias reportando=2, sem resposta=0)
+[21:11:12] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.04
+cpu_avg=0.04
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:12] DECISÃO FINAL: NO_ACTION
+[21:11:12] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:17] ==== CICLO MAPE-K ====
+[21:11:17] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.04, 'cpu_max_percent': 0.04, 'current_avg_cpu_percent': 0.04, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:17] CPU atual: max=0.04% avg=0.04% (instâncias reportando=2, sem resposta=0)
+[21:11:17] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.04
+cpu_avg=0.04
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:17] DECISÃO FINAL: NO_ACTION
+[21:11:17] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:22] ==== CICLO MAPE-K ====
+[21:11:22] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.055, 'cpu_max_percent': 0.06, 'current_avg_cpu_percent': 0.06, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:22] CPU atual: max=0.06% avg=0.06% (instâncias reportando=2, sem resposta=0)
+[21:11:22] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.06
+cpu_avg=0.06
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:22] DECISÃO FINAL: NO_ACTION
+[21:11:22] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:27] ==== CICLO MAPE-K ====
+[21:11:27] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.055, 'cpu_max_percent': 0.06, 'current_avg_cpu_percent': 0.06, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:27] CPU atual: max=0.06% avg=0.06% (instâncias reportando=2, sem resposta=0)
+[21:11:27] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.06
+cpu_avg=0.06
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:27] DECISÃO FINAL: NO_ACTION
+[21:11:27] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:32] ==== CICLO MAPE-K ====
+[21:11:32] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.06, 'cpu_max_percent': 0.06, 'current_avg_cpu_percent': 0.06, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:32] CPU atual: max=0.06% avg=0.06% (instâncias reportando=2, sem resposta=0)
+[21:11:32] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.06
+cpu_avg=0.06
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:32] DECISÃO FINAL: NO_ACTION
+[21:11:32] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:37] ==== CICLO MAPE-K ====
+[21:11:37] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.06, 'cpu_max_percent': 0.06, 'current_avg_cpu_percent': 0.06, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:37] CPU atual: max=0.06% avg=0.06% (instâncias reportando=2, sem resposta=0)
+[21:11:37] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=0.06
+cpu_avg=0.06
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:37] DECISÃO FINAL: NO_ACTION
+[21:11:37] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:42] ==== CICLO MAPE-K ====
+[21:11:42] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.7749999999999999, 'cpu_max_percent': 1.43, 'current_avg_cpu_percent': 1.43, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:42] CPU atual: max=1.43% avg=0.77% (instâncias reportando=2, sem resposta=0)
+[21:11:42] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=1.43
+cpu_avg=0.77
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:42] DECISÃO FINAL: NO_ACTION
+[21:11:42] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:47] ==== CICLO MAPE-K ====
+[21:11:47] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 0.7749999999999999, 'cpu_max_percent': 1.43, 'current_avg_cpu_percent': 1.43, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:47] CPU atual: max=1.43% avg=0.77% (instâncias reportando=2, sem resposta=0)
+[21:11:47] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=1.43
+cpu_avg=0.77
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:47] DECISÃO FINAL: NO_ACTION
+[21:11:47] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:52] ==== CICLO MAPE-K ====
+[21:11:52] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.675, 'cpu_max_percent': 3.15, 'current_avg_cpu_percent': 3.15, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:52] CPU atual: max=3.15% avg=2.67% (instâncias reportando=2, sem resposta=0)
+[21:11:52] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=3.15
+cpu_avg=2.67
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:52] DECISÃO FINAL: NO_ACTION
+[21:11:52] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:11:57] ==== CICLO MAPE-K ====
+[21:11:57] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.675, 'cpu_max_percent': 3.15, 'current_avg_cpu_percent': 3.15, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:11:57] CPU atual: max=3.15% avg=2.67% (instâncias reportando=2, sem resposta=0)
+[21:11:57] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=3.15
+cpu_avg=2.67
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:11:57] DECISÃO FINAL: NO_ACTION
+[21:11:57] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:02] ==== CICLO MAPE-K ====
+[21:12:02] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.675, 'cpu_max_percent': 3.15, 'current_avg_cpu_percent': 3.15, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:02] CPU atual: max=3.15% avg=2.67% (instâncias reportando=2, sem resposta=0)
+[21:12:02] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=3.15
+cpu_avg=2.67
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:02] DECISÃO FINAL: NO_ACTION
+[21:12:02] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:07] ==== CICLO MAPE-K ====
+[21:12:07] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.675, 'cpu_max_percent': 3.15, 'current_avg_cpu_percent': 3.15, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:07] CPU atual: max=3.15% avg=2.67% (instâncias reportando=2, sem resposta=0)
+[21:12:07] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=3.15
+cpu_avg=2.67
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:07] DECISÃO FINAL: NO_ACTION
+[21:12:07] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:12] ==== CICLO MAPE-K ====
+[21:12:12] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.375, 'cpu_max_percent': 4.73, 'current_avg_cpu_percent': 4.73, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:12] CPU atual: max=4.73% avg=4.38% (instâncias reportando=2, sem resposta=0)
+[21:12:12] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.73
+cpu_avg=4.38
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:12] DECISÃO FINAL: NO_ACTION
+[21:12:12] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:17] ==== CICLO MAPE-K ====
+[21:12:17] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.375, 'cpu_max_percent': 4.73, 'current_avg_cpu_percent': 4.73, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:17] CPU atual: max=4.73% avg=4.38% (instâncias reportando=2, sem resposta=0)
+[21:12:17] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.73
+cpu_avg=4.38
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:17] DECISÃO FINAL: NO_ACTION
+[21:12:17] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:22] ==== CICLO MAPE-K ====
+[21:12:22] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.555, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:22] CPU atual: max=6.14% avg=5.55% (instâncias reportando=2, sem resposta=0)
+[21:12:22] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.55
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:22] DECISÃO FINAL: NO_ACTION
+[21:12:22] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:27] ==== CICLO MAPE-K ====
+[21:12:27] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.555, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:27] CPU atual: max=6.14% avg=5.55% (instâncias reportando=2, sem resposta=0)
+[21:12:27] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.55
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:27] DECISÃO FINAL: NO_ACTION
+[21:12:27] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:32] ==== CICLO MAPE-K ====
+[21:12:32] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.555, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:32] CPU atual: max=6.14% avg=5.55% (instâncias reportando=2, sem resposta=0)
+[21:12:32] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.55
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:32] DECISÃO FINAL: NO_ACTION
+[21:12:32] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:37] ==== CICLO MAPE-K ====
+[21:12:37] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.555, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:37] CPU atual: max=6.14% avg=5.55% (instâncias reportando=2, sem resposta=0)
+[21:12:37] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.55
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:37] DECISÃO FINAL: NO_ACTION
+[21:12:37] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:42] ==== CICLO MAPE-K ====
+[21:12:42] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.505, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:42] CPU atual: max=6.14% avg=5.50% (instâncias reportando=2, sem resposta=0)
+[21:12:42] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.50
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:42] DECISÃO FINAL: NO_ACTION
+[21:12:42] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:47] ==== CICLO MAPE-K ====
+[21:12:47] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.505, 'cpu_max_percent': 6.14, 'current_avg_cpu_percent': 6.14, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:47] CPU atual: max=6.14% avg=5.50% (instâncias reportando=2, sem resposta=0)
+[21:12:47] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.14
+cpu_avg=5.50
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:47] DECISÃO FINAL: NO_ACTION
+[21:12:47] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:52] ==== CICLO MAPE-K ====
+[21:12:52] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.725, 'cpu_max_percent': 6.8, 'current_avg_cpu_percent': 6.8, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:52] CPU atual: max=6.80% avg=5.72% (instâncias reportando=2, sem resposta=0)
+[21:12:52] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.80
+cpu_avg=5.72
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:52] DECISÃO FINAL: NO_ACTION
+[21:12:52] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:12:57] ==== CICLO MAPE-K ====
+[21:12:57] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.725, 'cpu_max_percent': 6.8, 'current_avg_cpu_percent': 6.8, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:12:57] CPU atual: max=6.80% avg=5.72% (instâncias reportando=2, sem resposta=0)
+[21:12:57] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.80
+cpu_avg=5.72
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:12:57] DECISÃO FINAL: NO_ACTION
+[21:12:57] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:02] ==== CICLO MAPE-K ====
+[21:13:02] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.725, 'cpu_max_percent': 6.8, 'current_avg_cpu_percent': 6.8, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:02] CPU atual: max=6.80% avg=5.72% (instâncias reportando=2, sem resposta=0)
+[21:13:02] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.80
+cpu_avg=5.72
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:02] DECISÃO FINAL: NO_ACTION
+[21:13:02] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:07] ==== CICLO MAPE-K ====
+[21:13:07] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.725, 'cpu_max_percent': 6.8, 'current_avg_cpu_percent': 6.8, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:07] CPU atual: max=6.80% avg=5.72% (instâncias reportando=2, sem resposta=0)
+[21:13:07] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.80
+cpu_avg=5.72
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:07] DECISÃO FINAL: NO_ACTION
+[21:13:07] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:12] ==== CICLO MAPE-K ====
+[21:13:12] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 6.35, 'cpu_max_percent': 7.63, 'current_avg_cpu_percent': 7.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:12] CPU atual: max=7.63% avg=6.35% (instâncias reportando=2, sem resposta=0)
+[21:13:12] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=7.63
+cpu_avg=6.35
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:12] DECISÃO FINAL: NO_ACTION
+[21:13:12] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:17] ==== CICLO MAPE-K ====
+[21:13:17] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 6.35, 'cpu_max_percent': 7.63, 'current_avg_cpu_percent': 7.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:17] CPU atual: max=7.63% avg=6.35% (instâncias reportando=2, sem resposta=0)
+[21:13:17] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=7.63
+cpu_avg=6.35
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:17] DECISÃO FINAL: NO_ACTION
+[21:13:17] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:22] ==== CICLO MAPE-K ====
+[21:13:22] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 7.9350000000000005, 'cpu_max_percent': 8.5, 'current_avg_cpu_percent': 8.5, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:22] CPU atual: max=8.50% avg=7.94% (instâncias reportando=2, sem resposta=0)
+[21:13:22] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=8.50
+cpu_avg=7.94
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:22] DECISÃO FINAL: NO_ACTION
+[21:13:22] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:27] ==== CICLO MAPE-K ====
+[21:13:27] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 7.9350000000000005, 'cpu_max_percent': 8.5, 'current_avg_cpu_percent': 8.5, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:27] CPU atual: max=8.50% avg=7.94% (instâncias reportando=2, sem resposta=0)
+[21:13:27] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=8.50
+cpu_avg=7.94
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:27] DECISÃO FINAL: NO_ACTION
+[21:13:27] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:32] ==== CICLO MAPE-K ====
+[21:13:32] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 7.455, 'cpu_max_percent': 7.54, 'current_avg_cpu_percent': 7.54, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:32] CPU atual: max=7.54% avg=7.46% (instâncias reportando=2, sem resposta=0)
+[21:13:32] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=7.54
+cpu_avg=7.46
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:32] DECISÃO FINAL: NO_ACTION
+[21:13:32] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:37] ==== CICLO MAPE-K ====
+[21:13:37] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 7.455, 'cpu_max_percent': 7.54, 'current_avg_cpu_percent': 7.54, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:37] CPU atual: max=7.54% avg=7.46% (instâncias reportando=2, sem resposta=0)
+[21:13:37] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=7.54
+cpu_avg=7.46
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:37] DECISÃO FINAL: NO_ACTION
+[21:13:37] Instâncias ativas: 2 (índices=[0, 1], próximo nome=2)
+[21:13:42] ==== CICLO MAPE-K ====
+[21:13:42] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 8.98, 'cpu_max_percent': 10.79, 'current_avg_cpu_percent': 10.79, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:42] CPU atual: max=10.79% avg=8.98% (instâncias reportando=2, sem resposta=0)
+[21:13:42] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=10.79
+cpu_avg=8.98
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:13:42] AÇÃO: SCALE_UP (cpu max 10.79% > 10.0)
+[21:13:42] DECISÃO FINAL: SCALE_UP
+[21:13:42] 🚀 Subindo instância 2 na porta 8092
+[21:13:50] ⏳ Verificando registro de VideoStreamingService2 no service_registry...
+[21:13:50] ✅ SCALE_UP concluído. instance_numer=3
+[21:13:50] Instâncias ativas: 2 (índices=[0, 1], próximo nome=3)
+[21:13:55] ==== CICLO MAPE-K ====
+[21:13:55] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 9.629999999999999, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:13:55] CPU atual: max=12.09% avg=9.63% (instâncias reportando=2, sem resposta=0)
+[21:13:55] ⏳ COOLDOWN ativo
+[21:13:55] DECISÃO FINAL: NO_ACTION
+[21:13:55] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=3)
+[21:14:00] ==== CICLO MAPE-K ====
+[21:14:00] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 10.745000000000001, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:00] CPU atual: max=12.09% avg=10.75% (instâncias reportando=2, sem resposta=0)
+[21:14:00] ⏳ COOLDOWN ativo
+[21:14:00] DECISÃO FINAL: NO_ACTION
+[21:14:00] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=3)
+[21:14:05] ==== CICLO MAPE-K ====
+[21:14:05] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 10.745000000000001, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:05] CPU atual: max=12.09% avg=10.75% (instâncias reportando=2, sem resposta=0)
+[21:14:05] ⏳ COOLDOWN ativo
+[21:14:05] DECISÃO FINAL: NO_ACTION
+[21:14:05] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=3)
+[21:14:10] ==== CICLO MAPE-K ====
+[21:14:10] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 9.503333333333332, 'cpu_max_percent': 14.04, 'current_avg_cpu_percent': 14.04, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:10] CPU atual: max=14.04% avg=9.50% (instâncias reportando=3, sem resposta=0)
+[21:14:10] ⏳ COOLDOWN ativo
+[21:14:10] DECISÃO FINAL: NO_ACTION
+[21:14:10] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=3)
+[21:14:15] ==== CICLO MAPE-K ====
+[21:14:15] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 9.503333333333332, 'cpu_max_percent': 14.04, 'current_avg_cpu_percent': 14.04, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:15] CPU atual: max=14.04% avg=9.50% (instâncias reportando=3, sem resposta=0)
+[21:14:15] ⏳ COOLDOWN ativo
+[21:14:15] DECISÃO FINAL: NO_ACTION
+[21:14:15] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=3)
+[21:14:20] ==== CICLO MAPE-K ====
+[21:14:20] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 10.07, 'cpu_max_percent': 14.04, 'current_avg_cpu_percent': 14.04, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:20] CPU atual: max=14.04% avg=10.07% (instâncias reportando=3, sem resposta=0)
+[21:14:20] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=14.04
+cpu_avg=10.07
+instances=3
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:14:20] AÇÃO: SCALE_UP (cpu max 14.04% > 10.0)
+[21:14:20] DECISÃO FINAL: SCALE_UP
+[21:14:20] 🚀 Subindo instância 3 na porta 8093
+[21:14:28] ⏳ Verificando registro de VideoStreamingService3 no service_registry...
+[21:14:28] ✅ SCALE_UP concluído. instance_numer=4
+[21:14:28] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=4)
+[21:14:33] ==== CICLO MAPE-K ====
+[21:14:33] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 10.713333333333333, 'cpu_max_percent': 16.61, 'current_avg_cpu_percent': 16.61, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:33] CPU atual: max=16.61% avg=10.71% (instâncias reportando=3, sem resposta=0)
+[21:14:33] ⏳ COOLDOWN ativo
+[21:14:33] DECISÃO FINAL: NO_ACTION
+[21:14:33] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=4)
+[21:14:38] ==== CICLO MAPE-K ====
+[21:14:38] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 11.469999999999999, 'cpu_max_percent': 15.26, 'current_avg_cpu_percent': 15.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:38] CPU atual: max=15.26% avg=11.47% (instâncias reportando=3, sem resposta=0)
+[21:14:38] ⏳ COOLDOWN ativo
+[21:14:38] DECISÃO FINAL: NO_ACTION
+[21:14:38] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=4)
+[21:14:43] ==== CICLO MAPE-K ====
+[21:14:43] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 11.469999999999999, 'cpu_max_percent': 15.26, 'current_avg_cpu_percent': 15.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:43] CPU atual: max=15.26% avg=11.47% (instâncias reportando=3, sem resposta=0)
+[21:14:43] ⏳ COOLDOWN ativo
+[21:14:43] DECISÃO FINAL: NO_ACTION
+[21:14:43] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=4)
+[21:14:48] ==== CICLO MAPE-K ====
+[21:14:48] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 9.0275, 'cpu_max_percent': 17.6, 'current_avg_cpu_percent': 17.6, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:48] CPU atual: max=17.60% avg=9.03% (instâncias reportando=4, sem resposta=0)
+[21:14:48] ⏳ COOLDOWN ativo
+[21:14:48] DECISÃO FINAL: NO_ACTION
+[21:14:48] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=4)
+[21:14:53] ==== CICLO MAPE-K ====
+[21:14:53] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 9.0275, 'cpu_max_percent': 17.6, 'current_avg_cpu_percent': 17.6, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:53] CPU atual: max=17.60% avg=9.03% (instâncias reportando=4, sem resposta=0)
+[21:14:53] ⏳ COOLDOWN ativo
+[21:14:53] DECISÃO FINAL: NO_ACTION
+[21:14:53] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=4)
+[21:14:58] ==== CICLO MAPE-K ====
+[21:14:58] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 8.9925, 'cpu_max_percent': 17.43, 'current_avg_cpu_percent': 17.43, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:14:58] CPU atual: max=17.43% avg=8.99% (instâncias reportando=4, sem resposta=0)
+[21:14:58] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=17.43
+cpu_avg=8.99
+instances=4
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:14:58] AÇÃO: SCALE_UP (cpu max 17.43% > 10.0)
+[21:14:58] DECISÃO FINAL: SCALE_UP
+[21:14:58] 🚀 Subindo instância 4 na porta 8094
+[21:15:06] ⏳ Verificando registro de VideoStreamingService4 no service_registry...
+[21:15:06] ✅ SCALE_UP concluído. instance_numer=5
+[21:15:06] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=5)
+[21:15:11] ==== CICLO MAPE-K ====
+[21:15:11] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 9.745000000000001, 'cpu_max_percent': 17.26, 'current_avg_cpu_percent': 17.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:11] CPU atual: max=17.26% avg=9.75% (instâncias reportando=4, sem resposta=0)
+[21:15:11] ⏳ COOLDOWN ativo
+[21:15:11] DECISÃO FINAL: NO_ACTION
+[21:15:11] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=5)
+[21:15:16] ==== CICLO MAPE-K ====
+[21:15:16] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 9.745000000000001, 'cpu_max_percent': 17.26, 'current_avg_cpu_percent': 17.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:16] CPU atual: max=17.26% avg=9.75% (instâncias reportando=4, sem resposta=0)
+[21:15:16] ⏳ COOLDOWN ativo
+[21:15:16] DECISÃO FINAL: NO_ACTION
+[21:15:16] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=5)
+[21:15:21] ==== CICLO MAPE-K ====
+[21:15:21] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 11.120000000000001, 'cpu_max_percent': 17.26, 'current_avg_cpu_percent': 17.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:21] CPU atual: max=17.26% avg=11.12% (instâncias reportando=4, sem resposta=0)
+[21:15:21] ⏳ COOLDOWN ativo
+[21:15:21] DECISÃO FINAL: NO_ACTION
+[21:15:21] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=5)
+[21:15:26] ==== CICLO MAPE-K ====
+[21:15:27] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 11.120000000000001, 'cpu_max_percent': 17.26, 'current_avg_cpu_percent': 17.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:27] CPU atual: max=17.26% avg=11.12% (instâncias reportando=4, sem resposta=0)
+[21:15:27] ⏳ COOLDOWN ativo
+[21:15:27] DECISÃO FINAL: NO_ACTION
+[21:15:27] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=5)
+[21:15:32] ==== CICLO MAPE-K ====
+[21:15:32] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 10.4875, 'cpu_max_percent': 16.08, 'current_avg_cpu_percent': 16.08, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:32] CPU atual: max=16.08% avg=10.49% (instâncias reportando=4, sem resposta=0)
+[21:15:32] ⏳ COOLDOWN ativo
+[21:15:32] DECISÃO FINAL: NO_ACTION
+[21:15:32] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=5)
+[21:15:37] ==== CICLO MAPE-K ====
+[21:15:37] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 10.4875, 'cpu_max_percent': 16.08, 'current_avg_cpu_percent': 16.08, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:37] CPU atual: max=16.08% avg=10.49% (instâncias reportando=4, sem resposta=0)
+[21:15:37] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=16.08
+cpu_avg=10.49
+instances=5
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:15:37] AÇÃO: SCALE_UP (cpu max 16.08% > 10.0)
+[21:15:37] DECISÃO FINAL: SCALE_UP
+[21:15:37] 🚀 Subindo instância 5 na porta 8095
+[21:15:45] ⏳ Verificando registro de VideoStreamingService5 no service_registry...
+[21:15:45] ✅ SCALE_UP concluído. instance_numer=6
+[21:15:45] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=6)
+[21:15:50] ==== CICLO MAPE-K ====
+[21:15:50] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 8.556000000000001, 'cpu_max_percent': 15.17, 'current_avg_cpu_percent': 15.17, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:50] CPU atual: max=15.17% avg=8.56% (instâncias reportando=5, sem resposta=0)
+[21:15:50] ⏳ COOLDOWN ativo
+[21:15:50] DECISÃO FINAL: NO_ACTION
+[21:15:50] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=6)
+[21:15:55] ==== CICLO MAPE-K ====
+[21:15:55] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 8.556000000000001, 'cpu_max_percent': 15.17, 'current_avg_cpu_percent': 15.17, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:15:55] CPU atual: max=15.17% avg=8.56% (instâncias reportando=5, sem resposta=0)
+[21:15:55] ⏳ COOLDOWN ativo
+[21:15:55] DECISÃO FINAL: NO_ACTION
+[21:15:55] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=6)
+[21:16:00] ==== CICLO MAPE-K ====
+[21:16:00] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 9.44, 'cpu_max_percent': 15.17, 'current_avg_cpu_percent': 15.17, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:00] CPU atual: max=15.17% avg=9.44% (instâncias reportando=5, sem resposta=0)
+[21:16:00] ⏳ COOLDOWN ativo
+[21:16:00] DECISÃO FINAL: NO_ACTION
+[21:16:00] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=6)
+[21:16:05] ==== CICLO MAPE-K ====
+[21:16:05] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 9.44, 'cpu_max_percent': 15.17, 'current_avg_cpu_percent': 15.17, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:05] CPU atual: max=15.17% avg=9.44% (instâncias reportando=5, sem resposta=0)
+[21:16:05] ⏳ COOLDOWN ativo
+[21:16:05] DECISÃO FINAL: NO_ACTION
+[21:16:05] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=6)
+[21:16:10] ==== CICLO MAPE-K ====
+[21:16:10] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.021666666666667, 'cpu_max_percent': 13.26, 'current_avg_cpu_percent': 13.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:10] CPU atual: max=13.26% avg=8.02% (instâncias reportando=6, sem resposta=0)
+[21:16:10] ⏳ COOLDOWN ativo
+[21:16:10] DECISÃO FINAL: NO_ACTION
+[21:16:10] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=6)
+[21:16:15] ==== CICLO MAPE-K ====
+[21:16:15] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.021666666666667, 'cpu_max_percent': 13.26, 'current_avg_cpu_percent': 13.26, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:15] CPU atual: max=13.26% avg=8.02% (instâncias reportando=6, sem resposta=0)
+[21:16:15] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=13.26
+cpu_avg=8.02
+instances=6
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:16:15] AÇÃO: SCALE_UP (cpu max 13.26% > 10.0)
+[21:16:15] DECISÃO FINAL: SCALE_UP
+[21:16:15] 🚀 Subindo instância 6 na porta 8096
+[21:16:23] ⏳ Verificando registro de VideoStreamingService6 no service_registry...
+[21:16:23] ✅ SCALE_UP concluído. instance_numer=7
+[21:16:23] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=7)
+[21:16:28] ==== CICLO MAPE-K ====
+[21:16:28] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.276666666666667, 'cpu_max_percent': 12.82, 'current_avg_cpu_percent': 12.82, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:28] CPU atual: max=12.82% avg=8.28% (instâncias reportando=6, sem resposta=0)
+[21:16:28] ⏳ COOLDOWN ativo
+[21:16:28] DECISÃO FINAL: NO_ACTION
+[21:16:28] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=7)
+[21:16:33] ==== CICLO MAPE-K ====
+[21:16:33] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.255, 'cpu_max_percent': 12.28, 'current_avg_cpu_percent': 12.28, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:33] CPU atual: max=12.28% avg=8.26% (instâncias reportando=6, sem resposta=0)
+[21:16:33] ⏳ COOLDOWN ativo
+[21:16:33] DECISÃO FINAL: NO_ACTION
+[21:16:33] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=7)
+[21:16:38] ==== CICLO MAPE-K ====
+[21:16:38] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.255, 'cpu_max_percent': 12.28, 'current_avg_cpu_percent': 12.28, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:38] CPU atual: max=12.28% avg=8.26% (instâncias reportando=6, sem resposta=0)
+[21:16:38] ⏳ COOLDOWN ativo
+[21:16:38] DECISÃO FINAL: NO_ACTION
+[21:16:38] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=7)
+[21:16:43] ==== CICLO MAPE-K ====
+[21:16:43] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.168333333333333, 'cpu_max_percent': 11.91, 'current_avg_cpu_percent': 11.91, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:43] CPU atual: max=11.91% avg=8.17% (instâncias reportando=6, sem resposta=0)
+[21:16:43] ⏳ COOLDOWN ativo
+[21:16:43] DECISÃO FINAL: NO_ACTION
+[21:16:43] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=7)
+[21:16:48] ==== CICLO MAPE-K ====
+[21:16:48] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 8.168333333333333, 'cpu_max_percent': 11.91, 'current_avg_cpu_percent': 11.91, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:48] CPU atual: max=11.91% avg=8.17% (instâncias reportando=6, sem resposta=0)
+[21:16:48] ⏳ COOLDOWN ativo
+[21:16:48] DECISÃO FINAL: NO_ACTION
+[21:16:48] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=7)
+[21:16:53] ==== CICLO MAPE-K ====
+[21:16:53] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 7.826666666666667, 'cpu_max_percent': 11.68, 'current_avg_cpu_percent': 11.68, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:16:53] CPU atual: max=11.68% avg=7.83% (instâncias reportando=6, sem resposta=0)
+[21:16:53] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=11.68
+cpu_avg=7.83
+instances=7
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:16:53] AÇÃO: SCALE_UP (cpu max 11.68% > 10.0)
+[21:16:53] DECISÃO FINAL: SCALE_UP
+[21:16:53] 🚀 Subindo instância 7 na porta 8097
+[21:17:01] ⏳ Verificando registro de VideoStreamingService7 no service_registry...
+[21:17:01] ✅ SCALE_UP concluído. instance_numer=8
+[21:17:01] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=8)
+[21:17:06] ==== CICLO MAPE-K ====
+[21:17:06] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 6.932857142857143, 'cpu_max_percent': 11.68, 'current_avg_cpu_percent': 11.68, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:06] CPU atual: max=11.68% avg=6.93% (instâncias reportando=7, sem resposta=0)
+[21:17:06] ⏳ COOLDOWN ativo
+[21:17:06] DECISÃO FINAL: NO_ACTION
+[21:17:06] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=8)
+[21:17:11] ==== CICLO MAPE-K ====
+[21:17:11] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 6.7857142857142865, 'cpu_max_percent': 9.81, 'current_avg_cpu_percent': 9.81, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:11] CPU atual: max=9.81% avg=6.79% (instâncias reportando=7, sem resposta=0)
+[21:17:11] ⏳ COOLDOWN ativo
+[21:17:11] DECISÃO FINAL: NO_ACTION
+[21:17:11] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=8)
+[21:17:16] ==== CICLO MAPE-K ====
+[21:17:16] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 6.7857142857142865, 'cpu_max_percent': 9.81, 'current_avg_cpu_percent': 9.81, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:16] CPU atual: max=9.81% avg=6.79% (instâncias reportando=7, sem resposta=0)
+[21:17:16] ⏳ COOLDOWN ativo
+[21:17:16] DECISÃO FINAL: NO_ACTION
+[21:17:16] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=8)
+[21:17:21] ==== CICLO MAPE-K ====
+[21:17:21] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 6.7957142857142845, 'cpu_max_percent': 10.95, 'current_avg_cpu_percent': 10.95, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:21] CPU atual: max=10.95% avg=6.80% (instâncias reportando=7, sem resposta=0)
+[21:17:21] ⏳ COOLDOWN ativo
+[21:17:21] DECISÃO FINAL: NO_ACTION
+[21:17:21] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=8)
+[21:17:26] ==== CICLO MAPE-K ====
+[21:17:26] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 6.7957142857142845, 'cpu_max_percent': 10.95, 'current_avg_cpu_percent': 10.95, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:26] CPU atual: max=10.95% avg=6.80% (instâncias reportando=7, sem resposta=0)
+[21:17:26] ⏳ COOLDOWN ativo
+[21:17:26] DECISÃO FINAL: NO_ACTION
+[21:17:26] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=8)
+[21:17:31] ==== CICLO MAPE-K ====
+[21:17:31] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 6.05625, 'cpu_max_percent': 10.95, 'current_avg_cpu_percent': 10.95, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:31] CPU atual: max=10.95% avg=6.06% (instâncias reportando=8, sem resposta=0)
+[21:17:31] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=10.95
+cpu_avg=6.06
+instances=8
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:17:31] AÇÃO: SCALE_UP (cpu max 10.95% > 10.0)
+[21:17:31] DECISÃO FINAL: SCALE_UP
+[21:17:31] 🚀 Subindo instância 8 na porta 8098
+[21:17:39] ⏳ Verificando registro de VideoStreamingService8 no service_registry...
+[21:17:39] ✅ SCALE_UP concluído. instance_numer=9
+[21:17:39] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=9)
+[21:17:44] ==== CICLO MAPE-K ====
+[21:17:44] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.87875, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:44] CPU atual: max=12.09% avg=5.88% (instâncias reportando=8, sem resposta=0)
+[21:17:44] ⏳ COOLDOWN ativo
+[21:17:44] DECISÃO FINAL: NO_ACTION
+[21:17:44] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=9)
+[21:17:49] ==== CICLO MAPE-K ====
+[21:17:49] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.739999999999999, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:49] CPU atual: max=12.09% avg=5.74% (instâncias reportando=8, sem resposta=0)
+[21:17:49] ⏳ COOLDOWN ativo
+[21:17:49] DECISÃO FINAL: NO_ACTION
+[21:17:49] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=9)
+[21:17:54] ==== CICLO MAPE-K ====
+[21:17:54] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.739999999999999, 'cpu_max_percent': 12.09, 'current_avg_cpu_percent': 12.09, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:54] CPU atual: max=12.09% avg=5.74% (instâncias reportando=8, sem resposta=0)
+[21:17:54] ⏳ COOLDOWN ativo
+[21:17:54] DECISÃO FINAL: NO_ACTION
+[21:17:54] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=9)
+[21:17:59] ==== CICLO MAPE-K ====
+[21:17:59] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.821249999999999, 'cpu_max_percent': 12.12, 'current_avg_cpu_percent': 12.12, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:17:59] CPU atual: max=12.12% avg=5.82% (instâncias reportando=8, sem resposta=0)
+[21:17:59] ⏳ COOLDOWN ativo
+[21:17:59] DECISÃO FINAL: NO_ACTION
+[21:17:59] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=9)
+[21:18:04] ==== CICLO MAPE-K ====
+[21:18:04] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.821249999999999, 'cpu_max_percent': 12.12, 'current_avg_cpu_percent': 12.12, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:04] CPU atual: max=12.12% avg=5.82% (instâncias reportando=8, sem resposta=0)
+[21:18:04] ⏳ COOLDOWN ativo
+[21:18:04] DECISÃO FINAL: NO_ACTION
+[21:18:04] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=9)
+[21:18:09] ==== CICLO MAPE-K ====
+[21:18:09] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 5.652499999999999, 'cpu_max_percent': 10.86, 'current_avg_cpu_percent': 10.86, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:09] CPU atual: max=10.86% avg=5.65% (instâncias reportando=8, sem resposta=0)
+[21:18:09] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=10.86
+cpu_avg=5.65
+instances=9
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:18:09] AÇÃO: SCALE_UP (cpu max 10.86% > 10.0)
+[21:18:09] DECISÃO FINAL: SCALE_UP
+[21:18:09] 🚀 Subindo instância 9 na porta 8099
+[21:18:17] ⏳ Verificando registro de VideoStreamingService9 no service_registry...
+[21:18:17] ✅ SCALE_UP concluído. instance_numer=10
+[21:18:17] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:18:22] ==== CICLO MAPE-K ====
+[21:18:22] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.687777777777779, 'cpu_max_percent': 9.68, 'current_avg_cpu_percent': 9.68, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:22] CPU atual: max=9.68% avg=4.69% (instâncias reportando=9, sem resposta=0)
+[21:18:22] ⏳ COOLDOWN ativo
+[21:18:22] DECISÃO FINAL: NO_ACTION
+[21:18:22] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:27] ==== CICLO MAPE-K ====
+[21:18:27] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.687777777777779, 'cpu_max_percent': 9.68, 'current_avg_cpu_percent': 9.68, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:27] CPU atual: max=9.68% avg=4.69% (instâncias reportando=9, sem resposta=0)
+[21:18:27] ⏳ COOLDOWN ativo
+[21:18:27] DECISÃO FINAL: NO_ACTION
+[21:18:27] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:32] ==== CICLO MAPE-K ====
+[21:18:32] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.516666666666667, 'cpu_max_percent': 8.63, 'current_avg_cpu_percent': 8.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:32] CPU atual: max=8.63% avg=4.52% (instâncias reportando=9, sem resposta=0)
+[21:18:32] ⏳ COOLDOWN ativo
+[21:18:32] DECISÃO FINAL: NO_ACTION
+[21:18:32] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:37] ==== CICLO MAPE-K ====
+[21:18:37] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.516666666666667, 'cpu_max_percent': 8.63, 'current_avg_cpu_percent': 8.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:37] CPU atual: max=8.63% avg=4.52% (instâncias reportando=9, sem resposta=0)
+[21:18:37] ⏳ COOLDOWN ativo
+[21:18:37] DECISÃO FINAL: NO_ACTION
+[21:18:37] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:42] ==== CICLO MAPE-K ====
+[21:18:42] [DEBUG RESPONSE] {'active_instances': 10, 'cpu_avg_percent': 4.266, 'cpu_max_percent': 8.63, 'current_avg_cpu_percent': 8.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:42] CPU atual: max=8.63% avg=4.27% (instâncias reportando=10, sem resposta=0)
+[21:18:42] ⏳ COOLDOWN ativo
+[21:18:42] DECISÃO FINAL: NO_ACTION
+[21:18:42] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:47] ==== CICLO MAPE-K ====
+[21:18:47] [DEBUG RESPONSE] {'active_instances': 10, 'cpu_avg_percent': 4.266, 'cpu_max_percent': 8.63, 'current_avg_cpu_percent': 8.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:47] CPU atual: max=8.63% avg=4.27% (instâncias reportando=10, sem resposta=0)
+[21:18:47] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=8.63
+cpu_avg=4.27
+instances=10
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:18:47] AÇÃO: SCALE_DOWN (cpu avg 4.27% < 5.0, max 8.63 <= 10.0)
+[21:18:47] DECISÃO FINAL: SCALE_DOWN
+[21:18:47] 🧹 Removendo instância 9 (vivas: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+[21:18:50] ✅ SCALE_DOWN concluído: VideoStreamingService9 removida
+[21:18:50] Instâncias ativas: 10 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], próximo nome=10)
+[21:18:55] ==== CICLO MAPE-K ====
+[21:18:55] [DEBUG RESPONSE] {'active_instances': 10, 'cpu_avg_percent': 4.438, 'cpu_max_percent': 8.57, 'current_avg_cpu_percent': 8.57, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:18:55] CPU atual: max=8.57% avg=4.44% (instâncias reportando=10, sem resposta=0)
+[21:18:55] ⏳ COOLDOWN ativo
+[21:18:55] DECISÃO FINAL: NO_ACTION
+[21:18:55] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:00] ==== CICLO MAPE-K ====
+[21:19:00] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.391111111111111, 'cpu_max_percent': 8.42, 'current_avg_cpu_percent': 8.42, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:00] CPU atual: max=8.42% avg=4.39% (instâncias reportando=9, sem resposta=0)
+[21:19:00] ⏳ COOLDOWN ativo
+[21:19:00] DECISÃO FINAL: NO_ACTION
+[21:19:00] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:05] ==== CICLO MAPE-K ====
+[21:19:05] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.391111111111111, 'cpu_max_percent': 8.42, 'current_avg_cpu_percent': 8.42, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:05] CPU atual: max=8.42% avg=4.39% (instâncias reportando=9, sem resposta=0)
+[21:19:05] ⏳ COOLDOWN ativo
+[21:19:05] DECISÃO FINAL: NO_ACTION
+[21:19:05] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:10] ==== CICLO MAPE-K ====
+[21:19:10] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.387777777777778, 'cpu_max_percent': 8.42, 'current_avg_cpu_percent': 8.42, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:10] CPU atual: max=8.42% avg=4.39% (instâncias reportando=9, sem resposta=0)
+[21:19:10] ⏳ COOLDOWN ativo
+[21:19:10] DECISÃO FINAL: NO_ACTION
+[21:19:10] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:15] ==== CICLO MAPE-K ====
+[21:19:15] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.387777777777778, 'cpu_max_percent': 8.42, 'current_avg_cpu_percent': 8.42, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:15] CPU atual: max=8.42% avg=4.39% (instâncias reportando=9, sem resposta=0)
+[21:19:15] ⏳ COOLDOWN ativo
+[21:19:15] DECISÃO FINAL: NO_ACTION
+[21:19:15] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:20] ==== CICLO MAPE-K ====
+[21:19:20] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.124444444444445, 'cpu_max_percent': 7.87, 'current_avg_cpu_percent': 7.87, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:20] CPU atual: max=7.87% avg=4.12% (instâncias reportando=9, sem resposta=0)
+[21:19:20] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=7.87
+cpu_avg=4.12
+instances=9
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:19:20] AÇÃO: SCALE_DOWN (cpu avg 4.12% < 5.0, max 7.87 <= 10.0)
+[21:19:20] DECISÃO FINAL: SCALE_DOWN
+[21:19:20] 🧹 Removendo instância 8 (vivas: [0, 1, 2, 3, 4, 5, 6, 7, 8])
+[21:19:23] ✅ SCALE_DOWN concluído: VideoStreamingService8 removida
+[21:19:23] Instâncias ativas: 9 (índices=[0, 1, 2, 3, 4, 5, 6, 7, 8], próximo nome=10)
+[21:19:28] ==== CICLO MAPE-K ====
+[21:19:28] [DEBUG RESPONSE] {'active_instances': 9, 'cpu_avg_percent': 4.124444444444445, 'cpu_max_percent': 7.87, 'current_avg_cpu_percent': 7.87, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:28] CPU atual: max=7.87% avg=4.12% (instâncias reportando=9, sem resposta=0)
+[21:19:28] ⏳ COOLDOWN ativo
+[21:19:28] DECISÃO FINAL: NO_ACTION
+[21:19:28] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:19:33] ==== CICLO MAPE-K ====
+[21:19:33] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 4.336250000000001, 'cpu_max_percent': 6.85, 'current_avg_cpu_percent': 6.85, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:33] CPU atual: max=6.85% avg=4.34% (instâncias reportando=8, sem resposta=0)
+[21:19:33] ⏳ COOLDOWN ativo
+[21:19:33] DECISÃO FINAL: NO_ACTION
+[21:19:33] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:19:38] ==== CICLO MAPE-K ====
+[21:19:38] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 4.336250000000001, 'cpu_max_percent': 6.85, 'current_avg_cpu_percent': 6.85, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:38] CPU atual: max=6.85% avg=4.34% (instâncias reportando=8, sem resposta=0)
+[21:19:38] ⏳ COOLDOWN ativo
+[21:19:38] DECISÃO FINAL: NO_ACTION
+[21:19:38] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:19:43] ==== CICLO MAPE-K ====
+[21:19:43] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 4.0875, 'cpu_max_percent': 5.84, 'current_avg_cpu_percent': 5.84, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:43] CPU atual: max=5.84% avg=4.09% (instâncias reportando=8, sem resposta=0)
+[21:19:43] ⏳ COOLDOWN ativo
+[21:19:43] DECISÃO FINAL: NO_ACTION
+[21:19:43] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:19:48] ==== CICLO MAPE-K ====
+[21:19:48] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 4.0875, 'cpu_max_percent': 5.84, 'current_avg_cpu_percent': 5.84, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:48] CPU atual: max=5.84% avg=4.09% (instâncias reportando=8, sem resposta=0)
+[21:19:48] ⏳ COOLDOWN ativo
+[21:19:48] DECISÃO FINAL: NO_ACTION
+[21:19:48] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:19:53] ==== CICLO MAPE-K ====
+[21:19:53] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 3.825, 'cpu_max_percent': 5.65, 'current_avg_cpu_percent': 5.65, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:19:53] CPU atual: max=5.65% avg=3.83% (instâncias reportando=8, sem resposta=0)
+[21:19:53] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.65
+cpu_avg=3.83
+instances=8
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:19:53] AÇÃO: SCALE_DOWN (cpu avg 3.83% < 5.0, max 5.65 <= 10.0)
+[21:19:53] DECISÃO FINAL: SCALE_DOWN
+[21:19:53] 🧹 Removendo instância 7 (vivas: [0, 1, 2, 3, 4, 5, 6, 7])
+[21:19:55] ✅ SCALE_DOWN concluído: VideoStreamingService7 removida
+[21:19:55] Instâncias ativas: 8 (índices=[0, 1, 2, 3, 4, 5, 6, 7], próximo nome=10)
+[21:20:00] ==== CICLO MAPE-K ====
+[21:20:00] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 3.8475, 'cpu_max_percent': 5.62, 'current_avg_cpu_percent': 5.62, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:00] CPU atual: max=5.62% avg=3.85% (instâncias reportando=8, sem resposta=0)
+[21:20:00] ⏳ COOLDOWN ativo
+[21:20:00] DECISÃO FINAL: NO_ACTION
+[21:20:00] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:05] ==== CICLO MAPE-K ====
+[21:20:05] [DEBUG RESPONSE] {'active_instances': 8, 'cpu_avg_percent': 3.8475, 'cpu_max_percent': 5.62, 'current_avg_cpu_percent': 5.62, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:05] CPU atual: max=5.62% avg=3.85% (instâncias reportando=8, sem resposta=0)
+[21:20:05] ⏳ COOLDOWN ativo
+[21:20:05] DECISÃO FINAL: NO_ACTION
+[21:20:05] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:10] ==== CICLO MAPE-K ====
+[21:20:10] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 4.245714285714286, 'cpu_max_percent': 6.22, 'current_avg_cpu_percent': 6.22, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:10] CPU atual: max=6.22% avg=4.25% (instâncias reportando=7, sem resposta=0)
+[21:20:10] ⏳ COOLDOWN ativo
+[21:20:10] DECISÃO FINAL: NO_ACTION
+[21:20:10] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:15] ==== CICLO MAPE-K ====
+[21:20:15] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 4.245714285714286, 'cpu_max_percent': 6.22, 'current_avg_cpu_percent': 6.22, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:15] CPU atual: max=6.22% avg=4.25% (instâncias reportando=7, sem resposta=0)
+[21:20:15] ⏳ COOLDOWN ativo
+[21:20:15] DECISÃO FINAL: NO_ACTION
+[21:20:15] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:20] ==== CICLO MAPE-K ====
+[21:20:20] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 3.862857142857142, 'cpu_max_percent': 5.72, 'current_avg_cpu_percent': 5.72, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:20] CPU atual: max=5.72% avg=3.86% (instâncias reportando=7, sem resposta=0)
+[21:20:20] ⏳ COOLDOWN ativo
+[21:20:20] DECISÃO FINAL: NO_ACTION
+[21:20:20] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:25] ==== CICLO MAPE-K ====
+[21:20:25] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 3.862857142857142, 'cpu_max_percent': 5.72, 'current_avg_cpu_percent': 5.72, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:25] CPU atual: max=5.72% avg=3.86% (instâncias reportando=7, sem resposta=0)
+[21:20:25] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.72
+cpu_avg=3.86
+instances=7
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:20:25] AÇÃO: SCALE_DOWN (cpu avg 3.86% < 5.0, max 5.72 <= 10.0)
+[21:20:25] DECISÃO FINAL: SCALE_DOWN
+[21:20:25] 🧹 Removendo instância 6 (vivas: [0, 1, 2, 3, 4, 5, 6])
+[21:20:28] ✅ SCALE_DOWN concluído: VideoStreamingService6 removida
+[21:20:28] Instâncias ativas: 7 (índices=[0, 1, 2, 3, 4, 5, 6], próximo nome=10)
+[21:20:33] ==== CICLO MAPE-K ====
+[21:20:33] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 3.841428571428571, 'cpu_max_percent': 5.72, 'current_avg_cpu_percent': 5.72, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:33] CPU atual: max=5.72% avg=3.84% (instâncias reportando=7, sem resposta=0)
+[21:20:33] ⏳ COOLDOWN ativo
+[21:20:33] DECISÃO FINAL: NO_ACTION
+[21:20:33] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:20:38] ==== CICLO MAPE-K ====
+[21:20:38] [DEBUG RESPONSE] {'active_instances': 7, 'cpu_avg_percent': 3.841428571428571, 'cpu_max_percent': 5.72, 'current_avg_cpu_percent': 5.72, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:38] CPU atual: max=5.72% avg=3.84% (instâncias reportando=7, sem resposta=0)
+[21:20:38] ⏳ COOLDOWN ativo
+[21:20:38] DECISÃO FINAL: NO_ACTION
+[21:20:38] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:20:43] ==== CICLO MAPE-K ====
+[21:20:43] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 3.8016666666666663, 'cpu_max_percent': 4.86, 'current_avg_cpu_percent': 4.86, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:43] CPU atual: max=4.86% avg=3.80% (instâncias reportando=6, sem resposta=0)
+[21:20:43] ⏳ COOLDOWN ativo
+[21:20:43] DECISÃO FINAL: NO_ACTION
+[21:20:43] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:20:48] ==== CICLO MAPE-K ====
+[21:20:48] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 3.8016666666666663, 'cpu_max_percent': 4.86, 'current_avg_cpu_percent': 4.86, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:48] CPU atual: max=4.86% avg=3.80% (instâncias reportando=6, sem resposta=0)
+[21:20:48] ⏳ COOLDOWN ativo
+[21:20:48] DECISÃO FINAL: NO_ACTION
+[21:20:48] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:20:53] ==== CICLO MAPE-K ====
+[21:20:53] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 3.2633333333333336, 'cpu_max_percent': 4.28, 'current_avg_cpu_percent': 4.28, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:53] CPU atual: max=4.28% avg=3.26% (instâncias reportando=6, sem resposta=0)
+[21:20:53] ⏳ COOLDOWN ativo
+[21:20:53] DECISÃO FINAL: NO_ACTION
+[21:20:53] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:20:58] ==== CICLO MAPE-K ====
+[21:20:58] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 3.2633333333333336, 'cpu_max_percent': 4.28, 'current_avg_cpu_percent': 4.28, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:20:58] CPU atual: max=4.28% avg=3.26% (instâncias reportando=6, sem resposta=0)
+[21:20:58] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.28
+cpu_avg=3.26
+instances=6
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:20:58] AÇÃO: SCALE_DOWN (cpu avg 3.26% < 5.0, max 4.28 <= 10.0)
+[21:20:58] DECISÃO FINAL: SCALE_DOWN
+[21:20:58] 🧹 Removendo instância 5 (vivas: [0, 1, 2, 3, 4, 5])
+[21:21:01] ✅ SCALE_DOWN concluído: VideoStreamingService5 removida
+[21:21:01] Instâncias ativas: 6 (índices=[0, 1, 2, 3, 4, 5], próximo nome=10)
+[21:21:06] ==== CICLO MAPE-K ====
+[21:21:06] [DEBUG RESPONSE] {'active_instances': 6, 'cpu_avg_percent': 3.296666666666667, 'cpu_max_percent': 4.82, 'current_avg_cpu_percent': 4.82, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:06] CPU atual: max=4.82% avg=3.30% (instâncias reportando=6, sem resposta=0)
+[21:21:06] ⏳ COOLDOWN ativo
+[21:21:06] DECISÃO FINAL: NO_ACTION
+[21:21:06] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:11] ==== CICLO MAPE-K ====
+[21:21:11] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 3.152, 'cpu_max_percent': 4.96, 'current_avg_cpu_percent': 4.96, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:11] CPU atual: max=4.96% avg=3.15% (instâncias reportando=5, sem resposta=0)
+[21:21:11] ⏳ COOLDOWN ativo
+[21:21:11] DECISÃO FINAL: NO_ACTION
+[21:21:11] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:16] ==== CICLO MAPE-K ====
+[21:21:16] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 3.152, 'cpu_max_percent': 4.96, 'current_avg_cpu_percent': 4.96, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:16] CPU atual: max=4.96% avg=3.15% (instâncias reportando=5, sem resposta=0)
+[21:21:16] ⏳ COOLDOWN ativo
+[21:21:16] DECISÃO FINAL: NO_ACTION
+[21:21:16] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:21] ==== CICLO MAPE-K ====
+[21:21:21] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 2.99, 'cpu_max_percent': 4.48, 'current_avg_cpu_percent': 4.48, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:21] CPU atual: max=4.48% avg=2.99% (instâncias reportando=5, sem resposta=0)
+[21:21:21] ⏳ COOLDOWN ativo
+[21:21:21] DECISÃO FINAL: NO_ACTION
+[21:21:21] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:26] ==== CICLO MAPE-K ====
+[21:21:26] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 2.99, 'cpu_max_percent': 4.48, 'current_avg_cpu_percent': 4.48, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:26] CPU atual: max=4.48% avg=2.99% (instâncias reportando=5, sem resposta=0)
+[21:21:26] ⏳ COOLDOWN ativo
+[21:21:26] DECISÃO FINAL: NO_ACTION
+[21:21:26] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:31] ==== CICLO MAPE-K ====
+[21:21:31] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 2.8640000000000003, 'cpu_max_percent': 4.48, 'current_avg_cpu_percent': 4.48, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:31] CPU atual: max=4.48% avg=2.86% (instâncias reportando=5, sem resposta=0)
+[21:21:31] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.48
+cpu_avg=2.86
+instances=5
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:21:31] AÇÃO: SCALE_DOWN (cpu avg 2.86% < 5.0, max 4.48 <= 10.0)
+[21:21:31] DECISÃO FINAL: SCALE_DOWN
+[21:21:31] 🧹 Removendo instância 4 (vivas: [0, 1, 2, 3, 4])
+[21:21:33] ✅ SCALE_DOWN concluído: VideoStreamingService4 removida
+[21:21:33] Instâncias ativas: 5 (índices=[0, 1, 2, 3, 4], próximo nome=10)
+[21:21:38] ==== CICLO MAPE-K ====
+[21:21:38] [DEBUG RESPONSE] {'active_instances': 5, 'cpu_avg_percent': 2.8640000000000003, 'cpu_max_percent': 4.48, 'current_avg_cpu_percent': 4.48, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:38] CPU atual: max=4.48% avg=2.86% (instâncias reportando=5, sem resposta=0)
+[21:21:38] ⏳ COOLDOWN ativo
+[21:21:38] DECISÃO FINAL: NO_ACTION
+[21:21:38] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:21:43] ==== CICLO MAPE-K ====
+[21:21:43] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 2.985, 'cpu_max_percent': 4.0, 'current_avg_cpu_percent': 4.0, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:43] CPU atual: max=4.00% avg=2.98% (instâncias reportando=4, sem resposta=0)
+[21:21:44] ⏳ COOLDOWN ativo
+[21:21:44] DECISÃO FINAL: NO_ACTION
+[21:21:44] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:21:49] ==== CICLO MAPE-K ====
+[21:21:49] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 2.985, 'cpu_max_percent': 4.0, 'current_avg_cpu_percent': 4.0, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:49] CPU atual: max=4.00% avg=2.98% (instâncias reportando=4, sem resposta=0)
+[21:21:49] ⏳ COOLDOWN ativo
+[21:21:49] DECISÃO FINAL: NO_ACTION
+[21:21:49] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:21:54] ==== CICLO MAPE-K ====
+[21:21:54] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 3.5100000000000002, 'cpu_max_percent': 4.54, 'current_avg_cpu_percent': 4.54, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:54] CPU atual: max=4.54% avg=3.51% (instâncias reportando=4, sem resposta=0)
+[21:21:54] ⏳ COOLDOWN ativo
+[21:21:54] DECISÃO FINAL: NO_ACTION
+[21:21:54] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:21:59] ==== CICLO MAPE-K ====
+[21:21:59] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 3.5100000000000002, 'cpu_max_percent': 4.54, 'current_avg_cpu_percent': 4.54, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:21:59] CPU atual: max=4.54% avg=3.51% (instâncias reportando=4, sem resposta=0)
+[21:21:59] ⏳ COOLDOWN ativo
+[21:21:59] DECISÃO FINAL: NO_ACTION
+[21:21:59] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:22:04] ==== CICLO MAPE-K ====
+[21:22:04] [DEBUG RESPONSE] {'active_instances': 4, 'cpu_avg_percent': 3.1075, 'cpu_max_percent': 3.39, 'current_avg_cpu_percent': 3.39, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:04] CPU atual: max=3.39% avg=3.11% (instâncias reportando=4, sem resposta=0)
+[21:22:04] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=3.39
+cpu_avg=3.11
+instances=4
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:22:04] AÇÃO: SCALE_DOWN (cpu avg 3.11% < 5.0, max 3.39 <= 10.0)
+[21:22:04] DECISÃO FINAL: SCALE_DOWN
+[21:22:04] 🧹 Removendo instância 3 (vivas: [0, 1, 2, 3])
+[21:22:06] ✅ SCALE_DOWN concluído: VideoStreamingService3 removida
+[21:22:06] Instâncias ativas: 4 (índices=[0, 1, 2, 3], próximo nome=10)
+[21:22:11] ==== CICLO MAPE-K ====
+[21:22:11] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.2466666666666666, 'cpu_max_percent': 2.63, 'current_avg_cpu_percent': 2.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:11] CPU atual: max=2.63% avg=2.25% (instâncias reportando=3, sem resposta=0)
+[21:22:11] ⏳ COOLDOWN ativo
+[21:22:11] DECISÃO FINAL: NO_ACTION
+[21:22:11] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:16] ==== CICLO MAPE-K ====
+[21:22:16] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.2466666666666666, 'cpu_max_percent': 2.63, 'current_avg_cpu_percent': 2.63, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:16] CPU atual: max=2.63% avg=2.25% (instâncias reportando=3, sem resposta=0)
+[21:22:16] ⏳ COOLDOWN ativo
+[21:22:16] DECISÃO FINAL: NO_ACTION
+[21:22:16] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:21] ==== CICLO MAPE-K ====
+[21:22:21] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.04, 'cpu_max_percent': 2.49, 'current_avg_cpu_percent': 2.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:21] CPU atual: max=2.49% avg=2.04% (instâncias reportando=3, sem resposta=0)
+[21:22:21] ⏳ COOLDOWN ativo
+[21:22:21] DECISÃO FINAL: NO_ACTION
+[21:22:21] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:26] ==== CICLO MAPE-K ====
+[21:22:26] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.04, 'cpu_max_percent': 2.49, 'current_avg_cpu_percent': 2.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:26] CPU atual: max=2.49% avg=2.04% (instâncias reportando=3, sem resposta=0)
+[21:22:26] ⏳ COOLDOWN ativo
+[21:22:26] DECISÃO FINAL: NO_ACTION
+[21:22:26] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:31] ==== CICLO MAPE-K ====
+[21:22:31] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 1.9866666666666666, 'cpu_max_percent': 2.49, 'current_avg_cpu_percent': 2.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:31] CPU atual: max=2.49% avg=1.99% (instâncias reportando=3, sem resposta=0)
+[21:22:31] ⏳ COOLDOWN ativo
+[21:22:31] DECISÃO FINAL: NO_ACTION
+[21:22:31] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:36] ==== CICLO MAPE-K ====
+[21:22:36] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 1.9866666666666666, 'cpu_max_percent': 2.49, 'current_avg_cpu_percent': 2.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:36] CPU atual: max=2.49% avg=1.99% (instâncias reportando=3, sem resposta=0)
+[21:22:36] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=2.49
+cpu_avg=1.99
+instances=3
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:22:36] AÇÃO: SCALE_DOWN (cpu avg 1.99% < 5.0, max 2.49 <= 10.0)
+[21:22:36] DECISÃO FINAL: SCALE_DOWN
+[21:22:36] 🧹 Removendo instância 2 (vivas: [0, 1, 2])
+[21:22:39] ✅ SCALE_DOWN concluído: VideoStreamingService2 removida
+[21:22:39] Instâncias ativas: 3 (índices=[0, 1, 2], próximo nome=10)
+[21:22:44] ==== CICLO MAPE-K ====
+[21:22:44] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.7266666666666666, 'cpu_max_percent': 4.49, 'current_avg_cpu_percent': 4.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:44] CPU atual: max=4.49% avg=2.73% (instâncias reportando=3, sem resposta=0)
+[21:22:44] ⏳ COOLDOWN ativo
+[21:22:44] DECISÃO FINAL: NO_ACTION
+[21:22:44] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:22:49] ==== CICLO MAPE-K ====
+[21:22:49] [DEBUG RESPONSE] {'active_instances': 3, 'cpu_avg_percent': 2.7266666666666666, 'cpu_max_percent': 4.49, 'current_avg_cpu_percent': 4.49, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:49] CPU atual: max=4.49% avg=2.73% (instâncias reportando=3, sem resposta=0)
+[21:22:49] ⏳ COOLDOWN ativo
+[21:22:49] DECISÃO FINAL: NO_ACTION
+[21:22:49] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:22:54] ==== CICLO MAPE-K ====
+[21:22:54] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.575, 'cpu_max_percent': 2.99, 'current_avg_cpu_percent': 2.99, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:54] CPU atual: max=2.99% avg=2.58% (instâncias reportando=2, sem resposta=0)
+[21:22:54] ⏳ COOLDOWN ativo
+[21:22:54] DECISÃO FINAL: NO_ACTION
+[21:22:54] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:22:59] ==== CICLO MAPE-K ====
+[21:22:59] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.575, 'cpu_max_percent': 2.99, 'current_avg_cpu_percent': 2.99, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:22:59] CPU atual: max=2.99% avg=2.58% (instâncias reportando=2, sem resposta=0)
+[21:22:59] ⏳ COOLDOWN ativo
+[21:22:59] DECISÃO FINAL: NO_ACTION
+[21:22:59] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:04] ==== CICLO MAPE-K ====
+[21:23:04] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.575, 'cpu_max_percent': 2.99, 'current_avg_cpu_percent': 2.99, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:04] CPU atual: max=2.99% avg=2.58% (instâncias reportando=2, sem resposta=0)
+[21:23:04] ⏳ COOLDOWN ativo
+[21:23:04] DECISÃO FINAL: NO_ACTION
+[21:23:04] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:09] ==== CICLO MAPE-K ====
+[21:23:09] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 2.575, 'cpu_max_percent': 2.99, 'current_avg_cpu_percent': 2.99, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:09] CPU atual: max=2.99% avg=2.58% (instâncias reportando=2, sem resposta=0)
+[21:23:09] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=2.99
+cpu_avg=2.58
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:09] DECISÃO FINAL: NO_ACTION
+[21:23:09] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:14] ==== CICLO MAPE-K ====
+[21:23:14] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 3.645, 'cpu_max_percent': 4.46, 'current_avg_cpu_percent': 4.46, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:14] CPU atual: max=4.46% avg=3.65% (instâncias reportando=2, sem resposta=0)
+[21:23:14] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.46
+cpu_avg=3.65
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:14] DECISÃO FINAL: NO_ACTION
+[21:23:14] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:19] ==== CICLO MAPE-K ====
+[21:23:19] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 3.645, 'cpu_max_percent': 4.46, 'current_avg_cpu_percent': 4.46, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:19] CPU atual: max=4.46% avg=3.65% (instâncias reportando=2, sem resposta=0)
+[21:23:19] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=4.46
+cpu_avg=3.65
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:19] DECISÃO FINAL: NO_ACTION
+[21:23:19] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:24] ==== CICLO MAPE-K ====
+[21:23:24] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.755, 'cpu_max_percent': 5.29, 'current_avg_cpu_percent': 5.29, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:24] CPU atual: max=5.29% avg=4.75% (instâncias reportando=2, sem resposta=0)
+[21:23:24] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.29
+cpu_avg=4.75
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:24] DECISÃO FINAL: NO_ACTION
+[21:23:24] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:29] ==== CICLO MAPE-K ====
+[21:23:29] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.755, 'cpu_max_percent': 5.29, 'current_avg_cpu_percent': 5.29, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:29] CPU atual: max=5.29% avg=4.75% (instâncias reportando=2, sem resposta=0)
+[21:23:29] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.29
+cpu_avg=4.75
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:29] DECISÃO FINAL: NO_ACTION
+[21:23:29] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:34] ==== CICLO MAPE-K ====
+[21:23:34] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.755, 'cpu_max_percent': 5.29, 'current_avg_cpu_percent': 5.29, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:34] CPU atual: max=5.29% avg=4.75% (instâncias reportando=2, sem resposta=0)
+[21:23:34] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.29
+cpu_avg=4.75
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:34] DECISÃO FINAL: NO_ACTION
+[21:23:34] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:39] ==== CICLO MAPE-K ====
+[21:23:39] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 4.755, 'cpu_max_percent': 5.29, 'current_avg_cpu_percent': 5.29, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:39] CPU atual: max=5.29% avg=4.75% (instâncias reportando=2, sem resposta=0)
+[21:23:39] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.29
+cpu_avg=4.75
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:39] DECISÃO FINAL: NO_ACTION
+[21:23:39] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:44] ==== CICLO MAPE-K ====
+[21:23:44] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.33, 'cpu_max_percent': 5.71, 'current_avg_cpu_percent': 5.71, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:44] CPU atual: max=5.71% avg=5.33% (instâncias reportando=2, sem resposta=0)
+[21:23:44] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.71
+cpu_avg=5.33
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:44] DECISÃO FINAL: NO_ACTION
+[21:23:44] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:49] ==== CICLO MAPE-K ====
+[21:23:49] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.33, 'cpu_max_percent': 5.71, 'current_avg_cpu_percent': 5.71, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:49] CPU atual: max=5.71% avg=5.33% (instâncias reportando=2, sem resposta=0)
+[21:23:49] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.71
+cpu_avg=5.33
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:49] DECISÃO FINAL: NO_ACTION
+[21:23:49] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:54] ==== CICLO MAPE-K ====
+[21:23:54] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.57, 'cpu_max_percent': 6.34, 'current_avg_cpu_percent': 6.34, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:54] CPU atual: max=6.34% avg=5.57% (instâncias reportando=2, sem resposta=0)
+[21:23:54] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.34
+cpu_avg=5.57
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:54] DECISÃO FINAL: NO_ACTION
+[21:23:54] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:23:59] ==== CICLO MAPE-K ====
+[21:23:59] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.57, 'cpu_max_percent': 6.34, 'current_avg_cpu_percent': 6.34, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:23:59] CPU atual: max=6.34% avg=5.57% (instâncias reportando=2, sem resposta=0)
+[21:23:59] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.34
+cpu_avg=5.57
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:23:59] DECISÃO FINAL: NO_ACTION
+[21:23:59] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:24:04] ==== CICLO MAPE-K ====
+[21:24:04] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.57, 'cpu_max_percent': 6.34, 'current_avg_cpu_percent': 6.34, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:24:04] CPU atual: max=6.34% avg=5.57% (instâncias reportando=2, sem resposta=0)
+[21:24:04] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.34
+cpu_avg=5.57
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:24:04] DECISÃO FINAL: NO_ACTION
+[21:24:04] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:24:09] ==== CICLO MAPE-K ====
+[21:24:09] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.57, 'cpu_max_percent': 6.34, 'current_avg_cpu_percent': 6.34, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:24:09] CPU atual: max=6.34% avg=5.57% (instâncias reportando=2, sem resposta=0)
+[21:24:09] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=6.34
+cpu_avg=5.57
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:24:09] DECISÃO FINAL: NO_ACTION
+[21:24:09] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:24:14] ==== CICLO MAPE-K ====
+[21:24:14] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.5600000000000005, 'cpu_max_percent': 5.67, 'current_avg_cpu_percent': 5.67, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:24:14] CPU atual: max=5.67% avg=5.56% (instâncias reportando=2, sem resposta=0)
+[21:24:14] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.67
+cpu_avg=5.56
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:24:14] DECISÃO FINAL: NO_ACTION
+[21:24:14] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)
+[21:24:19] ==== CICLO MAPE-K ====
+[21:24:19] [DEBUG RESPONSE] {'active_instances': 2, 'cpu_avg_percent': 5.5600000000000005, 'cpu_max_percent': 5.67, 'current_avg_cpu_percent': 5.67, 'predicted_next_avg_cpu_percent': 'N/A', 'unresponsive_instances': 0}
+[21:24:19] CPU atual: max=5.67% avg=5.56% (instâncias reportando=2, sem resposta=0)
+[21:24:19] 
+[MAPE-K DEBUG]
+metric=cpu
+cpu_max=5.67
+cpu_avg=5.56
+instances=2
+threshold_up=10.0 (sobre o max)
+threshold_down=5.0 (sobre a media)
+
+[21:24:19] DECISÃO FINAL: NO_ACTION
+[21:24:19] Instâncias ativas: 2 (índices=[0, 1], próximo nome=10)

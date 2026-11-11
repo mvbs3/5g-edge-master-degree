@@ -1,0 +1,10 @@
+[02:38:30] === INÍCIO ===
+[02:38:30] WARMUP_UES=10 PEAK_UES=100 ramp_step=10s
+[02:38:30] Fase 1/5 WARMUP — subindo 10 UEs
+[02:38:40] Mantendo warmup por 600s
+[02:48:40] Fase 2/5 RAMP UP de 10 → 100 UEs em 900s
+[03:03:40] Fase 3/5 PEAK — 100 UEs por 900s
+[03:18:40] Fase 4/5 DRAIN — matando 90 UEs em 900s
+[03:33:40] Fase 5/5 SETTLE — mantendo 10 UEs por 300s
+[03:38:40] === FIM ===
+[03:38:40] Cleanup: matando todos os UEs
