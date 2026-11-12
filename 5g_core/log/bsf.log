@@ -1284,3 +1284,7 @@ Open5GS daemon v2.7.7
 11/10 21:26:37.873: [sbi] INFO: [8ee0f1ee-dd66-41f1-ab9e-cf44a8e2acb5] NF registered [Heartbeat:10s] (../lib/sbi/nf-sm.c:341)
 11/10 21:26:37.875: [sbi] INFO: Setup NF EndPoint(addr) [172.22.0.12:7777] (../lib/sbi/nnrf-handler.c:969)
 11/10 21:26:37.875: [sbi] INFO: [8ee18582-dd66-41f1-ae8f-6b549950fa67] Subscription created until 2026-11-11T21:26:37.874373-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+11/11 09:26:37.875: [bsf] INFO: [8ee18582-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/bsf/bsf-sm.c:413)
+11/11 09:26:37.876: [sbi] INFO: [8ee18582-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T09:26:37.876896-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+11/11 21:26:37.878: [bsf] INFO: [8ee18582-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/bsf/bsf-sm.c:413)
+11/11 21:26:37.879: [sbi] INFO: [8ee18582-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T21:26:37.879455-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)

@@ -2420,3 +2420,11 @@ Open5GS daemon v2.7.7
 [MAC_S] 0000: 468a8981 118a9fa5                     F.......
 0000: 45100d82 a5bf83e6                     E.......
 0000: e09fe05a 18c2                         ...Z..
+11/11 09:26:27.850: [udm] INFO: [88e7c092-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/udm/udm-sm.c:590)
+11/11 09:26:27.851: [udm] INFO: [88e7cb1e-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/udm/udm-sm.c:590)
+11/11 09:26:27.852: [sbi] INFO: [88e7c092-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T09:26:27.852774-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+11/11 09:26:27.852: [sbi] INFO: [88e7cb1e-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T09:26:27.852899-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+11/11 21:26:27.857: [udm] INFO: [88e7c092-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/udm/udm-sm.c:590)
+11/11 21:26:27.857: [udm] INFO: [88e7cb1e-dd66-41f1-ae8f-6b549950fa67] Need to update Subscription (../src/udm/udm-sm.c:590)
+11/11 21:26:27.858: [sbi] INFO: [88e7c092-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T21:26:27.858761-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
+11/11 21:26:27.858: [sbi] INFO: [88e7cb1e-dd66-41f1-ae8f-6b549950fa67] Subscription updated(204 No Content) until 2026-11-12T21:26:27.858878-03:00 [duration:86400000000,validity:86400.000000,patch:43200.000000] (../lib/sbi/nnrf-handler.c:888)
